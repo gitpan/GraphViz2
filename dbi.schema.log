@@ -1,0 +1,220 @@
+Default global: directed => digraph
+Default global: driver => /usr/local/bin/dot
+Default global: format => svg
+Default global: label => ->
+Default global: name => Perl
+Default global: record_shape => Mrecord
+Default global: strict => 0
+Default global: timeout => 10
+Default graph: label => Graph produced by GraphViz2::Data::Grapher's scripts/dbi.schema.pl, rankdir => TB
+Default node: shape => oval
+Default edge: color => red
+Added node: "categories" [ label="<port1> \{categories|<port2> date_added\ldate_modified\lid\limage\lname\lparent_id\lsort_order\lupper_name\l\}" shape="record" ]
+Added node: "category_descriptions" [ label="<port1> \{category_descriptions|<port2> category_id\lid\llanguage_id\lname\lupper_name\l\}" shape="record" ]
+Added node: "languages"
+Added edge: "category_descriptions" -> "languages" [ label="" ]
+Added edge: "category_descriptions" -> "categories" [ label="" ]
+Added node: "countries" [ label="<port1> \{countries|<port2> code\lid\lname\lupper_name\l\}" shape="record" ]
+Added node: "currencies" [ label="<port1> \{currencies|<port2> code\ldecimal_places\lid\lname\lsymbol_left\lsymbol_right\lupper_name\l\}" shape="record" ]
+Added node: "customer_statuses" [ label="<port1> \{customer_statuses|<port2> id\lname\lupper_name\l\}" shape="record" ]
+Added node: "customer_types" [ label="<port1> \{customer_types|<port2> id\lname\lupper_name\l\}" shape="record" ]
+Added node: "customers" [ label="<port1> \{customers|<port2> customer_status_id\lcustomer_type_id\ldate_added\ldate_modified\ldate_of_birth\ldefault_street_address_id\lgender_id\lgiven_names\lid\lname\lpassword\lpreferred_name\lsurname\ltitle_id\lupper_name\lusername\l\}" shape="record" ]
+Added edge: "customers" -> "customer_statuses" [ label="" ]
+Added node: "titles"
+Added edge: "customers" -> "titles" [ label="" ]
+Added edge: "customers" -> "customer_types" [ label="" ]
+Added node: "street_addresses"
+Added edge: "customers" -> "street_addresses" [ label="" ]
+Added node: "genders"
+Added edge: "customers" -> "genders" [ label="" ]
+Added node: "email_address_types" [ label="<port1> \{email_address_types|<port2> id\lname\lupper_name\l\}" shape="record" ]
+Added node: "email_addresses" [ label="<port1> \{email_addresses|<port2> address\lemail_address_type_id\lid\l\}" shape="record" ]
+Added edge: "email_addresses" -> "email_address_types" [ label="" ]
+Added node: "email_lists" [ label="<port1> \{email_lists|<port2> customer_id\lemail_address_id\lid\l\}" shape="record" ]
+Added edge: "email_lists" -> "email_addresses" [ label="" ]
+Added edge: "email_lists" -> "customers" [ label="" ]
+Added node: "genders" [ label="<port1> \{genders|<port2> id\lname\lupper_name\l\}" shape="record" ]
+Added node: "languages" [ label="<port1> \{languages|<port2> charset\lcode\lcurrency_id\ldate_format_long\ldate_format_short\lid\llocale\lname\lnumeric_separator_decimal\lnumeric_separator_thousands\ltext_direction\ltime_format\lupper_name\l\}" shape="record" ]
+Added edge: "languages" -> "currencies" [ label="" ]
+Added node: "log" [ label="<port1> \{log|<port2> id\llevel\lmessage\ltimestamp\l\}" shape="record" ]
+Added node: "logons" [ label="<port1> \{logons|<port2> customer_id\ldate\lid\lip_address\l\}" shape="record" ]
+Added edge: "logons" -> "customers" [ label="" ]
+Added node: "manufacturers" [ label="<port1> \{manufacturers|<port2> date_added\ldate_modified\lid\limage\lname\lupper_name\l\}" shape="record" ]
+Added node: "manufacturers_info" [ label="<port1> \{manufacturers_info|<port2> date_last_click\lid\llanguage_id\lmanufacturer_id\lurl\lurl_clicked\l\}" shape="record" ]
+Added edge: "manufacturers_info" -> "languages" [ label="" ]
+Added edge: "manufacturers_info" -> "manufacturers" [ label="" ]
+Added node: "order_history" [ label="<port1> \{order_history|<port2> comment\lcustomer_notified_id\ldate_added\ldate_modified\lid\lorder_id\lorder_status_id\l\}" shape="record" ]
+Added node: "order_statuses"
+Added edge: "order_history" -> "order_statuses" [ label="" ]
+Added node: "orders"
+Added edge: "order_history" -> "orders" [ label="" ]
+Added node: "yes_no"
+Added edge: "order_history" -> "yes_no" [ label="" ]
+Added node: "order_items" [ label="<port1> \{order_items|<port2> id\lmodel\lname\lorder_id\lprice\lproduct_id\lquantity\ltax_rate\lupper_name\l\}" shape="record" ]
+Added edge: "order_items" -> "orders" [ label="" ]
+Added node: "products"
+Added edge: "order_items" -> "products" [ label="" ]
+Added node: "order_statuses" [ label="<port1> \{order_statuses|<port2> id\llanguage_id\lname\lupper_name\l\}" shape="record" ]
+Added edge: "order_statuses" -> "languages" [ label="" ]
+Added node: "orders" [ label="<port1> \{orders|<port2> billing_address_id\lcustomer_address_id\lcustomer_id\ldate_added\ldate_completed\ldate_modified\ldelivery_address_id\lid\lorder_status_id\lpayment_method_id\l\}" shape="record" ]
+Added edge: "orders" -> "street_addresses" [ label="" ]
+Added edge: "orders" -> "order_statuses" [ label="" ]
+Added edge: "orders" -> "street_addresses" [ label="" ]
+Added edge: "orders" -> "street_addresses" [ label="" ]
+Added edge: "orders" -> "customers" [ label="" ]
+Added node: "payment_methods"
+Added edge: "orders" -> "payment_methods" [ label="" ]
+Added node: "payment_methods" [ label="<port1> \{payment_methods|<port2> id\lname\lupper_name\l\}" shape="record" ]
+Added node: "phone_lists" [ label="<port1> \{phone_lists|<port2> customer_id\lid\lphone_number_id\l\}" shape="record" ]
+Added edge: "phone_lists" -> "customers" [ label="" ]
+Added node: "phone_numbers"
+Added edge: "phone_lists" -> "phone_numbers" [ label="" ]
+Added node: "phone_number_types" [ label="<port1> \{phone_number_types|<port2> id\lname\lupper_name\l\}" shape="record" ]
+Added node: "phone_numbers" [ label="<port1> \{phone_numbers|<port2> id\lnumber\lphone_number_type_id\l\}" shape="record" ]
+Added edge: "phone_numbers" -> "phone_number_types" [ label="" ]
+Added node: "product_classes" [ label="<port1> \{product_classes|<port2> id\lname\lupper_name\l\}" shape="record" ]
+Added node: "product_colors" [ label="<port1> \{product_colors|<port2> id\lname\lupper_name\l\}" shape="record" ]
+Added node: "product_descriptions" [ label="<port1> \{product_descriptions|<port2> description\lid\lkeyword\llanguage_id\lname\ltags\lupper_name\lurl\l\}" shape="record" ]
+Added edge: "product_descriptions" -> "languages" [ label="" ]
+Added node: "product_sizes" [ label="<port1> \{product_sizes|<port2> id\lname\lupper_name\l\}" shape="record" ]
+Added node: "product_statuses" [ label="<port1> \{product_statuses|<port2> id\lname\lupper_name\l\}" shape="record" ]
+Added node: "product_styles" [ label="<port1> \{product_styles|<port2> id\lname\lupper_name\l\}" shape="record" ]
+Added node: "product_types" [ label="<port1> \{product_types|<port2> id\lname\lupper_name\l\}" shape="record" ]
+Added node: "products" [ label="<port1> \{products|<port2> currency_id\ldate_added\ldate_modified\ldescription\lhas_children\lid\lmanufacturer_id\lmodel\lname\lparent_id\lprice\lproduct_status_id\lquantity_on_hand\lquantity_ordered\ltax_class_id\lupper_name\lweight\lweight_class_id\l\}" shape="record" ]
+Added edge: "products" -> "manufacturers" [ label="" ]
+Added node: "tax_classes"
+Added edge: "products" -> "tax_classes" [ label="" ]
+Added edge: "products" -> "product_statuses" [ label="" ]
+Added node: "weight_classes"
+Added edge: "products" -> "weight_classes" [ label="" ]
+Added edge: "products" -> "currencies" [ label="" ]
+Added node: "products_to_categories" [ label="<port1> \{products_to_categories|<port2> category_id\lid\lproduct_id\l\}" shape="record" ]
+Added edge: "products_to_categories" -> "products" [ label="" ]
+Added edge: "products_to_categories" -> "categories" [ label="" ]
+Added node: "sessions" [ label="<port1> \{sessions|<port2> a_session\lid\l\}" shape="record" ]
+Added node: "street_addresses" [ label="<port1> \{street_addresses|<port2> country_id\lid\llocality\lname\lpostcode\lstreet_1\lstreet_2\lstreet_3\lstreet_4\lupper_name\lzone_id\l\}" shape="record" ]
+Added node: "zones"
+Added edge: "street_addresses" -> "zones" [ label="" ]
+Added edge: "street_addresses" -> "countries" [ label="" ]
+Added node: "tax_classes" [ label="<port1> \{tax_classes|<port2> date_added\ldate_modified\ldescription\lid\lname\lupper_name\l\}" shape="record" ]
+Added node: "tax_rates" [ label="<port1> \{tax_rates|<port2> date_added\ldate_modified\ldescription\lid\lname\lpriority\lrate\ltax_class_id\lupper_name\lzone_id\l\}" shape="record" ]
+Added edge: "tax_rates" -> "tax_classes" [ label="" ]
+Added edge: "tax_rates" -> "zones" [ label="" ]
+Added node: "titles" [ label="<port1> \{titles|<port2> id\lname\lupper_name\l\}" shape="record" ]
+Added node: "weight_class_rules" [ label="<port1> \{weight_class_rules|<port2> from_id\lid\lrule\lto_id\l\}" shape="record" ]
+Added edge: "weight_class_rules" -> "weight_classes" [ label="" ]
+Added edge: "weight_class_rules" -> "weight_classes" [ label="" ]
+Added node: "weight_classes" [ label="<port1> \{weight_classes|<port2> id\lkey\llanguage_id\lname\lupper_name\l\}" shape="record" ]
+Added edge: "weight_classes" -> "languages" [ label="" ]
+Added node: "yes_no" [ label="<port1> \{yes_no|<port2> id\lname\lupper_name\l\}" shape="record" ]
+Added node: "zones" [ label="<port1> \{zones|<port2> code\lcountry_id\lid\lname\lupper_name\l\}" shape="record" ]
+Added edge: "zones" -> "countries" [ label="" ]
+Driver: /usr/local/bin/dot. Output file: html/dbi.schema.svg. Format: svg. Timeout: 11 second(s)
+
+digraph Perl
+{
+graph [ label="Graph produced by GraphViz2::Data::Grapher's scripts/dbi.schema.pl" rankdir="TB" ]
+node [ shape="oval" ]
+edge [ color="red" ]
+"categories" [ label="<port1> \{categories|<port2> date_added\ldate_modified\lid\limage\lname\lparent_id\lsort_order\lupper_name\l\}" shape="record" ]
+"category_descriptions" [ label="<port1> \{category_descriptions|<port2> category_id\lid\llanguage_id\lname\lupper_name\l\}" shape="record" ]
+"languages"
+"category_descriptions" -> "languages" [ label="" ]
+"category_descriptions" -> "categories" [ label="" ]
+"countries" [ label="<port1> \{countries|<port2> code\lid\lname\lupper_name\l\}" shape="record" ]
+"currencies" [ label="<port1> \{currencies|<port2> code\ldecimal_places\lid\lname\lsymbol_left\lsymbol_right\lupper_name\l\}" shape="record" ]
+"customer_statuses" [ label="<port1> \{customer_statuses|<port2> id\lname\lupper_name\l\}" shape="record" ]
+"customer_types" [ label="<port1> \{customer_types|<port2> id\lname\lupper_name\l\}" shape="record" ]
+"customers" [ label="<port1> \{customers|<port2> customer_status_id\lcustomer_type_id\ldate_added\ldate_modified\ldate_of_birth\ldefault_street_address_id\lgender_id\lgiven_names\lid\lname\lpassword\lpreferred_name\lsurname\ltitle_id\lupper_name\lusername\l\}" shape="record" ]
+"customers" -> "customer_statuses" [ label="" ]
+"titles"
+"customers" -> "titles" [ label="" ]
+"customers" -> "customer_types" [ label="" ]
+"street_addresses"
+"customers" -> "street_addresses" [ label="" ]
+"genders"
+"customers" -> "genders" [ label="" ]
+"email_address_types" [ label="<port1> \{email_address_types|<port2> id\lname\lupper_name\l\}" shape="record" ]
+"email_addresses" [ label="<port1> \{email_addresses|<port2> address\lemail_address_type_id\lid\l\}" shape="record" ]
+"email_addresses" -> "email_address_types" [ label="" ]
+"email_lists" [ label="<port1> \{email_lists|<port2> customer_id\lemail_address_id\lid\l\}" shape="record" ]
+"email_lists" -> "email_addresses" [ label="" ]
+"email_lists" -> "customers" [ label="" ]
+"genders" [ label="<port1> \{genders|<port2> id\lname\lupper_name\l\}" shape="record" ]
+"languages" [ label="<port1> \{languages|<port2> charset\lcode\lcurrency_id\ldate_format_long\ldate_format_short\lid\llocale\lname\lnumeric_separator_decimal\lnumeric_separator_thousands\ltext_direction\ltime_format\lupper_name\l\}" shape="record" ]
+"languages" -> "currencies" [ label="" ]
+"log" [ label="<port1> \{log|<port2> id\llevel\lmessage\ltimestamp\l\}" shape="record" ]
+"logons" [ label="<port1> \{logons|<port2> customer_id\ldate\lid\lip_address\l\}" shape="record" ]
+"logons" -> "customers" [ label="" ]
+"manufacturers" [ label="<port1> \{manufacturers|<port2> date_added\ldate_modified\lid\limage\lname\lupper_name\l\}" shape="record" ]
+"manufacturers_info" [ label="<port1> \{manufacturers_info|<port2> date_last_click\lid\llanguage_id\lmanufacturer_id\lurl\lurl_clicked\l\}" shape="record" ]
+"manufacturers_info" -> "languages" [ label="" ]
+"manufacturers_info" -> "manufacturers" [ label="" ]
+"order_history" [ label="<port1> \{order_history|<port2> comment\lcustomer_notified_id\ldate_added\ldate_modified\lid\lorder_id\lorder_status_id\l\}" shape="record" ]
+"order_statuses"
+"order_history" -> "order_statuses" [ label="" ]
+"orders"
+"order_history" -> "orders" [ label="" ]
+"yes_no"
+"order_history" -> "yes_no" [ label="" ]
+"order_items" [ label="<port1> \{order_items|<port2> id\lmodel\lname\lorder_id\lprice\lproduct_id\lquantity\ltax_rate\lupper_name\l\}" shape="record" ]
+"order_items" -> "orders" [ label="" ]
+"products"
+"order_items" -> "products" [ label="" ]
+"order_statuses" [ label="<port1> \{order_statuses|<port2> id\llanguage_id\lname\lupper_name\l\}" shape="record" ]
+"order_statuses" -> "languages" [ label="" ]
+"orders" [ label="<port1> \{orders|<port2> billing_address_id\lcustomer_address_id\lcustomer_id\ldate_added\ldate_completed\ldate_modified\ldelivery_address_id\lid\lorder_status_id\lpayment_method_id\l\}" shape="record" ]
+"orders" -> "street_addresses" [ label="" ]
+"orders" -> "order_statuses" [ label="" ]
+"orders" -> "street_addresses" [ label="" ]
+"orders" -> "street_addresses" [ label="" ]
+"orders" -> "customers" [ label="" ]
+"payment_methods"
+"orders" -> "payment_methods" [ label="" ]
+"payment_methods" [ label="<port1> \{payment_methods|<port2> id\lname\lupper_name\l\}" shape="record" ]
+"phone_lists" [ label="<port1> \{phone_lists|<port2> customer_id\lid\lphone_number_id\l\}" shape="record" ]
+"phone_lists" -> "customers" [ label="" ]
+"phone_numbers"
+"phone_lists" -> "phone_numbers" [ label="" ]
+"phone_number_types" [ label="<port1> \{phone_number_types|<port2> id\lname\lupper_name\l\}" shape="record" ]
+"phone_numbers" [ label="<port1> \{phone_numbers|<port2> id\lnumber\lphone_number_type_id\l\}" shape="record" ]
+"phone_numbers" -> "phone_number_types" [ label="" ]
+"product_classes" [ label="<port1> \{product_classes|<port2> id\lname\lupper_name\l\}" shape="record" ]
+"product_colors" [ label="<port1> \{product_colors|<port2> id\lname\lupper_name\l\}" shape="record" ]
+"product_descriptions" [ label="<port1> \{product_descriptions|<port2> description\lid\lkeyword\llanguage_id\lname\ltags\lupper_name\lurl\l\}" shape="record" ]
+"product_descriptions" -> "languages" [ label="" ]
+"product_sizes" [ label="<port1> \{product_sizes|<port2> id\lname\lupper_name\l\}" shape="record" ]
+"product_statuses" [ label="<port1> \{product_statuses|<port2> id\lname\lupper_name\l\}" shape="record" ]
+"product_styles" [ label="<port1> \{product_styles|<port2> id\lname\lupper_name\l\}" shape="record" ]
+"product_types" [ label="<port1> \{product_types|<port2> id\lname\lupper_name\l\}" shape="record" ]
+"products" [ label="<port1> \{products|<port2> currency_id\ldate_added\ldate_modified\ldescription\lhas_children\lid\lmanufacturer_id\lmodel\lname\lparent_id\lprice\lproduct_status_id\lquantity_on_hand\lquantity_ordered\ltax_class_id\lupper_name\lweight\lweight_class_id\l\}" shape="record" ]
+"products" -> "manufacturers" [ label="" ]
+"tax_classes"
+"products" -> "tax_classes" [ label="" ]
+"products" -> "product_statuses" [ label="" ]
+"weight_classes"
+"products" -> "weight_classes" [ label="" ]
+"products" -> "currencies" [ label="" ]
+"products_to_categories" [ label="<port1> \{products_to_categories|<port2> category_id\lid\lproduct_id\l\}" shape="record" ]
+"products_to_categories" -> "products" [ label="" ]
+"products_to_categories" -> "categories" [ label="" ]
+"sessions" [ label="<port1> \{sessions|<port2> a_session\lid\l\}" shape="record" ]
+"street_addresses" [ label="<port1> \{street_addresses|<port2> country_id\lid\llocality\lname\lpostcode\lstreet_1\lstreet_2\lstreet_3\lstreet_4\lupper_name\lzone_id\l\}" shape="record" ]
+"zones"
+"street_addresses" -> "zones" [ label="" ]
+"street_addresses" -> "countries" [ label="" ]
+"tax_classes" [ label="<port1> \{tax_classes|<port2> date_added\ldate_modified\ldescription\lid\lname\lupper_name\l\}" shape="record" ]
+"tax_rates" [ label="<port1> \{tax_rates|<port2> date_added\ldate_modified\ldescription\lid\lname\lpriority\lrate\ltax_class_id\lupper_name\lzone_id\l\}" shape="record" ]
+"tax_rates" -> "tax_classes" [ label="" ]
+"tax_rates" -> "zones" [ label="" ]
+"titles" [ label="<port1> \{titles|<port2> id\lname\lupper_name\l\}" shape="record" ]
+"weight_class_rules" [ label="<port1> \{weight_class_rules|<port2> from_id\lid\lrule\lto_id\l\}" shape="record" ]
+"weight_class_rules" -> "weight_classes" [ label="" ]
+"weight_class_rules" -> "weight_classes" [ label="" ]
+"weight_classes" [ label="<port1> \{weight_classes|<port2> id\lkey\llanguage_id\lname\lupper_name\l\}" shape="record" ]
+"weight_classes" -> "languages" [ label="" ]
+"yes_no" [ label="<port1> \{yes_no|<port2> id\lname\lupper_name\l\}" shape="record" ]
+"zones" [ label="<port1> \{zones|<port2> code\lcountry_id\lid\lname\lupper_name\l\}" shape="record" ]
+"zones" -> "countries" [ label="" ]
+}
+Wrote html/dbi.schema.svg. Size: 64403 bytes

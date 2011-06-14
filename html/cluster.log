@@ -1,0 +1,65 @@
+Default global: directed => digraph
+Default global: driver => /usr/local/bin/dot
+Default global: format => svg
+Default global: label => ->
+Default global: name => Perl
+Default global: record_orientation => vertical
+Default global: record_shape => Mrecord
+Default global: strict => 0
+Default global: timeout => 10
+Default graph: clusterrank => local, compound => 1, label => Graph produced by GraphViz2::Data::Grapher's scripts/cluster.pl, rankdir => TB
+Default node: shape => oval
+Default edge: color => grey
+Default graph: bgcolor => grey, clusterrank => local, compound => 1, label => Europe, rankdir => TB
+Default node: shape => oval
+Default edge: color => grey
+Added node: "London" [ color="blue" ]
+Added node: "Paris" [ color="green" label="City of\nlurve" ]
+Added edge: "London" -> "Paris" [ label="" ]
+Added edge: "Paris" -> "London" [ label="" ]
+Added node: "New York" [ color="yellow" ]
+Added edge: "London" -> "New York" [ label="Far" ]
+Default graph: bgcolor => grey, clusterrank => local, compound => 1, label => Australia, rankdir => TB
+Default node: shape => oval
+Default edge: color => grey
+Added node: "Victoria" [ color="blue" ]
+Added node: "New South Wales" [ color="green" ]
+Added node: "Tasmania" [ color="red" ]
+Added edge: "Victoria" -> "New South Wales" [ label="" ]
+Added edge: "Victoria" -> "Tasmania" [ label="" ]
+Added node: "cluster_Australia"
+Added node: "cluster_Europe"
+Added edge: "cluster_Australia" -> "cluster_Europe" [ label="" ]
+Driver: /usr/local/bin/dot. Output file: html/cluster.svg. Format: svg. Timeout: 11 second(s)
+
+digraph Perl
+{
+graph [ clusterrank="local" compound="1" label="Graph produced by GraphViz2::Data::Grapher's scripts/cluster.pl" rankdir="TB" ]
+node [ shape="oval" ]
+edge [ color="grey" ]
+subgraph cluster_Europe {
+graph [ bgcolor="grey" clusterrank="local" compound="1" label="Europe" rankdir="TB" ]
+node [ shape="oval" ]
+edge [ color="grey" ]
+"London" [ color="blue" ]
+"Paris" [ color="green" label="City of\nlurve" ]
+"London" -> "Paris" [ label="" ]
+"Paris" -> "London" [ label="" ]
+}
+"New York" [ color="yellow" ]
+"London" -> "New York" [ label="Far" ]
+subgraph cluster_Australia {
+graph [ bgcolor="grey" clusterrank="local" compound="1" label="Australia" rankdir="TB" ]
+node [ shape="oval" ]
+edge [ color="grey" ]
+"Victoria" [ color="blue" ]
+"New South Wales" [ color="green" ]
+"Tasmania" [ color="red" ]
+"Victoria" -> "New South Wales" [ label="" ]
+"Victoria" -> "Tasmania" [ label="" ]
+}
+"cluster_Australia"
+"cluster_Europe"
+"cluster_Australia" -> "cluster_Europe" [ label="" ]
+}
+Wrote html/cluster.svg. Size: 5662 bytes

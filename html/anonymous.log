@@ -1,0 +1,29 @@
+Default global: directed => digraph
+Default global: driver => /usr/local/bin/dot
+Default global: format => svg
+Default global: label => ->
+Default global: name => Perl
+Default global: record_orientation => vertical
+Default global: record_shape => Mrecord
+Default global: strict => 0
+Default global: timeout => 10
+Default graph: label => Graph produced by GraphViz2::Data::Grapher's scripts/anonymous.pl, rankdir => TB
+Default node: shape => oval
+Default edge: color => grey
+Added node: "" [ label="" ]
+Added node: "Anonymous label 1" [ label="" ]
+Added node: "Anonymous label 2" [ label="" ]
+Added edge: "" -> "" [ label="" ]
+Driver: /usr/local/bin/dot. Output file: html/anonymous.svg. Format: svg. Timeout: 11 second(s)
+
+digraph Perl
+{
+graph [ label="Graph produced by GraphViz2::Data::Grapher's scripts/anonymous.pl" rankdir="TB" ]
+node [ shape="oval" ]
+edge [ color="grey" ]
+"" [ label="" ]
+"Anonymous label 1" [ label="" ]
+"Anonymous label 2" [ label="" ]
+"" -> "" [ label="" ]
+}
+Wrote html/anonymous.svg. Size: 1531 bytes

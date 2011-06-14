@@ -1,0 +1,41 @@
+Default global: directed => digraph
+Default global: driver => /usr/local/bin/dot
+Default global: format => svg
+Default global: label => ->
+Default global: name => Perl
+Default global: record_orientation => vertical
+Default global: record_shape => Mrecord
+Default global: strict => 0
+Default global: timeout => 10
+Default graph: label => Graph produced by GraphViz2::Data::Grapher's scripts/trivial.pl, rankdir => TB
+Default node: shape => oval
+Default edge: color => grey
+Default node: shape => circle, style => filled
+Default edge: arrowsize => 4, color => grey
+Added node: "Carnegie" [ shape="circle" ]
+Added node: "Carnegie" [ color="red" shape="circle" ]
+Default node: shape => circle, style => rounded
+Added node: "Murrumbeena" [ color="green" shape="box" ]
+Added node: "Oakleigh" [ color="blue" shape="oval" ]
+Added edge: "Murrumbeena" -> "Carnegie" [ arrowsize="2" label="" ]
+Default edge: arrowsize => 4, color => grey
+Added edge: "Murrumbeena" -> "Oakleigh" [ color="brown" label="" ]
+Driver: /usr/local/bin/dot. Output file: html/trivial.svg. Format: svg. Timeout: 11 second(s)
+
+digraph Perl
+{
+graph [ label="Graph produced by GraphViz2::Data::Grapher's scripts/trivial.pl" rankdir="TB" ]
+node [ shape="oval" ]
+edge [ color="grey" ]
+node [ shape="circle" style="filled" ]
+edge [ arrowsize="4" color="grey" ]
+"Carnegie" [ shape="circle" ]
+"Carnegie" [ color="red" shape="circle" ]
+node [ shape="circle" style="rounded" ]
+"Murrumbeena" [ color="green" shape="box" ]
+"Oakleigh" [ color="blue" shape="oval" ]
+"Murrumbeena" -> "Carnegie" [ arrowsize="2" label="" ]
+edge [ arrowsize="4" color="grey" ]
+"Murrumbeena" -> "Oakleigh" [ color="brown" label="" ]
+}
+Wrote html/trivial.svg. Size: 2785 bytes

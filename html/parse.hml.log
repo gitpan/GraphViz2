@@ -1,0 +1,55 @@
+Default global: directed => digraph
+Default global: driver => /usr/local/bin/dot
+Default global: format => svg
+Default global: label => ->
+Default global: name => Perl
+Default global: record_orientation => vertical
+Default global: record_shape => Mrecord
+Default global: strict => 0
+Default global: timeout => 10
+Default graph: label => Graph produced by GraphViz2::Data::Grapher's scripts/parse.html.pl, rankdir => TB
+Default node: color => darkblue, shape => oval
+Default edge: color => grey
+Added node: "0" [ color="green" label="%$html" shape="doubleoctagon" ]
+Added node: "0_kids" [ color="grey" fontcolor="darkblue" label="<port1> body|<port2> head" shape="Mrecord" ]
+Added edge: "0" -> "0_kids":port1 [ label="" ]
+Added node: "0_0_kids" [ color="grey" fontcolor="darkblue" label="<port1> %$body" shape="Mrecord" ]
+Added edge: "0_kids":port1 -> "0_0_kids":port1 [ label="" ]
+Added node: "0_0_0_kids" [ color="grey" fontcolor="darkblue" label="<port1> h1|<port2> p" shape="Mrecord" ]
+Added edge: "0_0_kids":port1 -> "0_0_0_kids":port1 [ label="" ]
+Added node: "0_0_0_0_kids" [ color="grey" fontcolor="darkblue" label="<port1> Heading 1" shape="Mrecord" ]
+Added edge: "0_0_0_kids":port1 -> "0_0_0_0_kids":port1 [ label="" ]
+Added node: "0_0_0_1_kids" [ color="grey" fontcolor="darkblue" label="<port1> Paragraph 1" shape="Mrecord" ]
+Added edge: "0_0_0_kids":port2 -> "0_0_0_1_kids":port1 [ label="" ]
+Added node: "0_1_kids" [ color="grey" fontcolor="darkblue" label="<port1> %$head" shape="Mrecord" ]
+Added edge: "0_kids":port2 -> "0_1_kids":port1 [ label="" ]
+Added node: "0_1_0_kids" [ color="grey" fontcolor="darkblue" label="<port1> title" shape="Mrecord" ]
+Added edge: "0_1_kids":port1 -> "0_1_0_kids":port1 [ label="" ]
+Added node: "0_1_0_0_kids" [ color="grey" fontcolor="darkblue" label="<port1> Title of document" shape="Mrecord" ]
+Added edge: "0_1_0_kids":port1 -> "0_1_0_0_kids":port1 [ label="" ]
+Driver: /usr/local/bin/dot. Output file: html/parse.html.svg. Format: svg. Timeout: 11 second(s)
+
+digraph Perl
+{
+graph [ label="Graph produced by GraphViz2::Data::Grapher's scripts/parse.html.pl" rankdir="TB" ]
+node [ color="darkblue" shape="oval" ]
+edge [ color="grey" ]
+"0" [ color="green" label="%$html" shape="doubleoctagon" ]
+"0_kids" [ color="grey" fontcolor="darkblue" label="<port1> body|<port2> head" shape="Mrecord" ]
+"0" -> "0_kids":port1 [ label="" ]
+"0_0_kids" [ color="grey" fontcolor="darkblue" label="<port1> %$body" shape="Mrecord" ]
+"0_kids":port1 -> "0_0_kids":port1 [ label="" ]
+"0_0_0_kids" [ color="grey" fontcolor="darkblue" label="<port1> h1|<port2> p" shape="Mrecord" ]
+"0_0_kids":port1 -> "0_0_0_kids":port1 [ label="" ]
+"0_0_0_0_kids" [ color="grey" fontcolor="darkblue" label="<port1> Heading 1" shape="Mrecord" ]
+"0_0_0_kids":port1 -> "0_0_0_0_kids":port1 [ label="" ]
+"0_0_0_1_kids" [ color="grey" fontcolor="darkblue" label="<port1> Paragraph 1" shape="Mrecord" ]
+"0_0_0_kids":port2 -> "0_0_0_1_kids":port1 [ label="" ]
+"0_1_kids" [ color="grey" fontcolor="darkblue" label="<port1> %$head" shape="Mrecord" ]
+"0_kids":port2 -> "0_1_kids":port1 [ label="" ]
+"0_1_0_kids" [ color="grey" fontcolor="darkblue" label="<port1> title" shape="Mrecord" ]
+"0_1_kids":port1 -> "0_1_0_kids":port1 [ label="" ]
+"0_1_0_0_kids" [ color="grey" fontcolor="darkblue" label="<port1> Title of document" shape="Mrecord" ]
+"0_1_0_kids":port1 -> "0_1_0_0_kids":port1 [ label="" ]
+}
+Wrote html/parse.html.svg. Size: 10537 bytes

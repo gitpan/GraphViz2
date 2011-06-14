@@ -1,0 +1,14 @@
+<html>
+<head>
+		<title>Index of sample SVG files created by GraphViz2.</title>
+</head>
+<body>
+		<h1>Index of sample SVG files created by GraphViz2.</h1>
+
+<p>All scripts, input files and output files required to generate these examples are shipped in the GraphViz2 distro.</p>
+
+<table>
+<: $sample_list :>
+</table>
+</body>
+</html>
