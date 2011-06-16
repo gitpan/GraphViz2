@@ -44,14 +44,14 @@ edge [ color="grey" ]
 "Oakleigh" [ color="blue" ]
 "Murrumbeena" -> "Carnegie" [ arrowsize="2" label="" ]
 "Murrumbeena" -> "Oakleigh" [ color="brown" label="" ]
-subgraph subgraph_1 {
+subgraph "subgraph_1" {
 graph [ label="Child" rankdir="TB" ]
 node [ color="magenta" shape="diamond" ]
 edge [ color="grey" ]
 "Chadstone" [ shape="hexagon" ]
 "Waverley" [ color="orange" ]
 "Chadstone" -> "Waverley" [ label="" ]
-subgraph cluster_2 {
+subgraph "cluster_2" {
 graph [ label="Grandchild" rankdir="TB" ]
 node [ color="blue3" shape="triangle" ]
 edge [ color="grey" ]

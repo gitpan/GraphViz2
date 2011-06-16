@@ -16,6 +16,8 @@ html/cluster.log
 html/cluster.svg
 html/dbi.schema.log
 html/dbi.schema.svg
+html/dependency.log
+html/dependency.svg
 html/graphviz.index.html
 html/graphviz.index.tx
 html/Heawood.log
@@ -24,6 +26,8 @@ html/parse.data.log
 html/parse.data.svg
 html/parse.hml.log
 html/parse.html.svg
+html/parse.isa.log
+html/parse.isa.svg
 html/parse.recdescent.log
 html/parse.recdescent.svg
 html/parse.regexp.log
@@ -47,6 +51,7 @@ html/trivial.svg
 lib/GraphViz2.pm
 lib/GraphViz2/Data/Grapher.pm
 lib/GraphViz2/DBI.pm
+lib/GraphViz2/Parse/ISA.pm
 lib/GraphViz2/Parse/RecDescent.pm
 lib/GraphViz2/Parse/Regexp.pm
 lib/GraphViz2/Parse/XML.pm
@@ -60,6 +65,7 @@ META.yml
 scripts/anonymous.pl
 scripts/cluster.pl
 scripts/dbi.schema.pl
+scripts/dependency.pl
 scripts/extract.arrow.shapes.pl
 scripts/extract.attributes.pl
 scripts/extract.node.shapes.pl
@@ -69,6 +75,7 @@ scripts/generate.svg.sh
 scripts/Heawood.pl
 scripts/parse.data.pl
 scripts/parse.html.pl
+scripts/parse.isa.pl
 scripts/parse.recdescent.pl
 scripts/parse.regexp.pl
 scripts/parse.xml.bare.pl
@@ -84,6 +91,10 @@ t/calc.input
 t/calc.output
 t/calc3.output
 t/calc3.y
+t/lib/Parent.pm
+t/lib/Parent/Child/Grandchild.pm
+t/lib/Parent/Child1.pm
+t/lib/Parent/Child2.pm
 t/pod.t
 t/sample.html
 t/sample.recdescent.1.dat

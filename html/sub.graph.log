@@ -38,7 +38,7 @@ edge [ color="grey" ]
 "Oakleigh" [ color="blue" ]
 "Murrumbeena" -> "Carnegie" [ arrowsize="2" label="" ]
 "Murrumbeena" -> "Oakleigh" [ color="brown" label="" ]
-subgraph cluster_1 {
+subgraph "cluster_1" {
 graph [ label="Child" rankdir="TB" ]
 node [ color="magenta" shape="diamond" ]
 edge [ color="grey" ]

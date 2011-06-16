@@ -31,6 +31,7 @@ WriteMakefile
  PL_FILES  => {},
  PREREQ_PM =>
  {
+	 Algorithm::Dependency       => 1.110,
 	 Capture::Tiny               => 0.10,
 	 Data::Section::Simple       => 0.02,
 	 DBI                         => 1.616,
@@ -44,6 +45,7 @@ WriteMakefile
 	 HTTP::Tiny                  => 0.012,
 	 Parse::RecDescent           => 1.965001,
 	 Perl6::Slurp                => 0.03,
+	 Pod::Simple                 => 3.16,
 	 Scalar::Util                => 1.23,
 	 Set::Array                  => 0.23,
  	 Test::More                  => 0.94,

@@ -18,7 +18,7 @@ fieldhash my %graph   => 'graph';
 fieldhash my %logger  => 'logger';
 fieldhash my %tree    => 'tree';
 
-our $VERSION = '1.00';
+our $VERSION = '1.01';
 
 # -----------------------------------------------
 # This is a function.
@@ -527,15 +527,19 @@ Warning: As the L<GraphViz2::Data::Grapher> object exits its scope, $self -> tre
 
 See L<GraphViz2/FAQ> and L<GraphViz2/Scripts Shipped with this Module>.
 
-=head1 Machine-Readable Change Log
-
-The file CHANGES was converted into Changelog.ini by L<Module::Metadata::Changes>.
-
 =head1 Thanks
 
 Many thanks are due to the people who chose to make L<Graphviz|http://www.graphviz.org/> Open Source.
 
 And thanks to L<Leon Brocard|http://search.cpan.org/~lbrocard/>, who wrote L<GraphViz>, and kindly gave me co-maint of the module.
+
+=head1 Version Numbers
+
+Version numbers < 1.00 represent development versions. From 1.00 up, they are production versions.
+
+=head1 Machine-Readable Change Log
+
+The file CHANGES was converted into Changelog.ini by L<Module::Metadata::Changes>.
 
 =head1 Support
 

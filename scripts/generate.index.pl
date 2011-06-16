@@ -5,6 +5,7 @@ use warnings;
 
 use File::Spec;
 
+use GraphViz2;
 use GraphViz2::Utils;
 
 use Text::Xslate 'mark_raw';
@@ -24,6 +25,7 @@ my($index) = $templater -> render
  'graphviz.index.tx',
  {
 	 sample_list => mark_raw('<tr><td>' . (join(qq|</td></tr>\n<tr><td>|, map{$count++; qq|<a href="./$svg_file{$_}">$count: $annotation{$_}</a>|} sort keys %svg_file) ) . '</td></tr>'),
+	 version     => $GraphViz2::VERSION,
  }
 );
 my($file_name) = File::Spec -> catfile('html', 'graphviz.index.html');

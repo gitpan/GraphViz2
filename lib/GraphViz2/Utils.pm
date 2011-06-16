@@ -12,7 +12,7 @@ use Perl6::Slurp;
 
 fieldhash my %graph => 'graph';
 
-our $VERSION = '1.00';
+our $VERSION = '1.01';
 
 # ------------------------------------------------
 
@@ -20,6 +20,8 @@ sub get_annotations
 {
 	my($self)     = @_;
 	my($dir_name) = 'scripts';
+
+	$|=1;
 
 	opendir(INX, $dir_name);
 	my(@file_name) = sort grep{! -d $_} readdir INX;
@@ -189,6 +191,14 @@ Key-value pairs accepted in the parameter list:
 Many thanks are due to the people who chose to make L<Graphviz|http://www.graphviz.org/> Open Source.
 
 And thanks to L<Leon Brocard|http://search.cpan.org/~lbrocard/>, who wrote L<GraphViz>, and kindly gave me co-maint of the module.
+
+=head1 Version Numbers
+
+Version numbers < 1.00 represent development versions. From 1.00 up, they are production versions.
+
+=head1 Machine-Readable Change Log
+
+The file CHANGES was converted into Changelog.ini by L<Module::Metadata::Changes>.
 
 =head1 Support
 

@@ -29,7 +29,7 @@ fieldhash my %scope            => 'scope';
 fieldhash my %verbose          => 'verbose';
 fieldhash my %valid_attributes => 'valid_attributes';
 
-our $VERSION = '1.00';
+our $VERSION = '1.01';
 
 # -----------------------------------------------
 
@@ -56,7 +56,7 @@ sub add_edge
 	{
 		# Remove port, if any, from name.
 
-		if ($name =~ m/^([^:]+)(:.+)$/)
+		if ($name =~ m/^(.+)(:port\d{1,})$/)
 		{
 			$name        = $1;
 			$port{$name} = $2;
@@ -204,6 +204,31 @@ sub default_node
 	return $self;
 
 } # End of default_node.
+
+# -----------------------------------------------
+
+sub dependency
+{
+	my($self, %arg) = @_;
+	my($data) = delete $arg{data} || die 'Error: No dependency data provided';
+	my(@item) = sort{$a -> id cmp $b -> id} $data -> source -> items;
+
+	for my $item (@item)
+	{
+		$self -> add_node(name => $item -> id);
+	}
+
+	for my $from (@item)
+	{
+		for my $to ($from -> depends)
+		{
+			$self -> add_edge(from => $from -> id, to => $to);
+		}
+	}
+
+	return $self;
+
+} # End of dependency.
 
 # -----------------------------------------------
 
@@ -393,7 +418,7 @@ sub push_subgraph
 			graph => {%{$$scope{graph} }, %{$arg{graph} } },
 			node  => {%{$$scope{node} },  %{$arg{node} } },
 		 });
-	$self -> command -> push("subgraph $name {\n");
+	$self -> command -> push(qq|subgraph "$name" {\n|);
 	$self -> default_graph;
 	$self -> default_node;
 	$self -> default_edge;
@@ -1280,6 +1305,18 @@ The L<Graphviz|http://www.graphviz.org/> syntax for ports is a bit unusual:
 
 You don't have to quote all node names in L<Graphviz|http://www.graphviz.org/>, but some, such as digits, must be quoted, so I've decided to quote them all.
 
+=head2 Why does L<GraphViz> plot top-to-bottom but L<GraphViz2::Parse::ISA> plot bottom-to-top?
+
+Because The latter knows the data is a class structure. The former makes no assumptions about the nature of the data.
+
+=head2 I'm having trouble with ports
+
+The code in L<GraphViz2>'s add_edge() method assumes my convention that port names match /:port\d{1,}/.
+
+This matches the code in the add_node() method, where port names are generated.
+
+If you adopt this convention, you should have no problems.
+
 =head2 What happened to GraphViz::No?
 
 The default_node(%hash) method in L<GraphViz2> allows you to make nodes vanish.
@@ -1334,32 +1371,6 @@ L</logger($logger_object)>.
 The 2 demo programs L</scripts/parse.html.pl> and L</scripts/parse.xml.bare.pl>, which both use L<XML::Bare>, assume your XML has a single
 parent container for all other containers. The programs use this container to provide a name for the root node of the graph.
 
-=head2 Is there a pure-Perl version of GraphViz2?
-
-Yes, this one (AFAIK), not counting dependencies, such as your operating system, Perl, and of course L<Graphviz|http://www.graphviz.org/>.
-
-I've made XML::Bare a pre-req, and that module needs a compiler, but the only place XML::Bare is used is in
-scripts/parse.xml.bare.pl.
-
-If you wish to remove this dependency, here's what you need to do:
-
-=over 4
-
-=item o Remove XML::Bare from Build.PL
-
-=item o Remove XML::Bare from Makefile.PL.
-
-=item o Edit scripts/generate.svg.sh to comment out running scripts/parse.xml.bare.pl
-
-=item o Move scripts/parse.xml.bare.pl to t/
-
-The point of this is that t/test.t looks in scripts/ for programs having annotations on line 4, and we want to skip it
-so that all tests pass.
-
-The other point is that scripts/generate.index.pl looks for scripts with annotations, too.
-
-=back
-
 =head2 Why did you choose L<Hash::FieldHash> over L<Moose>?
 
 My policy is to use L<Hash::FieldHash> for stand-alone modules and L<Moose> for applications.
@@ -1386,6 +1397,16 @@ If the environment vaiables DBI_DSN, DBI_USER and DBI_PASS are set (the latter 2
 graph from a database schema.
 
 Outputs to ./html/dbi.schema.svg by default.
+
+=head2 scripts/dependency.pl
+
+Demonstrates graphing an L<Algorithm::Dependency> source.
+
+Outputs to ./html/dependency.svg by default.
+
+The default for L<GraphViz2> is to plot from the top to the bottom. This is the opposite of L<GraphViz2::Parse::ISA>.
+
+See also parse.isa.pl below.
 
 =head2 scripts/extract.arrow.shapes.pl
 
@@ -1436,6 +1457,17 @@ Outputs to ./html/parse.data.svg by default.
 Demonstrates using L<XML::Bare> to parse HTML.
 
 Inputs from ./t/sample.html, and outputs to ./html/parse.html.svg by default.
+
+=head2 scripts/parse.isa.pl
+
+Demonstrates graphing a Perl class hierarchy.
+
+Outputs to ./html/parse.isa.svg by default.
+
+The default for L<GraphViz2::Parse::ISA> is to plot from the bottom to the top (Grandchild to Parent).
+This is the opposite of L<GraphViz2>.
+
+See also dependency.pl, above.
 
 =head2 scripts/parse.recdescent.pl
 
@@ -1613,15 +1645,19 @@ Read more on that L<here|http://blogs.perl.org/users/max_maischein/2011/06/displ
 
 L<Voronoi Applications|http://www.voronoi.com/wiki/index.php?title=Voronoi_Applications>.
 
-=head1 Machine-Readable Change Log
-
-The file CHANGES was converted into Changelog.ini by L<Module::Metadata::Changes>.
-
 =head1 Thanks
 
 Many thanks are due to the people who chose to make L<Graphviz|http://www.graphviz.org/> Open Source.
 
 And thanks to L<Leon Brocard|http://search.cpan.org/~lbrocard/>, who wrote L<GraphViz>, and kindly gave me co-maint of the module.
+
+=head1 Version Numbers
+
+Version numbers < 1.00 represent development versions. From 1.00 up, they are production versions.
+
+=head1 Machine-Readable Change Log
+
+The file CHANGES was converted into Changelog.ini by L<Module::Metadata::Changes>.
 
 =head1 Support
 

@@ -3,9 +3,11 @@
 perl -Ilib scripts/anonymous.pl        > html/anonymous.log
 perl -Ilib scripts/cluster.pl          > html/cluster.log
 perl -Ilib scripts/dbi.schema.pl       > html/dbi.schema.log
+perl -Ilib scripts/dependency.pl       > html/dependency.log
 perl -Ilib scripts/Heawood.pl          > html/Heawood.log
 perl -Ilib scripts/parse.data.pl       > html/parse.data.log
 perl -Ilib scripts/parse.html.pl       > html/parse.hml.log
+perl -Ilib scripts/parse.isa.pl        > html/parse.isa.log
 perl -Ilib scripts/parse.recdescent.pl > html/parse.recdescent.log
 perl -Ilib scripts/parse.regexp.pl     > html/parse.regexp.log
 perl -Ilib scripts/parse.xml.bare.pl   > html/parse.xml.bare.log
