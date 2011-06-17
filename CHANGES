@@ -1,5 +1,11 @@
 Revision history for Perl extension GraphViz2.
 
+1.02  Fri Jun 17  8:36:00 2011
+	  - Add the pre-requisite Log::Handler to Build.PL and Makefile.PL.
+	  - Release HTML::Entities::Interpolate V 1.04 and Set::Array V 0.23 to CPAN.
+	  - Add README file.
+	  - Clean up TODO list.
+
 1.01  Wed Jun 15 15:00:00 2011
 	  - Quote cluster/subgraph names so they may contain weird characters.
 	  - Add method dependency(data => $depend) to GraphViz2.pm, which accepts an object of type

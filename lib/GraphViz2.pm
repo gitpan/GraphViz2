@@ -29,7 +29,7 @@ fieldhash my %scope            => 'scope';
 fieldhash my %verbose          => 'verbose';
 fieldhash my %valid_attributes => 'valid_attributes';
 
-our $VERSION = '1.01';
+our $VERSION = '1.02';
 
 # -----------------------------------------------
 
@@ -1629,10 +1629,6 @@ But how?
 Some method parameter lists take keys whose value must be a hashref.
 
 =item o Integrate with the new, unreleased, L<Graph::Easy::Marpa>
-
-=item o Extend to Perl class relationships
-
-See L<Class::Sniff> and L<GraphViz::ISA::Multi> for previous work.
 
 =back
 

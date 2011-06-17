@@ -39,6 +39,7 @@
             "HTML::TreeBuilder" : "4.2",
             "HTTP::Tiny" : "0.012",
             "Hash::FieldHash" : "0.1",
+            "Log::Handler" : "0.71",
             "Parse::RecDescent" : "1.965001",
             "Perl6::Slurp" : "0.03",
             "Pod::Simple" : "3.16",
@@ -55,43 +56,43 @@
    "provides" : {
       "GraphViz2" : {
          "file" : "lib/GraphViz2.pm",
-         "version" : "1.01"
+         "version" : "1.02"
       },
       "GraphViz2::DBI" : {
          "file" : "lib/GraphViz2/DBI.pm",
-         "version" : "1.01"
+         "version" : "1.02"
       },
       "GraphViz2::Data::Grapher" : {
          "file" : "lib/GraphViz2/Data/Grapher.pm",
-         "version" : "1.01"
+         "version" : "1.02"
       },
       "GraphViz2::Parse::ISA" : {
          "file" : "lib/GraphViz2/Parse/ISA.pm",
-         "version" : "1.01"
+         "version" : "1.02"
       },
       "GraphViz2::Parse::RecDescent" : {
          "file" : "lib/GraphViz2/Parse/RecDescent.pm",
-         "version" : "1.01"
+         "version" : "1.02"
       },
       "GraphViz2::Parse::Regexp" : {
          "file" : "lib/GraphViz2/Parse/Regexp.pm",
-         "version" : "1.01"
+         "version" : "1.02"
       },
       "GraphViz2::Parse::XML" : {
          "file" : "lib/GraphViz2/Parse/XML.pm",
-         "version" : "1.01"
+         "version" : "1.02"
       },
       "GraphViz2::Parse::Yacc" : {
          "file" : "lib/GraphViz2/Parse/Yacc.pm",
-         "version" : "1.01"
+         "version" : "1.02"
       },
       "GraphViz2::Parse::Yapp" : {
          "file" : "lib/GraphViz2/Parse/Yapp.pm",
-         "version" : "1.01"
+         "version" : "1.02"
       },
       "GraphViz2::Utils" : {
          "file" : "lib/GraphViz2/Utils.pm",
-         "version" : "1.01"
+         "version" : "1.02"
       }
    },
    "release_status" : "stable",
@@ -100,5 +101,5 @@
          "http://opensource.org/licenses/artistic-license.php"
       ]
    },
-   "version" : "1.01"
+   "version" : "1.02"
 }

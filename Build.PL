@@ -36,6 +36,7 @@ Module::Build -> new
 	 HTML::Entities::Interpolate => 1.04,
 	 HTML::TreeBuilder           => 4.2,
 	 HTTP::Tiny                  => 0.012,
+	 Log::Handler                => 0.71,
 	 Parse::RecDescent           => 1.965001,
 	 Perl6::Slurp                => 0.03,
 	 Pod::Simple                 => 3.16,

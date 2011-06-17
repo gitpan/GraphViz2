@@ -9,7 +9,7 @@ use Algorithm::Dependency::Source::HoA;
 
 use GraphViz2;
 
-our $VERSION = '1.01';
+our $VERSION = '1.02';
 
 my(@candidate);
 my($graph);
