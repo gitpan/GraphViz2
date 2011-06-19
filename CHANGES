@@ -1,5 +1,8 @@
 Revision history for Perl extension GraphViz2.
 
+1.03  Sun Jun 19 16:27:00 2011
+	  - Tweak File::Temp -> new to be File::Temp ->new(EXLOCK => 0) for BSD-bases systems.
+
 1.02  Fri Jun 17  8:36:00 2011
 	  - Add the pre-requisite Log::Handler to Build.PL and Makefile.PL.
 	  - Release HTML::Entities::Interpolate V 1.04 and Set::Array V 0.23 to CPAN.

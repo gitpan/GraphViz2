@@ -29,7 +29,7 @@ fieldhash my %scope            => 'scope';
 fieldhash my %verbose          => 'verbose';
 fieldhash my %valid_attributes => 'valid_attributes';
 
-our $VERSION = '1.02';
+our $VERSION = '1.03';
 
 # -----------------------------------------------
 
@@ -532,7 +532,7 @@ sub run
 		$self -> dot_input(join('', @{$self -> command -> print} ) . "}\n");
 		$self -> log(debug => $self -> dot_input);
 
-		my($fh)   = File::Temp -> new;
+		my($fh)   = File::Temp -> new(EXLOCK => 0);
 		my($name) = $fh -> filename;
 
 		binmode $fh;
