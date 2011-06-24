@@ -1,4 +1,4 @@
-package GraphViz2::Parse::Yacc;
+package GraphViz2::Parse::Marpa;
 
 use strict;
 use warnings;
@@ -6,8 +6,6 @@ use warnings;
 use GraphViz2;
 
 use Hash::FieldHash ':all';
-
-use Perl6::Slurp;
 
 fieldhash my %graph => 'graph';
 
@@ -18,64 +16,129 @@ our $VERSION = '1.05';
 sub create
 {
 	my($self, %arg) = @_;
+	my($grammar) = $arg{grammar};
 
-	my(%edges);
-	my(%is_rule);
-	my(%labels);
-	my($rule, $rule_label);
-	my($text);
+	# Phase 1: Process all Marpa rule descriptors.
 
-	for my $line (slurp($arg{file_name}, {chomp => 1}) )
+	my($count) = 0;
+
+	my($name);
+	my(%rule);
+
+	for my $line (split(/\n/, $grammar) )
 	{
-		if ( ($line !~ /\w/) || ($line !~ /^\s+\d+\s+/) )
+		$line =~ s/^\s+//;
+		$line =~ s/\s+$//;
+
+		if ($line =~ /^(?:{|})/)
 		{
+			if ($line =~ /^{/)
+			{
+				$count++;
+			}
+
 			next;
 		}
 
-		$line =~ s/^\s+\d+\s+//;
-
-		if ($line =~ s/([^ ]+) : ?//)
+		if ($line =~ /^lhs\s*=>\s*(.+)$/)
 		{
-			$rule           = $1;
-			$is_rule{$rule} = 0;
+			$name = $1;
+
+			# Expect: qw/xyz/, or 'xyz' or "xyz".
+
+			if ($name =~ m|qw(.)(.+)\1|)
+			{
+				$name = $2;
+			}
+			elsif ($name =~ /("|')(.+)\1/)
+			{
+				$name = $2;
+			}
+			else
+			{
+				next;
+			}
+
+			$rule{$count} =
+				{
+					action => '',
+					lhs    => $name,
+					rhs    => [],
+				};
 		}
-
-		$line =~ s/\|\s+//;
-		$text = $line;
-
-		$is_rule{$rule}++;
-
-		$text       = '(empty)' if ($text =~ /^\s*$/);
-		$rule_label = '';
-
-		for my $item (split(' ', $text) )
+		elsif ($line =~ m|^rhs\s*=>\s*\[qw(.)(.+)\1]|)
+		{	# Expect qw/x y z/.
+			$rule{$count}{rhs} = [split /\s+/, $2];
+		}
+		elsif ($line =~ /^action\s*=>\s*(.+)$/)
 		{
-			$rule_label          .= "$item ";
-			$edges{$rule}        = {} if (! $edges{$rule});
-			$edges{$rule}{$item} = 0  if (! $edges{$rule}{$item});
+			$name = $1;
 
-			$edges{$rule}{$item}++;
+			# Expect: qw/xyz/, or 'xyz' or "xyz".
+
+			if ($name =~ m|qw(.)(.+)\1|)
+			{
+				$name = $2;
+			}
+			elsif ($name =~ /("|')(.+)\1/)
+			{
+				$name = $2;
+			}
+			else
+			{
+				next;
+			}
+
+			$rule{$count}{action} = $name;
 		}
-
-		$rule_label    .= '\n';
-		$labels{$rule} .= $rule_label;
 	}
 
-	for my $from (keys %edges)
+	# Phase 2: Generate 1 node per rule.
+	# The sorts are for debugging.
+
+	my($lhs_name);
+
+	for $count (sort keys %rule)
 	{
-		next if (! $is_rule{$from});
+		$lhs_name = $rule{$count}{lhs};
 
-		for my $to (keys %{$edges{$from} })
-		{
-			next if (! $is_rule{$to});
-
-			$self -> graph -> add_edge(from => $from, to => $to);
-		}
+		$self -> graph -> add_node(name => "${lhs_name}_$count", label => ["lhs: ${lhs_name}_$count", 'rhs list:', map{"${_}_$count"} @{$rule{$count}{rhs} }]);
 	}
 
-	for my $rule (keys %labels)
+	# Phase 3: Generate edges from rhs's to lhs's.
+
+	my($counter);
+	my($lhs_name_1);
+	my($port);
+	my($rhs_name);
+
+	for $count (sort keys %rule)
 	{
-		$self -> graph -> add_node(name => $rule, label => [$rule, $labels{$rule}]);
+		$lhs_name = $rule{$count}{lhs};
+
+		# Port 1 is 'lhs $node_name', and port 2 is 'rhs list:'.
+		# The next port, 3, will be the first component of the rhs.
+
+		$port = 2;
+
+		# Outer loop: Process each rhs name.
+
+		for $rhs_name (@{$rule{$count}{rhs} })
+		{
+			$port++;
+
+			# Inner loop: Find matching lhs name.
+
+			for $counter (sort keys %rule)
+			{
+				$lhs_name_1 = $rule{$counter}{lhs};
+
+				if ($lhs_name_1 eq $rhs_name)
+				{
+					$self -> graph -> add_edge(from => "${lhs_name}_$count:port$port", to => "${lhs_name_1}_$counter:port1");
+				}
+			}
+		}
 	}
 
 	return $self;
@@ -90,10 +153,10 @@ sub _init
 	$$arg{graph}    ||= GraphViz2 -> new
 		(
 		 edge   => {color => 'grey'},
-		 global => {directed => 1},
-		 graph  => {concentrate => 1, rankdir => 'TB'},
+		 global => {directed => 1, record_orientation => 'horizontal'},
+		 graph  => {rankdir => 'TB'},
 		 logger => '',
-		 node   => {color => 'darkblue', shape => 'oval'},
+		 node   => {color => 'blue', shape => 'oval'},
 		);
 	$self = from_hash($self, $arg);
 
@@ -121,7 +184,7 @@ sub new
 
 =head1 NAME
 
-L<GraphViz2::Parse::Yacc> - Visualize a yacc grammar as a graph
+L<GraphViz2::Parse::Marpa> - Visualize a Marpa grammar as a graph
 
 =head1 Synopsis
 
@@ -133,9 +196,11 @@ L<GraphViz2::Parse::Yacc> - Visualize a yacc grammar as a graph
 	use File::Spec;
 	
 	use GraphViz2;
-	use GraphViz2::Parse::Yacc;
+	use GraphViz2::Parse::Marpa;
 	
 	use Log::Handler;
+	
+	use Perl6::Slurp;
 	
 	# ------------------------------------------------
 	
@@ -154,25 +219,26 @@ L<GraphViz2::Parse::Yacc> - Visualize a yacc grammar as a graph
 	my($graph)  = GraphViz2 -> new
 		(
 		 edge   => {color => 'grey'},
-		 global => {directed => 1},
-		 graph  => {concentrate => 1, rankdir => 'TB', label => "Graph produced by GraphViz2::Data::Grapher's $0"},
+		 global => {directed => 1, record_orientation => 'horizontal'},
+		 graph  => {rankdir => 'TB', label => "Graph produced by GraphViz2::Data::Grapher's $0"},
 		 logger => $logger,
-		 node   => {color => 'darkblue', shape => 'oval'},
+		 node   => {color => 'blue', shape => 'oval'},
 		);
-	my($g) = GraphViz2::Parse::Yacc -> new(graph => $graph);
+	my($g)      = GraphViz2::Parse::Marpa -> new(graph => $graph);
+	my $grammar = slurp(File::Spec -> catfile('t', 'sample.marpa.1.dat') );
 	
-	$g -> create(file_name => File::Spec -> catfile('t', 'calc3.output') );
+	$g -> create(grammar => $grammar);
 	
 	my($format)      = shift || 'svg';
-	my($output_file) = shift || File::Spec -> catfile('html', "parse.yacc.$format");
+	my($output_file) = shift || File::Spec -> catfile('html', "parse.marpa.$format");
 	
 	$graph -> run(format => $format, output_file => $output_file, timeout => 11);
 
-See scripts/parse.yacc.pl (L<GraphViz2/Scripts Shipped with this Module>).
+See scripts/parse.marpa.pl (L<GraphViz2/Scripts Shipped with this Module>).
 
 =head1 Description
 
-Takes a yacc grammar and converts it into a graph.
+Takes a L<Marpa> grammar and converts it into a graph.
 
 You can write the result in any format supported by L<Graphviz|http://www.graphviz.org/>.
 
@@ -215,9 +281,9 @@ or:
 
 =head2 Calling new()
 
-C<new()> is called as C<< my($obj) = GraphViz2::Parse::Yacc -> new(k1 => v1, k2 => v2, ...) >>.
+C<new()> is called as C<< my($obj) = GraphViz2::Parse::Marpa -> new(k1 => v1, k2 => v2, ...) >>.
 
-It returns a new object of type C<GraphViz2::Parse::Yacc>.
+It returns a new object of type C<GraphViz2::Parse::Marpa>.
 
 Key-value pairs accepted in the parameter list:
 
@@ -236,13 +302,19 @@ This key is optional.
 
 =head1 Methods
 
-=head2 create(file_name => $file_name)
+=head2 create(grammar => $grammar)
 
 Creates the graph, which is accessible via the graph() method, or via the graph object you passed to new().
 
 Returns $self for method chaining.
 
-$file_name is the name of a yacc output file. See t/calc3.output.
+$grammar is the set of hashrefs which make up the rule descriptors for the L<Marpa> grammar.
+
+That is, it is the I<contents> of the arrayref 'rules', which is one of the keys in the parameter list to L<Marpa::Grammar>'s new().
+See t/sample.marpa.1.dat for an example.
+
+Nodes are given the names of the 'lhs' keys within each rule descriptor (a hashref), with numeric suffixes to separate nodes
+which would otherwise have the same name. The numbers are just 1 .. N counting the hashrefs processed in the grammar.
 
 =head2 graph()
 

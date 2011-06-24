@@ -11,7 +11,7 @@ use XML::Tiny;
 
 fieldhash my %graph => 'graph';
 
-our $VERSION = '1.03';
+our $VERSION = '1.05';
 
 # ------------------------------------------------
 

@@ -29,7 +29,7 @@ fieldhash my %scope            => 'scope';
 fieldhash my %verbose          => 'verbose';
 fieldhash my %valid_attributes => 'valid_attributes';
 
-our $VERSION = '1.03';
+our $VERSION = '1.05';
 
 # -----------------------------------------------
 
@@ -245,7 +245,7 @@ sub _init
 	$$arg{global}{format}             ||= 'svg';
 	$$arg{global}{label}              ||= $$arg{global}{directed} eq 'digraph' ? '->' : '--';
 	$$arg{global}{name}               ||= 'Perl';
-	$$arg{global}{record_orientation} = $$arg{global}{record_orientation} && $$arg{global}{record_orientation} =~ /^horizontal$/ ? $1 : 'vertical';
+	$$arg{global}{record_orientation} = $$arg{global}{record_orientation} && $$arg{global}{record_orientation} =~ /^(horizontal)$/ ? $1 : 'vertical';
 	$$arg{global}{record_shape}       = $$arg{global}{record_shape} && $$arg{global}{record_shape} =~ /^(M?record)$/ ? $1 : 'Mrecord';
 	$$arg{global}{strict}             ||= 0;
 	$$arg{global}{timeout}            ||= 10;
@@ -1280,6 +1280,10 @@ Here, [] indicates an optional parameter.
 
 =head1 FAQ
 
+=head2 o How do I print output files?
+
+Under Unix, output as PDF, and then try: lp -o fitplot html/parse.marpa.pdf.
+
 =head2 o I'm having trouble with special characters in node names and labels
 
 L<GraphViz2> escapes these characters in those contexts: []{}".
@@ -1469,21 +1473,39 @@ This is the opposite of L<GraphViz2>.
 
 See also dependency.pl, above.
 
+=head2 scripts/parse.marpa.pl
+
+Demonstrates graphing a L<Marpa>-style grammar.
+
+Inputs from t/sample.marpa.1 and outputs to ./html/parse.marpa.svg by default.
+
+The input grammar was extracted from L<Graph::Easy::Marpa::Parser> V 0.70, before the grammar supported L<Graph::Easy>'s groups.
+
 =head2 scripts/parse.recdescent.pl
 
 Demonstrates graphing a L<Parse::RecDescent>-style grammar.
 
-Inputs from t/sample.recdescent.grammar.1 and outputs to ./html/parse.recdescent.svg by default.
+Inputs from t/sample.recdescent.1.dat and outputs to ./html/parse.recdescent.svg by default.
 
 The input grammar was extracted from t/basics.t in L<Parse::RecDescent> V 1.965001.
 
-You can patch the *.pl to read from t/sample.recdescent.grammar.2, which was copied from L<a V 2 bug report|https://rt.cpan.org/Ticket/Display.html?id=36057>.
+You can patch the *.pl to read from t/sample.recdescent.2.dat, which was copied from L<a V 2 bug report|https://rt.cpan.org/Ticket/Display.html?id=36057>.
 
 =head2 scripts/parse.regexp.pl
 
 Demonstrates graphing a Perl regular expression.
 
 Outputs to ./html/parse.regexp.svg by default.
+
+=head2 scripts/parse.stt.pl
+
+Demonstrates graphing a L<Set::FA::Element>-style state transition table.
+
+Inputs from t/sample.stt.1.dat and outputs to ./html/parse.stt.svg by default.
+
+The input grammar was extracted from L<Set::FA::Element>.
+
+You can patch the *.pl to read from t/sample.stt.2.dat, which was output by L<Graph::Easy::Marpa::DFA> V 0.70.
 
 =head2 scripts/parse.yacc.pl
 

@@ -1,4 +1,4 @@
-package GraphViz2::Parse::Yacc;
+package GraphViz2::Parse::STT;
 
 use strict;
 use warnings;
@@ -6,8 +6,6 @@ use warnings;
 use GraphViz2;
 
 use Hash::FieldHash ':all';
-
-use Perl6::Slurp;
 
 fieldhash my %graph => 'graph';
 
@@ -18,64 +16,47 @@ our $VERSION = '1.05';
 sub create
 {
 	my($self, %arg) = @_;
+	my($stt) = $arg{stt};
 
-	my(%edges);
-	my(%is_rule);
-	my(%labels);
-	my($rule, $rule_label);
-	my($text);
+	my(%edge);
+	my(@field);
+	my($i);
+	my(%seen);
 
-	for my $line (slurp($arg{file_name}, {chomp => 1}) )
+	for my $line (split(/\n/, $stt) )
 	{
-		if ( ($line !~ /\w/) || ($line !~ /^\s+\d+\s+/) )
+		$line  =~ s/^\s+//;
+		$line  =~ s/\s+$//;
+		$line  =~ s/^\[//;
+		$line  =~ s/],?$//;
+		@field = split(/\s*,\s*/, $line);
+		@field = map{s/^(["'])(.+)\1/$2/; $_} @field;
+
+		for $i (0, 2)
 		{
-			next;
+			if (! $seen{$field[$i]})
+			{
+				$seen{$field[$i]} = 1;
+
+				$self -> graph -> add_node(name => $field[$i]);
+			}
 		}
 
-		$line =~ s/^\s+\d+\s+//;
+		$edge{$field[0]}            = {} if (! $edge{$field[0]});
+		$edge{$field[0]}{$field[2]} = [] if (! $edge{$field[0]}{$field[2]});
 
-		if ($line =~ s/([^ ]+) : ?//)
-		{
-			$rule           = $1;
-			$is_rule{$rule} = 0;
-		}
-
-		$line =~ s/\|\s+//;
-		$text = $line;
-
-		$is_rule{$rule}++;
-
-		$text       = '(empty)' if ($text =~ /^\s*$/);
-		$rule_label = '';
-
-		for my $item (split(' ', $text) )
-		{
-			$rule_label          .= "$item ";
-			$edges{$rule}        = {} if (! $edges{$rule});
-			$edges{$rule}{$item} = 0  if (! $edges{$rule}{$item});
-
-			$edges{$rule}{$item}++;
-		}
-
-		$rule_label    .= '\n';
-		$labels{$rule} .= $rule_label;
+		push @{$edge{$field[0]}{$field[2]} }, $field[1];
 	}
 
-	for my $from (keys %edges)
+	for my $from (keys %edge)
 	{
-		next if (! $is_rule{$from});
-
-		for my $to (keys %{$edges{$from} })
+		for my $to (keys %{$edge{$from} })
 		{
-			next if (! $is_rule{$to});
-
-			$self -> graph -> add_edge(from => $from, to => $to);
+			for my $edge (@{$edge{$from}{$to} })
+			{
+				$self -> graph -> add_edge(from => $from, to => $to, label => "/$edge/");
+			}
 		}
-	}
-
-	for my $rule (keys %labels)
-	{
-		$self -> graph -> add_node(name => $rule, label => [$rule, $labels{$rule}]);
 	}
 
 	return $self;
@@ -91,9 +72,9 @@ sub _init
 		(
 		 edge   => {color => 'grey'},
 		 global => {directed => 1},
-		 graph  => {concentrate => 1, rankdir => 'TB'},
+		 graph  => {rankdir => 'LR'},
 		 logger => '',
-		 node   => {color => 'darkblue', shape => 'oval'},
+		 node   => {color => 'green', shape => 'oval'},
 		);
 	$self = from_hash($self, $arg);
 
@@ -121,7 +102,7 @@ sub new
 
 =head1 NAME
 
-L<GraphViz2::Parse::Yacc> - Visualize a yacc grammar as a graph
+L<GraphViz2::Parse::STT> - Visualize a Set::FA::Element state transition table as a graph
 
 =head1 Synopsis
 
@@ -133,9 +114,11 @@ L<GraphViz2::Parse::Yacc> - Visualize a yacc grammar as a graph
 	use File::Spec;
 	
 	use GraphViz2;
-	use GraphViz2::Parse::Yacc;
+	use GraphViz2::Parse::STT;
 	
 	use Log::Handler;
+	
+	use Perl6::Slurp;
 	
 	# ------------------------------------------------
 	
@@ -154,25 +137,29 @@ L<GraphViz2::Parse::Yacc> - Visualize a yacc grammar as a graph
 	my($graph)  = GraphViz2 -> new
 		(
 		 edge   => {color => 'grey'},
-		 global => {directed => 1},
-		 graph  => {concentrate => 1, rankdir => 'TB', label => "Graph produced by GraphViz2::Data::Grapher's $0"},
+		 global => {directed => 1, record_orientation => 'horizontal'},
+		 graph  => {rankdir => 'TB', label => "Graph produced by GraphViz2::Data::Grapher's $0"},
 		 logger => $logger,
-		 node   => {color => 'darkblue', shape => 'oval'},
+		 node   => {color => 'green', shape => 'oval'},
 		);
-	my($g) = GraphViz2::Parse::Yacc -> new(graph => $graph);
+	my($g)  = GraphViz2::Parse::STT -> new(graph => $graph);
+	my $stt = slurp(File::Spec -> catfile('t', 'sample.stt.1.dat') );
 	
-	$g -> create(file_name => File::Spec -> catfile('t', 'calc3.output') );
+	$g -> create(stt => $stt);
 	
 	my($format)      = shift || 'svg';
-	my($output_file) = shift || File::Spec -> catfile('html', "parse.yacc.$format");
+	my($output_file) = shift || File::Spec -> catfile('html', "parse.stt.$format");
 	
 	$graph -> run(format => $format, output_file => $output_file, timeout => 11);
 
-See scripts/parse.yacc.pl (L<GraphViz2/Scripts Shipped with this Module>).
+See scripts/parse.stt.pl (L<GraphViz2/Scripts Shipped with this Module>).
+
+Note: t/sample.stt.2.dat is output from L<Graph::Easy::Marpa::DFA> V 0.70, and can be used
+instead of t/sample.stt.1.dat in the above code.
 
 =head1 Description
 
-Takes a yacc grammar and converts it into a graph.
+Takes a L<Set::FA::Element>-style state transition table and converts it into a graph.
 
 You can write the result in any format supported by L<Graphviz|http://www.graphviz.org/>.
 
@@ -215,9 +202,9 @@ or:
 
 =head2 Calling new()
 
-C<new()> is called as C<< my($obj) = GraphViz2::Parse::Yacc -> new(k1 => v1, k2 => v2, ...) >>.
+C<new()> is called as C<< my($obj) = GraphViz2::Parse::STT -> new(k1 => v1, k2 => v2, ...) >>.
 
-It returns a new object of type C<GraphViz2::Parse::Yacc>.
+It returns a new object of type C<GraphViz2::Parse::STT>.
 
 Key-value pairs accepted in the parameter list:
 
@@ -236,13 +223,34 @@ This key is optional.
 
 =head1 Methods
 
-=head2 create(file_name => $file_name)
+=head2 create(stt => $state_transition_table)
 
 Creates the graph, which is accessible via the graph() method, or via the graph object you passed to new().
 
 Returns $self for method chaining.
 
-$file_name is the name of a yacc output file. See t/calc3.output.
+$state_transition_table is a list of arrayrefs, each with 3 elements.
+
+That is, it is the I<contents> of the arrayref 'transitions', which is one of the keys in the parameter list
+to L<Set::FA::Element>'s new().
+
+A quick summary of each element of this list, where each element is an arrayref with 3 elements:
+
+=over 4
+
+=item o [0] A state name
+
+=item o [1] A regexp
+
+=item o [2] Another state name (which may be the same as the first)
+
+=back
+
+The DFA in L<Set::FA::Element> tests the 'current' state against the state name ([0]), and for each state name
+which matches, tests the regexp ([1]) against the next character in the input stream. The first regexp to match
+causes the DFA to transition to the state named in the 3rd element of the arrayref ([2]).
+
+See t/sample.stt.1.dat for an example.
 
 =head2 graph()
 

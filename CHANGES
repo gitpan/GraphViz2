@@ -1,7 +1,19 @@
 Revision history for Perl extension GraphViz2.
 
+1.05  Fri Jun 24 12:40:00 2011
+	  - Implement GraphViz2::Parse::Marpa, along with scripts/parse.marpa.pl and t/sample.marpa.1.dat.
+	  	The output is html/parse.marpa.svg.
+	  - Implement GraphViz2::Parse::STT, along with scripts/parse.stt.pl and t/sample.stt.1.dat.
+	  	The output is html/parse.stt.svg.
+	  - Add use File::Spec to t/test.t
+
+1.04  Wed Jun 22  9:36:00 2011
+	  - Reduce required version of File::Basename to 2.77, which came with Perl 5.10.1.
+	  - Stop trying to write to t/html/, and use File::Temp for a directory instead.
+	  	That way, it doesn't matter who owns t/html/, nor whether or not it's writable.
+
 1.03  Sun Jun 19 16:27:00 2011
-	  - Tweak File::Temp -> new to be File::Temp ->new(EXLOCK => 0) for BSD-bases systems.
+	  - Tweak File::Temp -> new to be File::Temp ->new(EXLOCK => 0) for BSD-based systems.
 
 1.02  Fri Jun 17  8:36:00 2011
 	  - Add the pre-requisite Log::Handler to Build.PL and Makefile.PL.

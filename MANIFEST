@@ -28,10 +28,13 @@ html/parse.hml.log
 html/parse.html.svg
 html/parse.isa.log
 html/parse.isa.svg
+html/parse.marpa.log
+html/parse.marpa.svg
 html/parse.recdescent.log
 html/parse.recdescent.svg
 html/parse.regexp.log
 html/parse.regexp.svg
+html/parse.stt.svg
 html/parse.xml.bare.log
 html/parse.xml.bare.svg
 html/parse.xml.pp.log
@@ -52,8 +55,10 @@ lib/GraphViz2.pm
 lib/GraphViz2/Data/Grapher.pm
 lib/GraphViz2/DBI.pm
 lib/GraphViz2/Parse/ISA.pm
+lib/GraphViz2/Parse/Marpa.pm
 lib/GraphViz2/Parse/RecDescent.pm
 lib/GraphViz2/Parse/Regexp.pm
+lib/GraphViz2/Parse/STT.pm
 lib/GraphViz2/Parse/XML.pm
 lib/GraphViz2/Parse/Yacc.pm
 lib/GraphViz2/Parse/Yapp.pm
@@ -77,8 +82,10 @@ scripts/Heawood.pl
 scripts/parse.data.pl
 scripts/parse.html.pl
 scripts/parse.isa.pl
+scripts/parse.marpa.pl
 scripts/parse.recdescent.pl
 scripts/parse.regexp.pl
+scripts/parse.stt.pl
 scripts/parse.xml.bare.pl
 scripts/parse.xml.pp.pl
 scripts/parse.yacc.pl
@@ -98,7 +105,10 @@ t/lib/Parent/Child1.pm
 t/lib/Parent/Child2.pm
 t/pod.t
 t/sample.html
+t/sample.marpa.1.dat
 t/sample.recdescent.1.dat
 t/sample.recdescent.2.dat
+t/sample.stt.1.dat
+t/sample.stt.2.dat
 t/sample.xml
 t/test.t

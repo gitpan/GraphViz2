@@ -35,7 +35,7 @@ WriteMakefile
 	 Capture::Tiny               => 0.10,
 	 Data::Section::Simple       => 0.02,
 	 DBI                         => 1.616,
-	 File::Basename              => 2.78,
+	 File::Basename              => 2.77,
 	 File::Spec                  => 3.33,
 	 File::Temp                  => 0.22,
 	 File::Which                 => 1.09,
