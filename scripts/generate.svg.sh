@@ -5,12 +5,14 @@ perl -Ilib scripts/cluster.pl          > html/cluster.log
 perl -Ilib scripts/dbi.schema.pl       > html/dbi.schema.log
 perl -Ilib scripts/dependency.pl       > html/dependency.log
 perl -Ilib scripts/Heawood.pl          > html/Heawood.log
+perl -Ilib scripts/jointed.edges.pl    > html/jointed.edges.log
 perl -Ilib scripts/parse.data.pl       > html/parse.data.log
 perl -Ilib scripts/parse.html.pl       > html/parse.hml.log
 perl -Ilib scripts/parse.isa.pl        > html/parse.isa.log
 perl -Ilib scripts/parse.marpa.pl      > html/parse.marpa.log
 perl -Ilib scripts/parse.recdescent.pl > html/parse.recdescent.log
 perl -Ilib scripts/parse.regexp.pl     > html/parse.regexp.log
+perl -Ilib scripts/parse.stt.pl        > html/parse.stt.log
 perl -Ilib scripts/parse.xml.bare.pl   > html/parse.xml.bare.log
 perl -Ilib scripts/parse.xml.pp.pl     > html/parse.xml.pp.log
 perl -Ilib scripts/parse.yacc.pl       > html/parse.yacc.log

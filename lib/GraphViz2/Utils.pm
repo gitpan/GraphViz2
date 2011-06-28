@@ -12,7 +12,7 @@ use Perl6::Slurp;
 
 fieldhash my %graph => 'graph';
 
-our $VERSION = '1.05';
+our $VERSION = '1.06';
 
 # ------------------------------------------------
 
@@ -37,6 +37,8 @@ sub get_annotations
 
 		if ( ($#line >= 3) && ($line[3] =~ /^# Annotation: (.+)$/) )
 		{
+			# Preserve $1 in case basename changes it.
+
 			$s                                       = $1;
 			$annotation{basename($file_name, '.pl')} = $s;
 		}
@@ -54,7 +56,7 @@ sub get_scripts
 	my($dir_name) = 'scripts';
 
 	opendir(INX, $dir_name);
-	my(@file_name) = sort grep{! -d $_} readdir INX;
+	my(@file_name) = sort grep{! -d $_ && /\.pl$/} readdir INX;
 	closedir INX;
 
 	my(@line);
@@ -66,7 +68,7 @@ sub get_scripts
 
 		if ( ($#line >= 3) && ($line[3] =~ /^# Annotation: (?:.+)$/) )
 		{
-			$script{$file_name} = basename($file_name, '.pl');
+			$script{basename($file_name, '.pl')} = $file_name;
 		}
 	}
 

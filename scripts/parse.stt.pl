@@ -33,7 +33,7 @@ my($graph)  = GraphViz2 -> new
 	(
 	 edge   => {color => 'grey'},
 	 global => {directed => 1, record_orientation => 'horizontal'},
-	 graph  => {rankdir => 'LR', label => "Graph produced by GraphViz2::Data::Grapher's $0"},
+	 graph  => {rankdir => 'LR'},
 	 logger => $logger,
 	 node   => {color => 'green', shape => 'oval'},
 	);
@@ -45,4 +45,4 @@ $g -> create(stt => $stt);
 my($format)      = shift || 'svg';
 my($output_file) = shift || File::Spec -> catfile('html', "parse.stt.$format");
 
-$graph -> run(format => $format, output_file => $output_file, timeout => 11);
+$graph -> run(format => $format, output_file => $output_file);

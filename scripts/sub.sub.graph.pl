@@ -30,7 +30,7 @@ my($graph) = GraphViz2 -> new
 	(
 	 edge   => {color => 'grey'},
 	 global => {directed => 1},
-	 graph  => {label => "Parent (Graph produced by GraphViz2::Data::Grapher's $0)", rankdir => 'TB'},
+	 graph  => {label => 'Parent', rankdir => 'TB'},
 	 logger => $logger,
 	 node   => {shape => 'oval'},
 	);
@@ -75,4 +75,4 @@ $graph -> add_edge(from => 'Malvern', to => 'Murrumbeena');
 my($format)      = shift || 'svg';
 my($output_file) = shift || File::Spec -> catfile('html', "sub.sub.graph.$format");
 
-$graph -> run(format => $format, output_file => $output_file, timeout => 11);
+$graph -> run(format => $format, output_file => $output_file);

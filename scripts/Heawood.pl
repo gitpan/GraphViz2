@@ -31,7 +31,7 @@ $logger -> add
 my($graph) = GraphViz2 -> new
 	(
 	 global => {name => 'Heawood'},
-	 graph  => {rankdir => 'TB', label => "Graph produced by GraphViz2::Data::Grapher's $0"},
+	 graph  => {rankdir => 'TB'},
 	 logger => $logger,
 	);
 
@@ -63,4 +63,4 @@ $graph -> add_edge(from => 12, to =>  3, len => 2.5);
 my($format)      = shift || 'svg';
 my($output_file) = shift || File::Spec -> catfile('html', "Heawood.$format");
 
-$graph -> run(format => $format, output_file => $output_file, timeout => 11);
+$graph -> run(format => $format, output_file => $output_file);

@@ -9,7 +9,7 @@
 <g id="graph1" class="graph" transform="scale(1 1) rotate(0) translate(4 336)">
 <title>Perl</title>
 <polygon fill="white" stroke="white" points="-4,5 -4,-336 463,-336 463,5 -4,5"/>
-<text text-anchor="middle" x="229" y="-10.4" font-family="Times Roman,serif" font-size="14.00">Parent (Graph produced by GraphViz2::Data::Grapher&#39;s scripts/sub.graph.pl)</text>
+<text text-anchor="middle" x="229" y="-10.4" font-family="Times Roman,serif" font-size="14.00">Parent</text>
 <g id="graph2" class="cluster"><title>cluster_1</title>
 <polygon fill="none" stroke="black" points="294,-147 294,-324 450,-324 450,-147 294,-147"/>
 <text text-anchor="middle" x="372" y="-307.4" font-family="Times Roman,serif" font-size="14.00">Child</text>

@@ -8,27 +8,71 @@ use File::Spec;
 use GraphViz2;
 use GraphViz2::Utils;
 
+use Perl6::Slurp;
+
 use Text::Xslate 'mark_raw';
 
 # ------------------------------------------------
 
-my(%annotation) = GraphViz2::Utils -> new -> get_annotations;
-my(%svg_file)   = GraphViz2::Utils -> new -> get_svg_files;
+my($util)       = GraphViz2::Utils -> new;
+my(%annotation) = $util -> get_annotations;
+my(%script)     = $util -> get_scripts;
+my(%svg_file)   = $util -> get_svg_files;
 my($templater)  = Text::Xslate -> new
 (
   input_layer => '',
   path        => 'html',
 );
+
+my(@data, %data);
+my($line, @line);
+
+for my $key (keys %script)
+{
+	$data{$key} = '';
+	$line       = slurp $script{$key};
+	@line       = split(/\n/, $line);
+
+	for $line (@line)
+	{
+		if ($line =~ /(?:create|slurp).+File::Spec -> catfile\((.+?)\)/)
+		{
+			@data       = split(/\s*,\s*/, $1);
+			$data{$key} = $templater -> render
+				(
+				 'table.tx',
+				 {
+					 data => [map{ {td => $_} } split(/\n/, slurp(File::Spec -> catfile(map{s/'//g; $_} @data) ) )],
+				 }
+				);
+
+			last;
+		}
+	}
+}
+
 my($count) = 0;
 my($index) = $templater -> render
 (
- 'graphviz.index.tx',
+ 'graphviz2.index.tx',
  {
-	 sample_list => mark_raw('<tr><td>' . (join(qq|</td></tr>\n<tr><td>|, map{$count++; qq|<a href="./$svg_file{$_}">$count: $annotation{$_}</a>|} sort keys %svg_file) ) . '</td></tr>'),
-	 version     => $GraphViz2::VERSION,
+	 data    =>
+		 [
+		  map
+		  {
+			  {
+				  count  => ++$count,
+				  input  => mark_raw($script{$_}),
+				  raw    => mark_raw($data{$_}),
+				  svg    => $svg_file{$_},
+				  title  => mark_raw($annotation{$_}),
+			  }
+		  } sort keys %svg_file
+		 ],
+	 version => $GraphViz2::VERSION,
  }
 );
-my($file_name) = File::Spec -> catfile('html', 'graphviz.index.html');
+my($file_name) = File::Spec -> catfile('html', 'index.html');
 
 open(OUT, '>', $file_name);
 print OUT $index;

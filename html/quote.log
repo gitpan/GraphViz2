@@ -7,7 +7,7 @@ Default global: record_orientation => vertical
 Default global: record_shape => Mrecord
 Default global: strict => 0
 Default global: timeout => 10
-Default graph: label => Graph produced by GraphViz2::Data::Grapher's scripts/quote.pl, rankdir => TB
+Default graph: rankdir => TB
 Default node: shape => oval
 Default edge: color => grey
 Added node: "Embedded\nnewline\nnode\nname"
@@ -16,11 +16,11 @@ Added node: "Embedded\ndouble-quote\nnode\nname\n\""
 Added node: "Embedded\double-quote\label" [ label="Embedded\ndouble-quote\nlabel\n\"" ]
 Added node: "Line justification 1" [ label="A short line\rA much longer line" ]
 Added node: "Line justification 2" [ label="A much longer line\rA short line" ]
-Driver: /usr/local/bin/dot. Output file: html/quote.svg. Format: svg. Timeout: 11 second(s)
+Driver: /usr/local/bin/dot. Output file: html/quote.svg. Format: svg. Timeout: 10 second(s)
 
 digraph Perl
 {
-graph [ label="Graph produced by GraphViz2::Data::Grapher's scripts/quote.pl" rankdir="TB" ]
+graph [ rankdir="TB" ]
 node [ shape="oval" ]
 edge [ color="grey" ]
 "Embedded\nnewline\nnode\nname"
@@ -30,4 +30,4 @@ edge [ color="grey" ]
 "Line justification 1" [ label="A short line\rA much longer line" ]
 "Line justification 2" [ label="A much longer line\rA short line" ]
 }
-Wrote html/quote.svg. Size: 4182 bytes
+Wrote html/quote.svg. Size: 4000 bytes

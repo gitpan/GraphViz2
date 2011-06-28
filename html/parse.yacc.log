@@ -7,7 +7,7 @@ Default global: record_orientation => vertical
 Default global: record_shape => Mrecord
 Default global: strict => 0
 Default global: timeout => 10
-Default graph: concentrate => 1, label => Graph produced by GraphViz2::Data::Grapher's scripts/parse.yacc.pl, rankdir => TB
+Default graph: concentrate => 1, rankdir => TB
 Default node: color => darkblue, shape => oval
 Default edge: color => grey
 Added node: "number"
@@ -27,11 +27,11 @@ Added node: "expr" [ label="{<port1> expr|<port2> '(' expr ')' \nexpr '+' expr \
 Added node: "$accept" [ label="{<port1> $accept|<port2> list $end \n}" shape="record" ]
 Added node: "stat" [ label="{<port1> stat|<port2> expr \nLETTER '=' expr \n}" shape="record" ]
 Added node: "list" [ label="{<port1> list|<port2> (empty) \nlist stat '\n' \nlist error '\n' \n}" shape="record" ]
-Driver: /usr/local/bin/dot. Output file: html/parse.yacc.svg. Format: svg. Timeout: 11 second(s)
+Driver: /usr/local/bin/dot. Output file: html/parse.yacc.svg. Format: svg. Timeout: 10 second(s)
 
 digraph Perl
 {
-graph [ concentrate="1" label="Graph produced by GraphViz2::Data::Grapher's scripts/parse.yacc.pl" rankdir="TB" ]
+graph [ concentrate="1" rankdir="TB" ]
 node [ color="darkblue" shape="oval" ]
 edge [ color="grey" ]
 "number"
@@ -52,4 +52,4 @@ edge [ color="grey" ]
 "stat" [ label="{<port1> stat|<port2> expr \nLETTER '=' expr \n}" shape="record" ]
 "list" [ label="{<port1> list|<port2> (empty) \nlist stat '\n' \nlist error '\n' \n}" shape="record" ]
 }
-Wrote html/parse.yacc.svg. Size: 7651 bytes
+Wrote html/parse.yacc.svg. Size: 7422 bytes

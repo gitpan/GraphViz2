@@ -7,7 +7,7 @@ Default global: record_orientation => vertical
 Default global: record_shape => Mrecord
 Default global: strict => 0
 Default global: timeout => 10
-Default graph: label => Graph produced by GraphViz2::Data::Grapher's scripts/Heawood.pl, rankdir => TB
+Default graph: rankdir => TB
 Default node: 
 Default edge: 
 Default edge: color => black
@@ -47,11 +47,11 @@ Added edge: "6" -- "11" [ label="" len="2.5" ]
 Added edge: "8" -- "13" [ label="" len="2.5" ]
 Added edge: "10" -- "1" [ label="" len="2.5" ]
 Added edge: "12" -- "3" [ label="" len="2.5" ]
-Driver: /usr/local/bin/dot. Output file: html/Heawood.svg. Format: svg. Timeout: 11 second(s)
+Driver: /usr/local/bin/dot. Output file: html/Heawood.svg. Format: svg. Timeout: 10 second(s)
 
 graph Heawood
 {
-graph [ label="Graph produced by GraphViz2::Data::Grapher's scripts/Heawood.pl" rankdir="TB" ]
+graph [ rankdir="TB" ]
 edge [ color="black" ]
 node [ color="black" fontname="Arial" height="0.500000" label="\N" shape="circle" width="0.50000" ]
 "0"
@@ -90,4 +90,4 @@ node [ color="black" fontname="Arial" height="0.500000" label="\N" shape="circle
 "10" -- "1" [ label="" len="2.5" ]
 "12" -- "3" [ label="" len="2.5" ]
 }
-Wrote html/Heawood.svg. Size: 8401 bytes
+Wrote html/Heawood.svg. Size: 8182 bytes

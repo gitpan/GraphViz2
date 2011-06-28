@@ -1,0 +1,7 @@
+<table align = "center">
+:for $data -> $row {
+<tr>
+  <td><: $row.td :></td>
+</tr>
+:}
+</table>

@@ -7,7 +7,7 @@ Default global: record_orientation => vertical
 Default global: record_shape => Mrecord
 Default global: strict => 0
 Default global: timeout => 10
-Default graph: label => Graph produced by GraphViz2::Data::Grapher's scripts/parse.isa.pl, rankdir => BT
+Default graph: rankdir => BT
 Default node: color => darkblue, shape => Mrecord
 Default edge: color => grey
 Added node: "Parent"
@@ -18,11 +18,11 @@ Added edge: "Parent::Child1" -> "Parent" [ label="" ]
 Added edge: "Parent::Child2" -> "Parent" [ label="" ]
 Added edge: "Parent::Child::Grandchild" -> "Parent::Child1" [ label="" ]
 Added edge: "Parent::Child::Grandchild" -> "Parent::Child2" [ label="" ]
-Driver: /usr/local/bin/dot. Output file: html/parse.isa.svg. Format: svg. Timeout: 11 second(s)
+Driver: /usr/local/bin/dot. Output file: html/parse.isa.svg. Format: svg. Timeout: 10 second(s)
 
 digraph Perl
 {
-graph [ label="Graph produced by GraphViz2::Data::Grapher's scripts/parse.isa.pl" rankdir="BT" ]
+graph [ rankdir="BT" ]
 node [ color="darkblue" shape="Mrecord" ]
 edge [ color="grey" ]
 "Parent"
@@ -34,4 +34,4 @@ edge [ color="grey" ]
 "Parent::Child::Grandchild" -> "Parent::Child1" [ label="" ]
 "Parent::Child::Grandchild" -> "Parent::Child2" [ label="" ]
 }
-Wrote html/parse.isa.svg. Size: 5499 bytes
+Wrote html/parse.isa.svg. Size: 5243 bytes

@@ -9,7 +9,7 @@ use Algorithm::Dependency::Source::HoA;
 
 use GraphViz2;
 
-our $VERSION = '1.05';
+our $VERSION = '1.06';
 
 my(@candidate);
 my($graph);
@@ -200,7 +200,7 @@ L<GraphViz2::Parse::ISA> - Visualize a Perl class hierarchy as a graph
 		(
 		 edge   => {color => 'grey'},
 		 global => {directed => 1},
-		 graph  => {rankdir => 'BT', label => "Graph produced by GraphViz2::Data::Grapher's $0"},
+		 graph  => {rankdir => 'BT'},
 		 logger => $logger,
 		 node   => {color => 'darkblue', shape => 'Mrecord'},
 		);
@@ -211,7 +211,7 @@ L<GraphViz2::Parse::ISA> - Visualize a Perl class hierarchy as a graph
 	my($format)      = shift || 'svg';
 	my($output_file) = shift || File::Spec -> catfile('html', "parse.code.$format");
 	
-	$graph -> run(format => $format, output_file => $output_file, timeout => 11);
+	$graph -> run(format => $format, output_file => $output_file);
 
 See scripts/parse.isa.pl (L<GraphViz2/Scripts Shipped with this Module>).
 

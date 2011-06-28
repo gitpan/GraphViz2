@@ -7,7 +7,7 @@ Default global: record_orientation => vertical
 Default global: record_shape => Mrecord
 Default global: strict => 0
 Default global: timeout => 10
-Default graph: label => Graph produced by GraphViz2::Data::Grapher's scripts/trivial.pl, rankdir => TB
+Default graph: rankdir => TB
 Default node: shape => oval
 Default edge: color => grey
 Default node: shape => circle, style => filled
@@ -20,11 +20,11 @@ Added node: "Oakleigh" [ color="blue" shape="oval" ]
 Added edge: "Murrumbeena" -> "Carnegie" [ arrowsize="2" label="" ]
 Default edge: arrowsize => 4, color => grey
 Added edge: "Murrumbeena" -> "Oakleigh" [ color="brown" label="" ]
-Driver: /usr/local/bin/dot. Output file: html/trivial.svg. Format: svg. Timeout: 11 second(s)
+Driver: /usr/local/bin/dot. Output file: html/trivial.svg. Format: svg. Timeout: 10 second(s)
 
 digraph Perl
 {
-graph [ label="Graph produced by GraphViz2::Data::Grapher's scripts/trivial.pl" rankdir="TB" ]
+graph [ rankdir="TB" ]
 node [ shape="oval" ]
 edge [ color="grey" ]
 node [ shape="circle" style="filled" ]
@@ -38,4 +38,4 @@ node [ shape="circle" style="rounded" ]
 edge [ arrowsize="4" color="grey" ]
 "Murrumbeena" -> "Oakleigh" [ color="brown" label="" ]
 }
-Wrote html/trivial.svg. Size: 2785 bytes
+Wrote html/trivial.svg. Size: 2539 bytes

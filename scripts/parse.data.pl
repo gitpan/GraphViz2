@@ -60,7 +60,7 @@ my($graph) = GraphViz2 -> new
 	(
 	 edge   => {color => 'grey'},
 	 global => {directed => 1},
-	 graph  => {rankdir => 'TB', label => "Graph produced by GraphViz2::Data::Grapher's $0"},
+	 graph  => {rankdir => 'TB'},
 	 logger => $logger,
 	 node   => {color => 'darkblue', shape => 'oval'},
 	);
@@ -70,16 +70,16 @@ my($format)      = shift || 'svg';
 my($output_file) = shift || File::Spec -> catfile('html', "parse.data.$format");
 
 $g -> create(name => 's', thing => $s);
-$graph -> run(format => $format, output_file => $output_file, timeout => 11);
+$graph -> run(format => $format, output_file => $output_file);
 
 # If you did not provide a GraphViz2 object, do this
 # to get access to the auto-created GraphViz2 object.
 
 #$g -> create(name => 's', thing => $s);
-#$g -> graph -> run(format => $format, output_file => $output_file, timeout => 11);
+#$g -> graph -> run(format => $format, output_file => $output_file);
 
 # Or even
 
 #$g -> create(name => 's', thing => $s)
 #-> graph
-#-> run(format => $format, output_file => $output_file, timeout => 11);
+#-> run(format => $format, output_file => $output_file);

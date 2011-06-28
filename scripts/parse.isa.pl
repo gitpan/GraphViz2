@@ -32,7 +32,7 @@ my($graph) = GraphViz2 -> new
 	(
 	 edge   => {color => 'grey'},
 	 global => {directed => 1},
-	 graph  => {rankdir => 'BT', label => "Graph produced by GraphViz2::Data::Grapher's $0"},
+	 graph  => {rankdir => 'BT'},
 	 logger => $logger,
 	 node   => {color => 'darkblue', shape => 'Mrecord'},
 	);
@@ -45,4 +45,4 @@ $parser -> create(class => 'Parent::Child::Grandchild', ignore => []);
 my($format)      = shift || 'svg';
 my($output_file) = shift || File::Spec -> catfile('html', "parse.isa.$format");
 
-$graph -> run(format => $format, output_file => $output_file, timeout => 11);
+$graph -> run(format => $format, output_file => $output_file);

@@ -31,7 +31,7 @@ my($graph)  = GraphViz2 -> new
 	(
 	 edge   => {color => 'grey'},
 	 global => {directed => 1},
-	 graph  => {concentrate => 1, rankdir => 'TB', label => "Graph produced by GraphViz2::Data::Grapher's $0"},
+	 graph  => {concentrate => 1, rankdir => 'TB'},
 	 logger => $logger,
 	 node   => {color => 'darkblue', shape => 'oval'},
 	);
@@ -42,4 +42,4 @@ $g -> create(file_name => File::Spec -> catfile('t', 'calc.output') );
 my($format)      = shift || 'svg';
 my($output_file) = shift || File::Spec -> catfile('html', "parse.yapp.$format");
 
-$graph -> run(format => $format, output_file => $output_file, timeout => 11);
+$graph -> run(format => $format, output_file => $output_file);

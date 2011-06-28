@@ -9,7 +9,7 @@ use Hash::FieldHash ':all';
 
 fieldhash my %graph => 'graph';
 
-our $VERSION = '1.05';
+our $VERSION = '1.06';
 
 # -----------------------------------------------
 
@@ -138,7 +138,7 @@ L<GraphViz2::Parse::STT> - Visualize a Set::FA::Element state transition table a
 		(
 		 edge   => {color => 'grey'},
 		 global => {directed => 1, record_orientation => 'horizontal'},
-		 graph  => {rankdir => 'TB', label => "Graph produced by GraphViz2::Data::Grapher's $0"},
+		 graph  => {rankdir => 'TB'},
 		 logger => $logger,
 		 node   => {color => 'green', shape => 'oval'},
 		);
@@ -150,7 +150,7 @@ L<GraphViz2::Parse::STT> - Visualize a Set::FA::Element state transition table a
 	my($format)      = shift || 'svg';
 	my($output_file) = shift || File::Spec -> catfile('html', "parse.stt.$format");
 	
-	$graph -> run(format => $format, output_file => $output_file, timeout => 11);
+	$graph -> run(format => $format, output_file => $output_file);
 
 See scripts/parse.stt.pl (L<GraphViz2/Scripts Shipped with this Module>).
 

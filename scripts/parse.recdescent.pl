@@ -35,7 +35,7 @@ my($graph) = GraphViz2 -> new
 	(
 	 edge   => {color => 'grey'},
 	 global => {directed => 1},
-	 graph  => {rankdir => 'TB', label => "Graph produced by GraphViz2::Data::Grapher's $0"},
+	 graph  => {rankdir => 'TB'},
 	 logger => $logger,
 	 node   => {color => 'darkblue', shape => 'oval'},
 	);
@@ -48,4 +48,4 @@ $g -> create(name => 'Grammar', grammar => $parser);
 my($format)      = shift || 'svg';
 my($output_file) = shift || File::Spec -> catfile('html', "parse.recdescent.$format");
 
-$graph -> run(format => $format, output_file => $output_file, timeout => 11);
+$graph -> run(format => $format, output_file => $output_file);

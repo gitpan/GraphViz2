@@ -7,7 +7,7 @@ Default global: record_orientation => vertical
 Default global: record_shape => Mrecord
 Default global: strict => 0
 Default global: timeout => 10
-Default graph: label => Parent (Graph produced by GraphViz2::Data::Grapher's scripts/dependency.pl), rankdir => BT
+Default graph: label => Parent, rankdir => BT
 Default node: shape => oval
 Default edge: color => grey
 Added node: "Parent"
@@ -18,11 +18,11 @@ Added edge: "Parent::Child1" -> "Parent" [ label="" ]
 Added edge: "Parent::Child2" -> "Parent" [ label="" ]
 Added edge: "Parent::Child::Grandchild" -> "Parent::Child1" [ label="" ]
 Added edge: "Parent::Child::Grandchild" -> "Parent::Child2" [ label="" ]
-Driver: /usr/local/bin/dot. Output file: html/dependency.svg. Format: svg. Timeout: 11 second(s)
+Driver: /usr/local/bin/dot. Output file: html/dependency.svg. Format: svg. Timeout: 10 second(s)
 
 digraph Perl
 {
-graph [ label="Parent (Graph produced by GraphViz2::Data::Grapher's scripts/dependency.pl)" rankdir="BT" ]
+graph [ label="Parent" rankdir="BT" ]
 node [ shape="oval" ]
 edge [ color="grey" ]
 "Parent"
@@ -34,4 +34,4 @@ edge [ color="grey" ]
 "Parent::Child::Grandchild" -> "Parent::Child1" [ label="" ]
 "Parent::Child::Grandchild" -> "Parent::Child2" [ label="" ]
 }
-Wrote html/dependency.svg. Size: 3336 bytes
+Wrote html/dependency.svg. Size: 3262 bytes

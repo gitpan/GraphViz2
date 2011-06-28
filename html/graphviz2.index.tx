@@ -7,8 +7,13 @@
 
 <p>All scripts, input files and output files required to generate these examples are shipped in the GraphViz2 distro.</p>
 
-<table>
-<: $sample_list :>
+<table align = "center" border = "1">
+:for $data -> $row {
+<tr>
+  <td>Input file # <: $row.count :> - <: $row.input :>:<br /><: $row.raw :></td>
+  <td><img src = "<: $row.svg :>" /><br /><br /><: $row.count :> - <: $row.title :></td>
+</tr>
+:}
 </table>
 </body>
 </html>

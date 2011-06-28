@@ -7,7 +7,7 @@ Default global: record_orientation => vertical
 Default global: record_shape => Mrecord
 Default global: strict => 0
 Default global: timeout => 10
-Default graph: clusterrank => local, compound => 1, label => Graph produced by GraphViz2::Data::Grapher's scripts/cluster.pl, rankdir => TB
+Default graph: clusterrank => local, compound => 1, rankdir => TB
 Default node: shape => oval
 Default edge: color => grey
 Default graph: bgcolor => grey, clusterrank => local, compound => 1, label => Europe, rankdir => TB
@@ -30,11 +30,11 @@ Added edge: "Victoria" -> "Tasmania" [ label="" ]
 Added node: "cluster_Australia"
 Added node: "cluster_Europe"
 Added edge: "cluster_Australia" -> "cluster_Europe" [ label="" ]
-Driver: /usr/local/bin/dot. Output file: html/cluster.svg. Format: svg. Timeout: 11 second(s)
+Driver: /usr/local/bin/dot. Output file: html/cluster.svg. Format: svg. Timeout: 10 second(s)
 
 digraph Perl
 {
-graph [ clusterrank="local" compound="1" label="Graph produced by GraphViz2::Data::Grapher's scripts/cluster.pl" rankdir="TB" ]
+graph [ clusterrank="local" compound="1" rankdir="TB" ]
 node [ shape="oval" ]
 edge [ color="grey" ]
 subgraph "cluster_Europe" {
@@ -62,4 +62,4 @@ edge [ color="grey" ]
 "cluster_Europe"
 "cluster_Australia" -> "cluster_Europe" [ label="" ]
 }
-Wrote html/cluster.svg. Size: 5662 bytes
+Wrote html/cluster.svg. Size: 5488 bytes

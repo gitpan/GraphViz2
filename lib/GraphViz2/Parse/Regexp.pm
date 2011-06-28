@@ -11,7 +11,7 @@ use Hash::FieldHash ':all';
 
 fieldhash my %graph => 'graph';
 
-our $VERSION = '1.05';
+our $VERSION = '1.06';
 
 # -----------------------------------------------
 
@@ -217,7 +217,7 @@ L<GraphViz2::Parse::Regexp> - Visualize a Perl regular expression as a graph
 		(
 		 edge   => {color => 'grey'},
 		 global => {directed => 1},
-		 graph  => {rankdir => 'TB', label => "Graph produced by GraphViz2::Data::Grapher's $0"},
+		 graph  => {rankdir => 'TB'},
 		 logger => $logger,
 		 node   => {color => 'darkblue', shape => 'oval'},
 		);
@@ -228,7 +228,7 @@ L<GraphViz2::Parse::Regexp> - Visualize a Perl regular expression as a graph
 	my($format)      = shift || 'svg';
 	my($output_file) = shift || File::Spec -> catfile('html', "parse.regexp.$format");
 	
-	$graph -> run(format => $format, output_file => $output_file, timeout => 11);
+	$graph -> run(format => $format, output_file => $output_file);
 
 See scripts/parse.regexp.pl (L<GraphViz2/Scripts Shipped with this Module>).
 

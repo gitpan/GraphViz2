@@ -33,7 +33,7 @@ my($graph) = GraphViz2 -> new
 	(
 	 edge   => {color => 'grey'},
 	 global => {directed => 1},
-	 graph  => {label => "Parent (Graph produced by GraphViz2::Data::Grapher's $0)", rankdir => 'BT'},
+	 graph  => {label => 'Parent', rankdir => 'BT'},
 	 logger => $logger,
 	 node   => {shape => 'oval'},
 	);
@@ -50,4 +50,4 @@ $graph -> dependency(data => Algorithm::Dependency -> new(source => Algorithm::D
 my($format)      = shift || 'svg';
 my($output_file) = shift || File::Spec -> catfile('html', "dependency.$format");
 
-$graph -> run(format => $format, output_file => $output_file, timeout => 11);
+$graph -> run(format => $format, output_file => $output_file);

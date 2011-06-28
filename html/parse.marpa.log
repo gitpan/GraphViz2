@@ -7,7 +7,7 @@ Default global: record_orientation => horizontal
 Default global: record_shape => Mrecord
 Default global: strict => 0
 Default global: timeout => 10
-Default graph: label => Graph produced by GraphViz2::Data::Grapher's scripts/parse.marpa.pl, rankdir => TB
+Default graph: rankdir => TB
 Default node: color => blue, shape => oval
 Default edge: color => grey
 Added node: "graph_definition_1" [ label="<port1> lhs: graph_definition_1|<port2> rhs list:|<port3> graph_sequence_1" shape="record" ]
@@ -56,11 +56,11 @@ Added edge: "node_statement_6":port4 -> "node_name_9":port1 [ label="" ]
 Added edge: "node_statement_6":port5 -> "end_node_10":port1 [ label="" ]
 Added edge: "node_statement_6":port6 -> "attr_definition_11":port1 [ label="" ]
 Added edge: "node_sequence_7":port3 -> "node_statement_6":port1 [ label="" ]
-Driver: /usr/local/bin/dot. Output file: html/parse.marpa.svg. Format: svg. Timeout: 11 second(s)
+Driver: /usr/local/bin/dot. Output file: html/parse.marpa.svg. Format: svg. Timeout: 10 second(s)
 
 digraph Perl
 {
-graph [ label="Graph produced by GraphViz2::Data::Grapher's scripts/parse.marpa.pl" rankdir="TB" ]
+graph [ rankdir="TB" ]
 node [ color="blue" shape="oval" ]
 edge [ color="grey" ]
 "graph_definition_1" [ label="<port1> lhs: graph_definition_1|<port2> rhs list:|<port3> graph_sequence_1" shape="record" ]
@@ -110,4 +110,4 @@ edge [ color="grey" ]
 "node_statement_6":port6 -> "attr_definition_11":port1 [ label="" ]
 "node_sequence_7":port3 -> "node_statement_6":port1 [ label="" ]
 }
-Wrote html/parse.marpa.svg. Size: 27323 bytes
+Wrote html/parse.marpa.svg. Size: 27111 bytes

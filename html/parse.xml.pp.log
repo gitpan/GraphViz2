@@ -7,7 +7,7 @@ Default global: record_orientation => vertical
 Default global: record_shape => Mrecord
 Default global: strict => 0
 Default global: timeout => 10
-Default graph: label => Graph produced by GraphViz2::Data::Grapher's scripts/parse.xml.pp.pl, rankdir => TB
+Default graph: rankdir => TB
 Default node: color => darkblue, shape => oval
 Default edge: color => grey
 Added node: "person"
@@ -41,11 +41,11 @@ Added node: "postcode"
 Added edge: "city" -> "postcode" [ label="" ]
 Added node: "3163" [ shape="rectangle" ]
 Added edge: "postcode" -> "3163" [ label="" ]
-Driver: /usr/local/bin/dot. Output file: html/parse.xml.pp.svg. Format: svg. Timeout: 11 second(s)
+Driver: /usr/local/bin/dot. Output file: html/parse.xml.pp.svg. Format: svg. Timeout: 10 second(s)
 
 digraph Perl
 {
-graph [ label="Graph produced by GraphViz2::Data::Grapher's scripts/parse.xml.pp.pl" rankdir="TB" ]
+graph [ rankdir="TB" ]
 node [ color="darkblue" shape="oval" ]
 edge [ color="grey" ]
 "person"
@@ -80,4 +80,4 @@ edge [ color="grey" ]
 "3163" [ shape="rectangle" ]
 "postcode" -> "3163" [ label="" ]
 }
-Wrote html/parse.xml.pp.svg. Size: 9758 bytes
+Wrote html/parse.xml.pp.svg. Size: 9601 bytes

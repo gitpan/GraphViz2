@@ -29,7 +29,7 @@ fieldhash my %scope            => 'scope';
 fieldhash my %verbose          => 'verbose';
 fieldhash my %valid_attributes => 'valid_attributes';
 
-our $VERSION = '1.05';
+our $VERSION = '1.06';
 
 # -----------------------------------------------
 
@@ -627,9 +627,9 @@ L<GraphViz2> - A wrapper for AT&T's Graphviz
 
 Unpack the distro and copy html/*.html and html/*.svg to your web server's doc root directory.
 
-Then, point your browser at 127.0.0.1/graphviz.index.html.
+Then, point your browser at 127.0.0.1/index.html.
 
-Or, hit L<http://savage.net.au/Perl-modules/html/GraphViz2/graphviz.index.html>.
+Or, hit L<http://savage.net.au/Perl-modules/html/graphviz2/index.html>.
 
 =head2 Perl code
 
@@ -662,7 +662,7 @@ Or, hit L<http://savage.net.au/Perl-modules/html/GraphViz2/graphviz.index.html>.
 		(
 		 edge   => {color => 'grey'},
 		 global => {directed => 1},
-		 graph  => {label => "Parent (Graph produced by GraphViz2::Data::Grapher's $0)", rankdir => 'TB'},
+		 graph  => {label => 'Parent', rankdir => 'TB'},
 		 logger => $logger,
 		 node   => {shape => 'oval'},
 		);
@@ -699,7 +699,7 @@ Or, hit L<http://savage.net.au/Perl-modules/html/GraphViz2/graphviz.index.html>.
 	my($format)      = shift || 'svg';
 	my($output_file) = shift || File::Spec -> catfile('html', "sub.graph.$format");
 	
-	$graph -> run(format => $format, output_file => $output_file, timeout => 11);
+	$graph -> run(format => $format, output_file => $output_file);
 
 This program ships as scripts/sub.graph.pl. See L</Scripts Shipped with this Module>.
 

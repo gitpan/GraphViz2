@@ -18,10 +18,12 @@ html/dbi.schema.log
 html/dbi.schema.svg
 html/dependency.log
 html/dependency.svg
-html/graphviz.index.html
-html/graphviz.index.tx
+html/graphviz2.index.tx
 html/Heawood.log
 html/Heawood.svg
+html/index.html
+html/jointed.edges.log
+html/jointed.edges.svg
 html/parse.data.log
 html/parse.data.svg
 html/parse.hml.log
@@ -34,6 +36,7 @@ html/parse.recdescent.log
 html/parse.recdescent.svg
 html/parse.regexp.log
 html/parse.regexp.svg
+html/parse.stt.log
 html/parse.stt.svg
 html/parse.xml.bare.log
 html/parse.xml.bare.svg
@@ -49,6 +52,7 @@ html/sub.graph.log
 html/sub.graph.svg
 html/sub.sub.graph.log
 html/sub.sub.graph.svg
+html/table.tx
 html/trivial.log
 html/trivial.svg
 lib/GraphViz2.pm
@@ -79,6 +83,7 @@ scripts/extract.output.formats.pl
 scripts/generate.index.pl
 scripts/generate.svg.sh
 scripts/Heawood.pl
+scripts/jointed.edges.pl
 scripts/parse.data.pl
 scripts/parse.html.pl
 scripts/parse.isa.pl

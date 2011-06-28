@@ -1,5 +1,12 @@
 Revision history for Perl extension GraphViz2.
 
+1.06  Tue Jun 28 11:10:00 2011
+	  - Change usage of File::Temp -> newdir to fix problems testing on BSD-based systems.
+	  - Add scripts/jointed.edges.pl.
+	  	This demo - in Graph::Easy syntax - ships with Graph::Easy::Marpa.
+	  - Re-write generate.index.pl to put all demo data (where available) and images on 1 page.
+	  - Upload demo to (new location) http://savage.net.au/Perl-modules/html/graphviz2/index.html.
+
 1.05  Fri Jun 24 12:40:00 2011
 	  - Implement GraphViz2::Parse::Marpa, along with scripts/parse.marpa.pl and t/sample.marpa.1.dat.
 	  	The output is html/parse.marpa.svg.

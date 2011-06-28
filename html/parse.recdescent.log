@@ -7,7 +7,7 @@ Default global: record_orientation => vertical
 Default global: record_shape => Mrecord
 Default global: strict => 0
 Default global: timeout => 10
-Default graph: label => Graph produced by GraphViz2::Data::Grapher's scripts/parse.recdescent.pl, rankdir => TB
+Default graph: rankdir => TB
 Default node: color => darkblue, shape => oval
 Default edge: color => grey
 Added node: "Grammar"
@@ -74,11 +74,11 @@ Added edge: "Grammar" -> "test4" [ label="" ]
 Added node: "test3" [ label="_alternation_1_of_production_1_of_rule_test3(5..10)  " ]
 Added edge: "test3" -> "_alternation_1_of_production_1_of_rule_test3" [ label="" ]
 Added edge: "Grammar" -> "test3" [ label="" ]
-Driver: /usr/local/bin/dot. Output file: html/parse.recdescent.svg. Format: svg. Timeout: 11 second(s)
+Driver: /usr/local/bin/dot. Output file: html/parse.recdescent.svg. Format: svg. Timeout: 10 second(s)
 
 digraph Perl
 {
-graph [ label="Graph produced by GraphViz2::Data::Grapher's scripts/parse.recdescent.pl" rankdir="TB" ]
+graph [ rankdir="TB" ]
 node [ color="darkblue" shape="oval" ]
 edge [ color="grey" ]
 "Grammar"
@@ -146,4 +146,4 @@ edge [ color="grey" ]
 "test3" -> "_alternation_1_of_production_1_of_rule_test3" [ label="" ]
 "Grammar" -> "test3" [ label="" ]
 }
-Wrote html/parse.recdescent.svg. Size: 20666 bytes
+Wrote html/parse.recdescent.svg. Size: 20478 bytes
