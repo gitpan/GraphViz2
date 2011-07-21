@@ -1,5 +1,9 @@
 Revision history for Perl extension GraphViz2.
 
+1.09  Thu Jul 21 14:13:00 2011
+	  - Patch parameter validation to allow for output image types such as png:gd etc.
+	  	Only the prefix before the first ':' is validated.
+
 1.08  Thu Jul 21 11:53:00 2011
 	  - Change the behaviour of sub log() in GraphViz.pm. Now if called with $level eq 'error', it dies with $message.
 	  - Change references to the color darkblue to blue, so it's compatible with both the X11 and SVG color schemes.

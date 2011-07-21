@@ -29,7 +29,7 @@ fieldhash my %scope            => 'scope';
 fieldhash my %verbose          => 'verbose';
 fieldhash my %valid_attributes => 'valid_attributes';
 
-our $VERSION = '1.08';
+our $VERSION = '1.09';
 
 # -----------------------------------------------
 
@@ -503,6 +503,7 @@ sub report_valid_attributes
 		$self -> log(info => $a);
 	}
 
+	$self -> log(info => 'Output formats for the form png:gd etc are also supported');
 	$self -> log;
 
 } # End of report_valid_attributes.
@@ -516,7 +517,9 @@ sub run
 	my($format)      = delete $arg{format}      || ${$self -> global}{format};
 	my($timeout)     = delete $arg{timeout}     || ${$self -> global}{timeout};
 	my($output_file) = delete $arg{output_file} || '';
-	%arg             = ($format => 1);
+	my($prefix)      = $format;
+	$prefix          =~ s/:.+$//;
+	%arg             = ($prefix => 1);
 
 	$self -> validate_params('output_format', %arg);
 
@@ -821,6 +824,9 @@ This key is optional.
 This option specifies what type of output file to create.
 
 The default is 'svg'.
+
+Output formats of the form 'png:gd' etc are also supported, but only the component before
+the first ':' is validated by L<GraphViz2>.
 
 This key is optional.
 
