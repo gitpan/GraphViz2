@@ -9,7 +9,7 @@ use Algorithm::Dependency::Source::HoA;
 
 use GraphViz2;
 
-our $VERSION = '1.06';
+our $VERSION = '1.08';
 
 my(@candidate);
 my($graph);
@@ -139,7 +139,7 @@ sub new
 		 global => {directed => 1},
 		 graph  => {rankdir => 'BT'},
 		 logger => '',
-		 node   => {color => 'darkblue', shape => 'Mrecord'},
+		 node   => {color => 'blue', shape => 'Mrecord'},
 		);
 	$graph = delete $arg{graph};
 
@@ -202,7 +202,7 @@ L<GraphViz2::Parse::ISA> - Visualize a Perl class hierarchy as a graph
 		 global => {directed => 1},
 		 graph  => {rankdir => 'BT'},
 		 logger => $logger,
-		 node   => {color => 'darkblue', shape => 'Mrecord'},
+		 node   => {color => 'blue', shape => 'Mrecord'},
 		);
 	my($parser) = GraphViz2::Parse::ISA -> new(graph => $graph);
 	

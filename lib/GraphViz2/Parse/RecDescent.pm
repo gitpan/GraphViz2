@@ -11,7 +11,7 @@ use Parse::RecDescent;
 
 fieldhash my %graph => 'graph';
 
-our $VERSION = '1.06';
+our $VERSION = '1.08';
 
 # -----------------------------------------------
 
@@ -120,7 +120,7 @@ sub _init
 		 global => {directed => 1},
 		 graph  => {rankdir => 'TB'},
 		 logger => '',
-		 node   => {color => 'darkblue', shape => 'oval'},
+		 node   => {color => 'blue', shape => 'oval'},
 		);
 	$self = from_hash($self, $arg);
 
@@ -188,7 +188,7 @@ L<GraphViz2::Parse::RecDescent> - Visualize a Parse::RecDescent grammar as a gra
 		 global => {directed => 1},
 		 graph  => {rankdir => 'TB'},
 		 logger => $logger,
-		 node   => {color => 'darkblue', shape => 'oval'},
+		 node   => {color => 'blue', shape => 'oval'},
 		);
 	my($g)      = GraphViz2::Parse::RecDescent -> new(graph => $graph);
 	my $grammar = slurp(File::Spec -> catfile('t', 'sample.recdescent.1.dat') );

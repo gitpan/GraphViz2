@@ -11,12 +11,12 @@
 <polygon fill="white" stroke="white" points="-4,5 -4,-482 239,-482 239,5 -4,5"/>
 <!-- 1 -->
 <g id="node1" class="node"><title>1</title>
-<ellipse fill="none" stroke="darkblue" cx="117" cy="-459" rx="53.9477" ry="19.0919"/>
+<ellipse fill="none" stroke="blue" cx="117" cy="-459" rx="53.9477" ry="19.0919"/>
 <text text-anchor="middle" x="117" y="-455.9" font-family="Times Roman,serif" font-size="14.00">START $1</text>
 </g>
 <!-- 3 -->
 <g id="node2" class="node"><title>3</title>
-<polygon fill="none" stroke="darkblue" points="117,-404 90,-386 117,-368 144,-386 117,-404"/>
+<polygon fill="none" stroke="blue" points="117,-404 90,-386 117,-368 144,-386 117,-404"/>
 </g>
 <!-- 1&#45;&gt;3 -->
 <g id="edge2" class="edge"><title>1&#45;&gt;3</title>
@@ -25,7 +25,7 @@
 </g>
 <!-- 4 -->
 <g id="node4" class="node"><title>4</title>
-<ellipse fill="none" stroke="darkblue" cx="54" cy="-313" rx="53.9477" ry="19.0919"/>
+<ellipse fill="none" stroke="blue" cx="54" cy="-313" rx="53.9477" ry="19.0919"/>
 <text text-anchor="middle" x="54" y="-309.9" font-family="Times Roman,serif" font-size="14.00">START $2</text>
 </g>
 <!-- 3&#45;&gt;4 -->
@@ -35,7 +35,7 @@
 </g>
 <!-- 20 -->
 <g id="node6" class="node"><title>20</title>
-<ellipse fill="none" stroke="darkblue" cx="180" cy="-313" rx="53.9477" ry="19.0919"/>
+<ellipse fill="none" stroke="blue" cx="180" cy="-313" rx="53.9477" ry="19.0919"/>
 <text text-anchor="middle" x="180" y="-309.9" font-family="Times Roman,serif" font-size="14.00">START $3</text>
 </g>
 <!-- 3&#45;&gt;20 -->
@@ -45,7 +45,7 @@
 </g>
 <!-- 6 -->
 <g id="node16" class="node"><title>6</title>
-<polygon fill="none" stroke="darkblue" points="99,-258 29,-258 29,-222 99,-222 99,-258"/>
+<polygon fill="none" stroke="blue" points="99,-258 29,-258 29,-222 99,-222 99,-258"/>
 <text text-anchor="middle" x="64" y="-236.9" font-family="Times Roman,serif" font-size="14.00">[0&#45;9a&#45;d][]</text>
 </g>
 <!-- 4&#45;&gt;6 -->
@@ -55,7 +55,7 @@
 </g>
 <!-- 22 -->
 <g id="node8" class="node"><title>22</title>
-<polygon fill="none" stroke="darkblue" points="205,-258 151,-258 151,-222 205,-222 205,-258"/>
+<polygon fill="none" stroke="blue" points="205,-258 151,-258 151,-222 205,-222 205,-258"/>
 <text text-anchor="middle" x="178" y="-236.9" font-family="Times Roman,serif" font-size="14.00">foo</text>
 </g>
 <!-- 20&#45;&gt;22 -->
@@ -65,7 +65,7 @@
 </g>
 <!-- 24 -->
 <g id="node10" class="node"><title>24</title>
-<ellipse fill="none" stroke="darkblue" cx="177" cy="-167" rx="43.8406" ry="19.0919"/>
+<ellipse fill="none" stroke="blue" cx="177" cy="-167" rx="43.8406" ry="19.0919"/>
 <text text-anchor="middle" x="177" y="-163.9" font-family="Times Roman,serif" font-size="14.00">END $3</text>
 </g>
 <!-- 22&#45;&gt;24 -->
@@ -75,7 +75,7 @@
 </g>
 <!-- 26 -->
 <g id="node12" class="node"><title>26</title>
-<ellipse fill="none" stroke="darkblue" cx="123" cy="-93" rx="43.8406" ry="19.0919"/>
+<ellipse fill="none" stroke="blue" cx="123" cy="-93" rx="43.8406" ry="19.0919"/>
 <text text-anchor="middle" x="123" y="-89.9" font-family="Times Roman,serif" font-size="14.00">END $1</text>
 </g>
 <!-- 24&#45;&gt;26 -->
@@ -85,7 +85,7 @@
 </g>
 <!-- 28 -->
 <g id="node14" class="node"><title>28</title>
-<ellipse fill="none" stroke="darkblue" cx="123" cy="-19" rx="31.1127" ry="19.0919"/>
+<ellipse fill="none" stroke="blue" cx="123" cy="-19" rx="31.1127" ry="19.0919"/>
 <text text-anchor="middle" x="123" y="-15.9" font-family="Times Roman,serif" font-size="14.00">END</text>
 </g>
 <!-- 26&#45;&gt;28 -->
@@ -95,7 +95,7 @@
 </g>
 <!-- 17 -->
 <g id="node18" class="node"><title>17</title>
-<ellipse fill="none" stroke="darkblue" cx="69" cy="-167" rx="43.8406" ry="19.0919"/>
+<ellipse fill="none" stroke="blue" cx="69" cy="-167" rx="43.8406" ry="19.0919"/>
 <text text-anchor="middle" x="69" y="-163.9" font-family="Times Roman,serif" font-size="14.00">END $2</text>
 </g>
 <!-- 6&#45;&gt;17 -->

@@ -11,12 +11,12 @@
 <polygon fill="white" stroke="white" points="-4,5 -4,-336 608,-336 608,5 -4,5"/>
 <!-- person -->
 <g id="node1" class="node"><title>person</title>
-<ellipse fill="none" stroke="darkblue" cx="251" cy="-313" rx="36.977" ry="19.0919"/>
+<ellipse fill="none" stroke="blue" cx="251" cy="-313" rx="36.977" ry="19.0919"/>
 <text text-anchor="middle" x="251" y="-309.9" font-family="Times Roman,serif" font-size="14.00">person</text>
 </g>
 <!-- name -->
 <g id="node2" class="node"><title>name</title>
-<ellipse fill="none" stroke="darkblue" cx="178" cy="-239" rx="33.234" ry="19.0919"/>
+<ellipse fill="none" stroke="blue" cx="178" cy="-239" rx="33.234" ry="19.0919"/>
 <text text-anchor="middle" x="178" y="-235.9" font-family="Times Roman,serif" font-size="14.00">name</text>
 </g>
 <!-- person&#45;&gt;name -->
@@ -26,7 +26,7 @@
 </g>
 <!-- address -->
 <g id="node12" class="node"><title>address</title>
-<ellipse fill="none" stroke="darkblue" cx="325" cy="-239" rx="39.8075" ry="19.0919"/>
+<ellipse fill="none" stroke="blue" cx="325" cy="-239" rx="39.8075" ry="19.0919"/>
 <text text-anchor="middle" x="325" y="-235.9" font-family="Times Roman,serif" font-size="14.00">address</text>
 </g>
 <!-- person&#45;&gt;address -->
@@ -36,7 +36,7 @@
 </g>
 <!-- given_name -->
 <g id="node4" class="node"><title>given_name</title>
-<ellipse fill="none" stroke="darkblue" cx="58" cy="-165" rx="58.1882" ry="19.0919"/>
+<ellipse fill="none" stroke="blue" cx="58" cy="-165" rx="58.1882" ry="19.0919"/>
 <text text-anchor="middle" x="58" y="-161.9" font-family="Times Roman,serif" font-size="14.00">given_name</text>
 </g>
 <!-- name&#45;&gt;given_name -->
@@ -46,7 +46,7 @@
 </g>
 <!-- surname -->
 <g id="node8" class="node"><title>surname</title>
-<ellipse fill="none" stroke="darkblue" cx="178" cy="-165" rx="44.0472" ry="19.0919"/>
+<ellipse fill="none" stroke="blue" cx="178" cy="-165" rx="44.0472" ry="19.0919"/>
 <text text-anchor="middle" x="178" y="-161.9" font-family="Times Roman,serif" font-size="14.00">surname</text>
 </g>
 <!-- name&#45;&gt;surname -->
@@ -56,7 +56,7 @@
 </g>
 <!-- Ron -->
 <g id="node6" class="node"><title>Ron</title>
-<polygon fill="none" stroke="darkblue" points="85,-109 31,-109 31,-73 85,-73 85,-109"/>
+<polygon fill="none" stroke="blue" points="85,-109 31,-109 31,-73 85,-73 85,-109"/>
 <text text-anchor="middle" x="58" y="-87.9" font-family="Times Roman,serif" font-size="14.00">Ron</text>
 </g>
 <!-- given_name&#45;&gt;Ron -->
@@ -66,7 +66,7 @@
 </g>
 <!-- Savage -->
 <g id="node10" class="node"><title>Savage</title>
-<polygon fill="none" stroke="darkblue" points="206,-109 150,-109 150,-73 206,-73 206,-109"/>
+<polygon fill="none" stroke="blue" points="206,-109 150,-109 150,-73 206,-73 206,-109"/>
 <text text-anchor="middle" x="178" y="-87.9" font-family="Times Roman,serif" font-size="14.00">Savage</text>
 </g>
 <!-- surname&#45;&gt;Savage -->
@@ -76,7 +76,7 @@
 </g>
 <!-- country -->
 <g id="node14" class="node"><title>country</title>
-<ellipse fill="none" stroke="darkblue" cx="281" cy="-165" rx="41.0122" ry="19.0919"/>
+<ellipse fill="none" stroke="blue" cx="281" cy="-165" rx="41.0122" ry="19.0919"/>
 <text text-anchor="middle" x="281" y="-161.9" font-family="Times Roman,serif" font-size="14.00">country</text>
 </g>
 <!-- address&#45;&gt;country -->
@@ -86,7 +86,7 @@
 </g>
 <!-- state -->
 <g id="node18" class="node"><title>state</title>
-<ellipse fill="none" stroke="darkblue" cx="369" cy="-165" rx="28.9914" ry="19.0919"/>
+<ellipse fill="none" stroke="blue" cx="369" cy="-165" rx="28.9914" ry="19.0919"/>
 <text text-anchor="middle" x="369" y="-161.9" font-family="Times Roman,serif" font-size="14.00">state</text>
 </g>
 <!-- address&#45;&gt;state -->
@@ -96,7 +96,7 @@
 </g>
 <!-- city -->
 <g id="node22" class="node"><title>city</title>
-<ellipse fill="none" stroke="darkblue" cx="453" cy="-165" rx="27" ry="19.0919"/>
+<ellipse fill="none" stroke="blue" cx="453" cy="-165" rx="27" ry="19.0919"/>
 <text text-anchor="middle" x="453" y="-161.9" font-family="Times Roman,serif" font-size="14.00">city</text>
 </g>
 <!-- address&#45;&gt;city -->
@@ -106,7 +106,7 @@
 </g>
 <!-- Australia -->
 <g id="node16" class="node"><title>Australia</title>
-<polygon fill="none" stroke="darkblue" points="314,-109 248,-109 248,-73 314,-73 314,-109"/>
+<polygon fill="none" stroke="blue" points="314,-109 248,-109 248,-73 314,-73 314,-109"/>
 <text text-anchor="middle" x="281" y="-87.9" font-family="Times Roman,serif" font-size="14.00">Australia</text>
 </g>
 <!-- country&#45;&gt;Australia -->
@@ -116,7 +116,7 @@
 </g>
 <!-- Victoria -->
 <g id="node20" class="node"><title>Victoria</title>
-<polygon fill="none" stroke="darkblue" points="395,-109 335,-109 335,-73 395,-73 395,-109"/>
+<polygon fill="none" stroke="blue" points="395,-109 335,-109 335,-73 395,-73 395,-109"/>
 <text text-anchor="middle" x="365" y="-87.9" font-family="Times Roman,serif" font-size="14.00">Victoria</text>
 </g>
 <!-- state&#45;&gt;Victoria -->
@@ -126,7 +126,7 @@
 </g>
 <!-- locality -->
 <g id="node24" class="node"><title>locality</title>
-<ellipse fill="none" stroke="darkblue" cx="453" cy="-91" rx="39.8075" ry="19.0919"/>
+<ellipse fill="none" stroke="blue" cx="453" cy="-91" rx="39.8075" ry="19.0919"/>
 <text text-anchor="middle" x="453" y="-87.9" font-family="Times Roman,serif" font-size="14.00">locality</text>
 </g>
 <!-- city&#45;&gt;locality -->
@@ -136,7 +136,7 @@
 </g>
 <!-- postcode -->
 <g id="node28" class="node"><title>postcode</title>
-<ellipse fill="none" stroke="darkblue" cx="557" cy="-91" rx="45.9619" ry="19.0919"/>
+<ellipse fill="none" stroke="blue" cx="557" cy="-91" rx="45.9619" ry="19.0919"/>
 <text text-anchor="middle" x="557" y="-87.9" font-family="Times Roman,serif" font-size="14.00">postcode</text>
 </g>
 <!-- city&#45;&gt;postcode -->
@@ -146,7 +146,7 @@
 </g>
 <!-- Murrumbeena -->
 <g id="node26" class="node"><title>Murrumbeena</title>
-<polygon fill="none" stroke="darkblue" points="500,-36 406,-36 406,-1.77636e-14 500,-3.55271e-15 500,-36"/>
+<polygon fill="none" stroke="blue" points="500,-36 406,-36 406,-1.77636e-14 500,-3.55271e-15 500,-36"/>
 <text text-anchor="middle" x="453" y="-14.9" font-family="Times Roman,serif" font-size="14.00">Murrumbeena</text>
 </g>
 <!-- locality&#45;&gt;Murrumbeena -->
@@ -156,7 +156,7 @@
 </g>
 <!-- 3163 -->
 <g id="node30" class="node"><title>3163</title>
-<polygon fill="none" stroke="darkblue" points="584,-36 530,-36 530,-1.77636e-14 584,-3.55271e-15 584,-36"/>
+<polygon fill="none" stroke="blue" points="584,-36 530,-36 530,-1.77636e-14 584,-3.55271e-15 584,-36"/>
 <text text-anchor="middle" x="557" y="-14.9" font-family="Times Roman,serif" font-size="14.00">3163</text>
 </g>
 <!-- postcode&#45;&gt;3163 -->

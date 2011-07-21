@@ -62,7 +62,7 @@ my($graph) = GraphViz2 -> new
 	 global => {directed => 1},
 	 graph  => {rankdir => 'TB'},
 	 logger => $logger,
-	 node   => {color => 'darkblue', shape => 'oval'},
+	 node   => {color => 'blue', shape => 'oval'},
 	);
 
 my($g)           = GraphViz2::Data::Grapher -> new(graph => $graph, logger => $logger);

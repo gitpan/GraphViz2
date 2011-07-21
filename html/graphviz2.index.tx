@@ -1,9 +1,9 @@
 <html>
 <head>
-		<title>Index of sample SVG files created by GraphViz2.</title>
+		<title>Index of sample files created by GraphViz2 V <: $version :></title>
 </head>
 <body>
-		<h1>Index of sample SVG files created by GraphViz2 V <: $version :>.</h1>
+		<h1>Index of sample files created by GraphViz2 V <: $version :>.</h1>
 
 <p>All scripts, input files and output files required to generate these examples are shipped in the GraphViz2 distro.</p>
 
@@ -11,9 +11,12 @@
 :for $data -> $row {
 <tr>
   <td>Input file # <: $row.count :> - <: $row.input :>:<br /><: $row.raw :></td>
-  <td><img src = "<: $row.svg :>" /><br /><br /><: $row.count :> - <: $row.title :></td>
+  <td><img src = "<: $row.image :>" /><br /><br /><: $row.count :> - <: $row.title :></td>
 </tr>
 :}
 </table>
+
+<p>Last updated: <: $date_stamp :>.</p>
+
 </body>
 </html>

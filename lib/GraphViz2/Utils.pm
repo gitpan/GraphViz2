@@ -12,7 +12,7 @@ use Perl6::Slurp;
 
 fieldhash my %graph => 'graph';
 
-our $VERSION = '1.06';
+our $VERSION = '1.08';
 
 # ------------------------------------------------
 
@@ -78,25 +78,25 @@ sub get_scripts
 
 # ------------------------------------------------
 
-sub get_svg_files
+sub get_files
 {
-	my($self)     = @_;
-	my($dir_name) = 'html';
+	my($self, $format) = @_;
+	my($dir_name)      = 'html';
 
 	opendir(INX, $dir_name);
-	my(@svg_file) = sort grep{/svg$/} readdir INX;
+	my(@file) = sort grep{/$format$/} readdir INX;
 	closedir INX;
 
-	my(%svg_file);
+	my(%file);
 
-	for my $file_name (@svg_file)
+	for my $file_name (@file)
 	{
-		$svg_file{basename($file_name, '.svg')} = $file_name;
+		$file{basename($file_name, ".$format")} = $file_name;
 	}
 
-	return %svg_file;
+	return %file;
 
-} # End of get_svg_files.
+} # End of get_files.
 
 # -----------------------------------------------
 

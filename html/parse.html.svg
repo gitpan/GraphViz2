@@ -25,9 +25,9 @@
 <path fill="none" stroke="grey" d="M125,-259C119,-259 113,-253 113,-247"/>
 <polyline fill="none" stroke="grey" points="113,-247 113,-235 "/>
 <path fill="none" stroke="grey" d="M113,-235C113,-229 119,-223 125,-223"/>
-<text text-anchor="middle" x="135" y="-237.9" font-family="Times Roman,serif" font-size="14.00" fill="darkblue">body</text>
+<text text-anchor="middle" x="135" y="-237.9" font-family="Times Roman,serif" font-size="14.00" fill="blue">body</text>
 <polyline fill="none" stroke="grey" points="157,-223 157,-259 "/>
-<text text-anchor="middle" x="178" y="-237.9" font-family="Times Roman,serif" font-size="14.00" fill="darkblue">head</text>
+<text text-anchor="middle" x="178" y="-237.9" font-family="Times Roman,serif" font-size="14.00" fill="blue">head</text>
 </g>
 <!-- 0&#45;&gt;0_kids -->
 <g id="edge2" class="edge"><title>0&#45;&gt;0_kids:port1</title>
@@ -44,7 +44,7 @@
 <path fill="none" stroke="grey" d="M94,-185C88,-185 82,-179 82,-173"/>
 <polyline fill="none" stroke="grey" points="82,-173 82,-161 "/>
 <path fill="none" stroke="grey" d="M82,-161C82,-155 88,-149 94,-149"/>
-<text text-anchor="middle" x="113" y="-163.9" font-family="Times Roman,serif" font-size="14.00" fill="darkblue">%$body</text>
+<text text-anchor="middle" x="113" y="-163.9" font-family="Times Roman,serif" font-size="14.00" fill="blue">%$body</text>
 </g>
 <!-- 0_kids&#45;&gt;0_0_kids -->
 <g id="edge4" class="edge"><title>0_kids:port1&#45;&gt;0_0_kids:port1</title>
@@ -61,7 +61,7 @@
 <path fill="none" stroke="grey" d="M181.5,-185C175.5,-185 169.5,-179 169.5,-173"/>
 <polyline fill="none" stroke="grey" points="169.5,-173 169.5,-161 "/>
 <path fill="none" stroke="grey" d="M169.5,-161C169.5,-155 175.5,-149 181.5,-149"/>
-<text text-anchor="middle" x="200" y="-163.9" font-family="Times Roman,serif" font-size="14.00" fill="darkblue">%$head</text>
+<text text-anchor="middle" x="200" y="-163.9" font-family="Times Roman,serif" font-size="14.00" fill="blue">%$head</text>
 </g>
 <!-- 0_kids&#45;&gt;0_1_kids -->
 <g id="edge12" class="edge"><title>0_kids:port2&#45;&gt;0_1_kids:port1</title>
@@ -78,9 +78,9 @@
 <path fill="none" stroke="grey" d="M101,-111C95,-111 89,-105 89,-99"/>
 <polyline fill="none" stroke="grey" points="89,-99 89,-87 "/>
 <path fill="none" stroke="grey" d="M89,-87C89,-81 95,-75 101,-75"/>
-<text text-anchor="middle" x="104" y="-89.9" font-family="Times Roman,serif" font-size="14.00" fill="darkblue">h1</text>
+<text text-anchor="middle" x="104" y="-89.9" font-family="Times Roman,serif" font-size="14.00" fill="blue">h1</text>
 <polyline fill="none" stroke="grey" points="119,-75 119,-111 "/>
-<text text-anchor="middle" x="131" y="-89.9" font-family="Times Roman,serif" font-size="14.00" fill="darkblue">p</text>
+<text text-anchor="middle" x="131" y="-89.9" font-family="Times Roman,serif" font-size="14.00" fill="blue">p</text>
 </g>
 <!-- 0_0_kids&#45;&gt;0_0_0_kids -->
 <g id="edge6" class="edge"><title>0_0_kids:port1&#45;&gt;0_0_0_kids:port1</title>
@@ -97,7 +97,7 @@
 <path fill="none" stroke="grey" d="M11.5,-37C5.5,-37 -0.5,-31 -0.5,-25"/>
 <polyline fill="none" stroke="grey" points="-0.5,-25 -0.5,-13 "/>
 <path fill="none" stroke="grey" d="M-0.5,-13C-0.5,-7 5.5,-1 11.5,-1"/>
-<text text-anchor="middle" x="36" y="-15.9" font-family="Times Roman,serif" font-size="14.00" fill="darkblue">Heading 1</text>
+<text text-anchor="middle" x="36" y="-15.9" font-family="Times Roman,serif" font-size="14.00" fill="blue">Heading 1</text>
 </g>
 <!-- 0_0_0_kids&#45;&gt;0_0_0_0_kids -->
 <g id="edge8" class="edge"><title>0_0_0_kids:port1&#45;&gt;0_0_0_0_kids:port1</title>
@@ -114,7 +114,7 @@
 <path fill="none" stroke="grey" d="M102,-37C96,-37 90,-31 90,-25"/>
 <polyline fill="none" stroke="grey" points="90,-25 90,-13 "/>
 <path fill="none" stroke="grey" d="M90,-13C90,-7 96,-1 102,-1"/>
-<text text-anchor="middle" x="131" y="-15.9" font-family="Times Roman,serif" font-size="14.00" fill="darkblue">Paragraph 1</text>
+<text text-anchor="middle" x="131" y="-15.9" font-family="Times Roman,serif" font-size="14.00" fill="blue">Paragraph 1</text>
 </g>
 <!-- 0_0_0_kids&#45;&gt;0_0_0_1_kids -->
 <g id="edge10" class="edge"><title>0_0_0_kids:port2&#45;&gt;0_0_0_1_kids:port1</title>
@@ -131,7 +131,7 @@
 <path fill="none" stroke="grey" d="M202,-111C196,-111 190,-105 190,-99"/>
 <polyline fill="none" stroke="grey" points="190,-99 190,-87 "/>
 <path fill="none" stroke="grey" d="M190,-87C190,-81 196,-75 202,-75"/>
-<text text-anchor="middle" x="217" y="-89.9" font-family="Times Roman,serif" font-size="14.00" fill="darkblue">title</text>
+<text text-anchor="middle" x="217" y="-89.9" font-family="Times Roman,serif" font-size="14.00" fill="blue">title</text>
 </g>
 <!-- 0_1_kids&#45;&gt;0_1_0_kids -->
 <g id="edge14" class="edge"><title>0_1_kids:port1&#45;&gt;0_1_0_kids:port1</title>
@@ -148,7 +148,7 @@
 <path fill="none" stroke="grey" d="M201.5,-37C195.5,-37 189.5,-31 189.5,-25"/>
 <polyline fill="none" stroke="grey" points="189.5,-25 189.5,-13 "/>
 <path fill="none" stroke="grey" d="M189.5,-13C189.5,-7 195.5,-1 201.5,-1"/>
-<text text-anchor="middle" x="247" y="-15.9" font-family="Times Roman,serif" font-size="14.00" fill="darkblue">Title of document</text>
+<text text-anchor="middle" x="247" y="-15.9" font-family="Times Roman,serif" font-size="14.00" fill="blue">Title of document</text>
 </g>
 <!-- 0_1_0_kids&#45;&gt;0_1_0_0_kids -->
 <g id="edge16" class="edge"><title>0_1_0_kids:port1&#45;&gt;0_1_0_0_kids:port1</title>

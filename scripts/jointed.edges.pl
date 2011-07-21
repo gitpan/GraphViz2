@@ -60,7 +60,7 @@ $graph -> add_edge(from => 'one',         to => 'Oakleigh', sametail => 1);
 
 # Node set 2:
 
-$graph -> add_node(name => 'Ashburton', color => 'chartreuse');
+$graph -> add_node(name => 'Ashburton', color => 'lawngreen');
 $graph -> add_node(name => 'Chadstone', color => 'coral');
 $graph -> add_node(name => 'Waverley',  color => 'crimson');
 
@@ -73,6 +73,7 @@ $graph -> add_edge(from => 'Chadstone', to => 'two', %headless_arrow);
 $graph -> add_edge(from => 'two',       to => 'Waverley', sametail => 1);
 
 my($format)      = shift || 'svg';
-my($output_file) = shift || File::Spec -> catfile('html', "jointed.edges.$format");
+my($suffix)      = $format eq 'png:gd' ? 'png' : $format;
+my($output_file) = shift || File::Spec -> catfile('html', "jointed.edges.$suffix");
 
 $graph -> run(format => $format, output_file => $output_file);

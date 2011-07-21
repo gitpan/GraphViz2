@@ -35,7 +35,7 @@ my($graph) = GraphViz2 -> new
 	 global => {directed => 1},
 	 graph  => {rankdir => 'TB'},
 	 logger => $logger,
-	 node   => {color => 'darkblue', shape => 'oval'},
+	 node   => {color => 'blue', shape => 'oval'},
 	);
 my($dbh) = DBI -> connect($ENV{DBI_DSN}, $ENV{DBI_USER}, $ENV{DBI_PASS});
 my($g)   = GraphViz2::DBI -> new(dbh => $dbh, graph => $graph);

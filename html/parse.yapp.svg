@@ -11,9 +11,9 @@
 <polygon fill="white" stroke="white" points="-4,5 -4,-618 111,-618 111,5 -4,5"/>
 <!-- exp -->
 <g id="node1" class="node"><title>exp</title>
-<polygon fill="none" stroke="darkblue" points="-0.5,-0.5 -0.5,-225.5 88.5,-225.5 88.5,-0.5 -0.5,-0.5"/>
+<polygon fill="none" stroke="blue" points="-0.5,-0.5 -0.5,-225.5 88.5,-225.5 88.5,-0.5 -0.5,-0.5"/>
 <text text-anchor="middle" x="44" y="-208.9" font-family="Times Roman,serif" font-size="14.00">exp</text>
-<polyline fill="none" stroke="darkblue" points="-0.5,-198.5 88.5,-198.5 "/>
+<polyline fill="none" stroke="blue" points="-0.5,-198.5 88.5,-198.5 "/>
 <text text-anchor="middle" x="44" y="-181.9" font-family="Times Roman,serif" font-size="14.00">NUM </text>
 <text text-anchor="middle" x="44" y="-162.9" font-family="Times Roman,serif" font-size="14.00">VAR </text>
 <text text-anchor="middle" x="44" y="-143.9" font-family="Times Roman,serif" font-size="14.00">VAR &#39;=&#39; exp </text>
@@ -32,16 +32,16 @@
 </g>
 <!-- $start -->
 <g id="node3" class="node"><title>$start</title>
-<polygon fill="none" stroke="darkblue" points="5,-559 5,-613 83,-613 83,-559 5,-559"/>
+<polygon fill="none" stroke="blue" points="5,-559 5,-613 83,-613 83,-559 5,-559"/>
 <text text-anchor="middle" x="44" y="-596.4" font-family="Times Roman,serif" font-size="14.00">$start</text>
-<polyline fill="none" stroke="darkblue" points="5,-586 83,-586 "/>
+<polyline fill="none" stroke="blue" points="5,-586 83,-586 "/>
 <text text-anchor="middle" x="44" y="-569.4" font-family="Times Roman,serif" font-size="14.00">input $end </text>
 </g>
 <!-- input -->
 <g id="node4" class="node"><title>input</title>
-<polygon fill="none" stroke="darkblue" points="8,-448.5 8,-521.5 80,-521.5 80,-448.5 8,-448.5"/>
+<polygon fill="none" stroke="blue" points="8,-448.5 8,-521.5 80,-521.5 80,-448.5 8,-448.5"/>
 <text text-anchor="middle" x="44" y="-504.9" font-family="Times Roman,serif" font-size="14.00">input</text>
-<polyline fill="none" stroke="darkblue" points="8,-494.5 80,-494.5 "/>
+<polyline fill="none" stroke="blue" points="8,-494.5 80,-494.5 "/>
 <text text-anchor="middle" x="44" y="-477.9" font-family="Times Roman,serif" font-size="14.00">(empty) </text>
 <text text-anchor="middle" x="44" y="-458.9" font-family="Times Roman,serif" font-size="14.00">input line </text>
 </g>
@@ -57,9 +57,9 @@
 </g>
 <!-- line -->
 <g id="node7" class="node"><title>line</title>
-<polygon fill="none" stroke="darkblue" points="17,-262.5 17,-411.5 71,-411.5 71,-262.5 17,-262.5"/>
+<polygon fill="none" stroke="blue" points="17,-262.5 17,-411.5 71,-411.5 71,-262.5 17,-262.5"/>
 <text text-anchor="middle" x="44" y="-394.9" font-family="Times Roman,serif" font-size="14.00">line</text>
-<polyline fill="none" stroke="darkblue" points="17,-384.5 71,-384.5 "/>
+<polyline fill="none" stroke="blue" points="17,-384.5 71,-384.5 "/>
 <text text-anchor="middle" x="44" y="-367.9" font-family="Times Roman,serif" font-size="14.00">&#39;</text>
 <text text-anchor="middle" x="44" y="-348.9" font-family="Times Roman,serif" font-size="14.00">&#39; </text>
 <text text-anchor="middle" x="44" y="-329.9" font-family="Times Roman,serif" font-size="14.00">exp &#39;</text>

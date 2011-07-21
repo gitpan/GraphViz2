@@ -1,5 +1,5 @@
 package Parent;
 
-our $VERSION = '1.06';
+our $VERSION = '1.08';
 
 1;

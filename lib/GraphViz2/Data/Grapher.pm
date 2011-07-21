@@ -18,7 +18,7 @@ fieldhash my %graph   => 'graph';
 fieldhash my %logger  => 'logger';
 fieldhash my %tree    => 'tree';
 
-our $VERSION = '1.06';
+our $VERSION = '1.08';
 
 # -----------------------------------------------
 # This is a function.
@@ -68,7 +68,7 @@ sub add_record
 		my(%global) = %{$self -> graph -> global};
 		my($shape)  = $global{record_shape};
 
-		$self -> graph -> add_node(color => 'grey', fontcolor => 'darkblue', name => $name, label => $label, shape => $shape);
+		$self -> graph -> add_node(color => 'grey', fontcolor => 'blue', name => $name, label => $label, shape => $shape);
 	}
 
 	return $self;
@@ -280,7 +280,7 @@ sub _init
 		 global => {directed => 1},
 		 graph  => {rankdir => 'TB'},
 		 logger => $$arg{logger},
-		 node   => {color => 'darkblue', shape => 'oval'},
+		 node   => {color => 'blue', shape => 'oval'},
 		);
 	$$arg{tree} = Tree::DAG_Node -> new;
 	$self       = from_hash($self, $arg);
@@ -379,7 +379,7 @@ L<GraphViz2::Data::Grapher> - Visualize a data structure as a graph
 		 global => {directed => 1},
 		 graph  => {rankdir => 'TB'},
 		 logger => $logger,
-		 node   => {color => 'darkblue', shape => 'oval'},
+		 node   => {color => 'blue', shape => 'oval'},
 		);
 	
 	my($g)           = GraphViz2::Data::Grapher -> new(graph => $graph, logger => $logger);

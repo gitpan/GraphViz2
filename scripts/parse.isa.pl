@@ -34,7 +34,7 @@ my($graph) = GraphViz2 -> new
 	 global => {directed => 1},
 	 graph  => {rankdir => 'BT'},
 	 logger => $logger,
-	 node   => {color => 'darkblue', shape => 'Mrecord'},
+	 node   => {color => 'blue', shape => 'Mrecord'},
 	);
 my($parser) = GraphViz2::Parse::ISA -> new(graph => $graph);
 

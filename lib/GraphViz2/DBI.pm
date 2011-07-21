@@ -15,7 +15,7 @@ fieldhash my %table      => 'table';
 fieldhash my %table_info => 'table_info';
 fieldhash my %type       => 'type';
 
-our $VERSION = '1.06';
+our $VERSION = '1.08';
 
 # -----------------------------------------------
 
@@ -144,7 +144,7 @@ sub _init
 		 global => {directed => 1},
 		 graph  => {rankdir => 'TB'},
 		 logger => '',
-		 node   => {color => 'darkblue', shape => 'oval'},
+		 node   => {color => 'blue', shape => 'oval'},
 		);
 	$$arg{schema}     ||= undef;   # Caller can set.
 	$$arg{table}      ||= '%';     # Caller can set.
@@ -214,7 +214,7 @@ L<GraphViz2::DBI> - Visualize a database schema as a graph
 		 global => {directed => 1},
 		 graph  => {rankdir => 'TB'},
 		 logger => $logger,
-		 node   => {color => 'darkblue', shape => 'oval'},
+		 node   => {color => 'blue', shape => 'oval'},
 		);
 	my($dbh) = DBI -> connect($ENV{DBI_DSN}, $ENV{DBI_USER}, $ENV{DBI_PASS});
 	my($g)   = GraphViz2::DBI -> new(dbh => $dbh, graph => $graph);

@@ -1,25 +1,25 @@
 #!/bin/bash
 
-perl -Ilib scripts/anonymous.pl        > html/anonymous.log
-perl -Ilib scripts/cluster.pl          > html/cluster.log
-perl -Ilib scripts/dbi.schema.pl       > html/dbi.schema.log
-perl -Ilib scripts/dependency.pl       > html/dependency.log
-perl -Ilib scripts/Heawood.pl          > html/Heawood.log
-perl -Ilib scripts/jointed.edges.pl    > html/jointed.edges.log
-perl -Ilib scripts/parse.data.pl       > html/parse.data.log
-perl -Ilib scripts/parse.html.pl       > html/parse.hml.log
-perl -Ilib scripts/parse.isa.pl        > html/parse.isa.log
-perl -Ilib scripts/parse.marpa.pl      > html/parse.marpa.log
-perl -Ilib scripts/parse.recdescent.pl > html/parse.recdescent.log
-perl -Ilib scripts/parse.regexp.pl     > html/parse.regexp.log
-perl -Ilib scripts/parse.stt.pl        > html/parse.stt.log
-perl -Ilib scripts/parse.xml.bare.pl   > html/parse.xml.bare.log
-perl -Ilib scripts/parse.xml.pp.pl     > html/parse.xml.pp.log
-perl -Ilib scripts/parse.yacc.pl       > html/parse.yacc.log
-perl -Ilib scripts/parse.yapp.pl       > html/parse.yapp.log
-perl -Ilib scripts/quote.pl            > html/quote.log
-perl -Ilib scripts/sub.graph.pl        > html/sub.graph.log
-perl -Ilib scripts/sub.sub.graph.pl    > html/sub.sub.graph.log
-perl -Ilib scripts/trivial.pl          > html/trivial.log
+perl -Ilib scripts/anonymous.pl        > /tmp/anonymous.log
+perl -Ilib scripts/cluster.pl          > /tmp/cluster.log
+perl -Ilib scripts/dbi.schema.pl       > /tmp/dbi.schema.log
+perl -Ilib scripts/dependency.pl       > /tmp/dependency.log
+perl -Ilib scripts/Heawood.pl          > /tmp/Heawood.log
+perl -Ilib scripts/jointed.edges.pl    > /tmp/jointed.edges.log
+perl -Ilib scripts/parse.data.pl       > /tmp/parse.data.log
+perl -Ilib scripts/parse.html.pl       > /tmp/parse.hml.log
+perl -Ilib scripts/parse.isa.pl        > /tmp/parse.isa.log
+perl -Ilib scripts/parse.marpa.pl      > /tmp/parse.marpa.log
+perl -Ilib scripts/parse.recdescent.pl > /tmp/parse.recdescent.log
+perl -Ilib scripts/parse.regexp.pl     > /tmp/parse.regexp.log
+perl -Ilib scripts/parse.stt.pl        > /tmp/parse.stt.log
+perl -Ilib scripts/parse.xml.bare.pl   > /tmp/parse.xml.bare.log
+perl -Ilib scripts/parse.xml.pp.pl     > /tmp/parse.xml.pp.log
+perl -Ilib scripts/parse.yacc.pl       > /tmp/parse.yacc.log
+perl -Ilib scripts/parse.yapp.pl       > /tmp/parse.yapp.log
+perl -Ilib scripts/quote.pl            > /tmp/quote.log
+perl -Ilib scripts/sub.graph.pl        > /tmp/sub.graph.log
+perl -Ilib scripts/sub.sub.graph.pl    > /tmp/sub.sub.graph.log
+perl -Ilib scripts/trivial.pl          > /tmp/trivial.log
 
-perl -Ilib scripts/generate.index.pl
+perl -Ilib scripts/generate.demo.pl

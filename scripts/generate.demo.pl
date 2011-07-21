@@ -3,6 +3,8 @@
 use strict;
 use warnings;
 
+use Date::Format;
+
 use File::Spec;
 
 use GraphViz2;
@@ -14,10 +16,11 @@ use Text::Xslate 'mark_raw';
 
 # ------------------------------------------------
 
+my($format)     = shift || 'svg';
 my($util)       = GraphViz2::Utils -> new;
 my(%annotation) = $util -> get_annotations;
 my(%script)     = $util -> get_scripts;
-my(%svg_file)   = $util -> get_svg_files;
+my(%image_file)  = $util -> get_files($format);
 my($templater)  = Text::Xslate -> new
 (
   input_layer => '',
@@ -62,14 +65,15 @@ my($index) = $templater -> render
 		  {
 			  {
 				  count  => ++$count,
+				  image  => "./$image_file{$_}",
 				  input  => mark_raw($script{$_}),
 				  raw    => mark_raw($data{$_}),
-				  svg    => $svg_file{$_},
 				  title  => mark_raw($annotation{$_}),
 			  }
-		  } sort keys %svg_file
+		  } sort keys %image_file
 		 ],
-	 version => $GraphViz2::VERSION,
+	 date_stamp => time2str('%Y-%m-%d %T', time),
+	 version    => $GraphViz2::VERSION,
  }
 );
 my($file_name) = File::Spec -> catfile('html', 'index.html');
@@ -78,4 +82,4 @@ open(OUT, '>', $file_name);
 print OUT $index;
 close OUT;
 
-print "Wrote: $file_name. \n";
+print "Wrote: $file_name to html/. \n";

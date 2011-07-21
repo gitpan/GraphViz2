@@ -29,7 +29,7 @@ fieldhash my %scope            => 'scope';
 fieldhash my %verbose          => 'verbose';
 fieldhash my %valid_attributes => 'valid_attributes';
 
-our $VERSION = '1.06';
+our $VERSION = '1.08';
 
 # -----------------------------------------------
 
@@ -351,16 +351,14 @@ sub log
 	$level   ||= 'debug';
 	$message ||= '';
 
-	# Avoid odd warning: Useless use of a constant () in void context at /home/ron/perl.modules/GraphViz2/blib/lib/GraphViz2.pm
-	# $self -> logger ? $self -> logger -> $level($message) : $level eq 'error' ? die $message : $self -> verbose ? print "$level: $message\n" : '';
+	if ($level eq 'error')
+	{
+		die $message;
+	}
 
 	if ($self -> logger)
 	{
 		$self -> logger -> $level($message);
-	}
-	elsif ($level eq 'error')
-	{
-		die $message;
 	}
 	elsif ($self -> verbose)
 	{
@@ -1145,15 +1143,7 @@ Here, [] indicate optional parameters.
 
 $level defaults to 'debug', and $message defaults to ''.
 
-log() then executes this, admittedly complex, line:
-
-        $self -> logger                       # If there is a logger...
-        ? $self -> logger -> $level($message) # Call it.
-        : $level eq 'error'                   # Otherwise (no logger) and it's an error...
-        ? die $message                        # Die.
-        : $self -> verbose                    # Otherwise (no error) and we're verbose...
-        ? print "$level: $message\n"          # Print.
-        : '';                                 # Otherwise (silent) do nothing.
+If called with $level eq 'error', it dies with $message.
 
 =head2 logger($logger_object])
 

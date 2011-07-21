@@ -1,5 +1,24 @@
 Revision history for Perl extension GraphViz2.
 
+1.08  Thu Jul 21 11:53:00 2011
+	  - Change the behaviour of sub log() in GraphViz.pm. Now if called with $level eq 'error', it dies with $message.
+	  - Change references to the color darkblue to blue, so it's compatible with both the X11 and SVG color schemes.
+	  - Likewise change chartreuse to lawngreen.
+	  - Rename scripts/generate.index.pl to scripts/generate.demo.pl, as a more meaningful name.
+	  - Patch scripts/generate.demo.pl to accept the output image type as a command line parameter.
+	  - Use this new feature to generate png files, and upload them to the demo site
+	  	http://savage.net.au/Perl-modules/html/graphviz2/ even though png is often uglier than svg.
+		I did this because Iceweasel (Firefox) V 3.5.16 was not displaying svgs within the index file,
+		even though they are fine when displayed directly.
+	  - Add scripts/generate.png.sh.
+	  - Note: scripts/jointed.edges.pl must call dot with -Tpng:gd and not -Tpng, for unknown reasons.
+	  - Make both scripts/generate.png.sh and scripts/generate.svg.sh redirect their log files to /tmp,
+	  	so that we don't have to ship the logs, and also so they don't keep changing and hence need checking in.
+	  - Remove ./dbi.schema.log from the distro.
+
+1.07  Mon Jul  4 15:46:00 2011
+	  - Use Date::Format to add a date stamp at the end of html/index.html, as output by generate.index.pl.
+
 1.06  Tue Jun 28 11:10:00 2011
 	  - Change usage of File::Temp -> newdir to fix problems testing on BSD-based systems.
 	  - Add scripts/jointed.edges.pl.

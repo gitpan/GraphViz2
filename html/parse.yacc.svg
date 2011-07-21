@@ -11,9 +11,9 @@
 <polygon fill="white" stroke="white" points="-4,5 -4,-758.144 131,-758.144 131,5 -4,5"/>
 <!-- number -->
 <g id="node1" class="node"><title>number</title>
-<polygon fill="none" stroke="darkblue" points="5.5,-2.64409 5.5,-75.6441 108.5,-75.6441 108.5,-2.64409 5.5,-2.64409"/>
+<polygon fill="none" stroke="blue" points="5.5,-2.64409 5.5,-75.6441 108.5,-75.6441 108.5,-2.64409 5.5,-2.64409"/>
 <text text-anchor="middle" x="57" y="-59.0441" font-family="Times Roman,serif" font-size="14.00">number</text>
-<polyline fill="none" stroke="darkblue" points="5.5,-48.6441 108.5,-48.6441 "/>
+<polyline fill="none" stroke="blue" points="5.5,-48.6441 108.5,-48.6441 "/>
 <text text-anchor="middle" x="57" y="-32.0441" font-family="Times Roman,serif" font-size="14.00">DIGIT </text>
 <text text-anchor="middle" x="57" y="-13.0441" font-family="Times Roman,serif" font-size="14.00">number DIGIT </text>
 </g>
@@ -24,9 +24,9 @@
 </g>
 <!-- expr -->
 <g id="node3" class="node"><title>expr</title>
-<polygon fill="none" stroke="darkblue" points="11,-112.644 11,-383.644 103,-383.644 103,-112.644 11,-112.644"/>
+<polygon fill="none" stroke="blue" points="11,-112.644 11,-383.644 103,-383.644 103,-112.644 11,-112.644"/>
 <text text-anchor="middle" x="57" y="-367.044" font-family="Times Roman,serif" font-size="14.00">expr</text>
-<polyline fill="none" stroke="darkblue" points="11,-356.644 103,-356.644 "/>
+<polyline fill="none" stroke="blue" points="11,-356.644 103,-356.644 "/>
 <text text-anchor="middle" x="57" y="-340.044" font-family="Times Roman,serif" font-size="14.00">&#39;(&#39; expr &#39;)&#39; </text>
 <text text-anchor="middle" x="57" y="-321.044" font-family="Times Roman,serif" font-size="14.00">expr &#39;+&#39; expr </text>
 <text text-anchor="middle" x="57" y="-302.044" font-family="Times Roman,serif" font-size="14.00">expr &#39;&#45;&#39; expr </text>
@@ -35,7 +35,7 @@
 <text text-anchor="middle" x="57" y="-245.044" font-family="Times Roman,serif" font-size="14.00">expr &#39;%&#39; expr </text>
 <text text-anchor="middle" x="57" y="-226.044" font-family="Times Roman,serif" font-size="14.00">expr &#39;&amp;&#39; expr </text>
 <text text-anchor="middle" x="57" y="-207.044" font-family="Times Roman,serif" font-size="14.00">expr &#39;</text>
-<polyline fill="none" stroke="darkblue" points="11,-196.644 103,-196.644 "/>
+<polyline fill="none" stroke="blue" points="11,-196.644 103,-196.644 "/>
 <text text-anchor="middle" x="57" y="-180.044" font-family="Times Roman,serif" font-size="14.00">&#39; expr </text>
 <text text-anchor="middle" x="57" y="-161.044" font-family="Times Roman,serif" font-size="14.00">&#39;&#45;&#39; expr </text>
 <text text-anchor="middle" x="57" y="-142.044" font-family="Times Roman,serif" font-size="14.00">LETTER </text>
@@ -53,16 +53,16 @@
 </g>
 <!-- $accept -->
 <g id="node6" class="node"><title>$accept</title>
-<polygon fill="none" stroke="darkblue" points="23.5,-699.144 23.5,-753.144 90.5,-753.144 90.5,-699.144 23.5,-699.144"/>
+<polygon fill="none" stroke="blue" points="23.5,-699.144 23.5,-753.144 90.5,-753.144 90.5,-699.144 23.5,-699.144"/>
 <text text-anchor="middle" x="57" y="-736.544" font-family="Times Roman,serif" font-size="14.00">$accept</text>
-<polyline fill="none" stroke="darkblue" points="23.5,-726.144 90.5,-726.144 "/>
+<polyline fill="none" stroke="blue" points="23.5,-726.144 90.5,-726.144 "/>
 <text text-anchor="middle" x="57" y="-709.544" font-family="Times Roman,serif" font-size="14.00">list $end </text>
 </g>
 <!-- list -->
 <g id="node7" class="node"><title>list</title>
-<polygon fill="none" stroke="darkblue" points="22.5,-531.144 22.5,-661.144 91.5,-661.144 91.5,-531.144 22.5,-531.144"/>
+<polygon fill="none" stroke="blue" points="22.5,-531.144 22.5,-661.144 91.5,-661.144 91.5,-531.144 22.5,-531.144"/>
 <text text-anchor="middle" x="57" y="-644.544" font-family="Times Roman,serif" font-size="14.00">list</text>
-<polyline fill="none" stroke="darkblue" points="22.5,-634.144 91.5,-634.144 "/>
+<polyline fill="none" stroke="blue" points="22.5,-634.144 91.5,-634.144 "/>
 <text text-anchor="middle" x="57" y="-617.544" font-family="Times Roman,serif" font-size="14.00">(empty) </text>
 <text text-anchor="middle" x="57" y="-598.544" font-family="Times Roman,serif" font-size="14.00">list stat &#39;</text>
 <text text-anchor="middle" x="57" y="-579.544" font-family="Times Roman,serif" font-size="14.00">&#39; </text>
@@ -81,9 +81,9 @@
 </g>
 <!-- stat -->
 <g id="node9" class="node"><title>stat</title>
-<polygon fill="none" stroke="darkblue" points="-0.5,-420.644 -0.5,-493.644 114.5,-493.644 114.5,-420.644 -0.5,-420.644"/>
+<polygon fill="none" stroke="blue" points="-0.5,-420.644 -0.5,-493.644 114.5,-493.644 114.5,-420.644 -0.5,-420.644"/>
 <text text-anchor="middle" x="57" y="-477.044" font-family="Times Roman,serif" font-size="14.00">stat</text>
-<polyline fill="none" stroke="darkblue" points="-0.5,-466.644 114.5,-466.644 "/>
+<polyline fill="none" stroke="blue" points="-0.5,-466.644 114.5,-466.644 "/>
 <text text-anchor="middle" x="57" y="-450.044" font-family="Times Roman,serif" font-size="14.00">expr </text>
 <text text-anchor="middle" x="57" y="-431.044" font-family="Times Roman,serif" font-size="14.00">LETTER &#39;=&#39; expr </text>
 </g>

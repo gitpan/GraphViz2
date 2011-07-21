@@ -11,7 +11,7 @@ use Perl6::Slurp;
 
 fieldhash my %graph => 'graph';
 
-our $VERSION = '1.06';
+our $VERSION = '1.08';
 
 # -----------------------------------------------
 
@@ -86,7 +86,7 @@ sub _init
 		 global => {directed => 1},
 		 graph  => {concentrate => 1, rankdir => 'TB'},
 		 logger => '',
-		 node   => {color => 'darkblue', shape => 'oval'},
+		 node   => {color => 'blue', shape => 'oval'},
 		);
 	$self = from_hash($self, $arg);
 
@@ -150,7 +150,7 @@ L<GraphViz2::Parse::Yapp> - Visualize a yapp grammar as a graph
 		 global => {directed => 1},
 		 graph  => {concentrate => 1, rankdir => 'TB'},
 		 logger => $logger,
-		 node   => {color => 'darkblue', shape => 'oval'},
+		 node   => {color => 'blue', shape => 'oval'},
 		);
 	my($g) = GraphViz2::Parse::Yapp -> new(graph => $graph);
 	
