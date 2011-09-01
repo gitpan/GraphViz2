@@ -29,7 +29,7 @@ fieldhash my %scope            => 'scope';
 fieldhash my %verbose          => 'verbose';
 fieldhash my %valid_attributes => 'valid_attributes';
 
-our $VERSION = '1.09';
+our $VERSION = '1.10';
 
 # -----------------------------------------------
 
@@ -123,7 +123,7 @@ sub add_node
 		$arg{label}      = "{$arg{label}}" if ($orientation eq 'vertical');
 		$arg{shape}      = 'record';
 	}
-	elsif ($arg{shape} && ( ($arg{shape} =~ /M?record/) || ( ($arg{shape} eq 'plaintext') && ($arg{label} =~ /^<</) ) ) )
+	elsif ($arg{shape} && ( ($arg{shape} =~ /M?record/) || ( ($arg{shape} =~ /(?:none|plaintext)/) && ($arg{label} =~ /^</) ) ) )
 	{
 		# Do not escape anything.
 	}
@@ -1084,8 +1084,6 @@ The attribute name 'label' may point to a string or an arrayref. If it is an arr
 
 For more details on this complex topic, see L<Records|http://www.graphviz.org/content/node-shapes#record> and L<Ports|http://www.graphviz.org/content/attrs#kportPos>.
 
-I could not get HTML-like labels working, so don't try them!
-
 =head2 default_edge(%hash)
 
 Sets defaults attributes for edges added subsequently.
@@ -1307,7 +1305,7 @@ You don't have to quote all node names in L<Graphviz|http://www.graphviz.org/>, 
 
 =head2 Why does L<GraphViz> plot top-to-bottom but L<GraphViz2::Parse::ISA> plot bottom-to-top?
 
-Because The latter knows the data is a class structure. The former makes no assumptions about the nature of the data.
+Because the latter knows the data is a class structure. The former makes no assumptions about the nature of the data.
 
 =head2 I'm having trouble with ports
 
@@ -1428,15 +1426,23 @@ Then it extracts the reserved words into ./data/node.shapes.dat.
 Downloads the output formats from L<Graphviz's Output Formats|http://www.graphviz.org/content/output-formats> and outputs them to ./data/output.formats.html.
 Then it extracts the reserved words into ./data/output.formats.dat.
 
-=head2 scripts/generate.index.pl
+=head2 scripts/generate.demo.pl
 
 Run by scripts/generate.svg.sh. See next point.
+
+=head2 scripts/generate.png.sh
+
+See scripts/generate.svg.sh for details.
+
+Outputs to /tmp by default.
 
 =head2 scripts/generate.svg.sh
 
 A bash script to run all the scripts and generate the *.svg and *.log files, in ./html.
 
 You can them copy html/*.html and html/*.svg to your web server's doc root, for viewing.
+
+Outputs to /tmp by default.
 
 =head2 scripts/Heawood.pl
 
@@ -1445,6 +1451,12 @@ Demonstrates the transitive 6-net, also known as Heawood's graph.
 Outputs to ./html/Heawood.svg by default.
 
 This program was reverse-engineered from graphs/undirected/Heawood.gv in the distro for L<Graphviz|http://www.graphviz.org/> V 2.26.3.
+
+=head2 scripts/html.labels.pl
+
+Demonstrates a trivial 3-node graph, with colors and HTML labels.
+
+Outputs to ./html/html.labels.svg by default.
 
 =head2 scripts/parse.data.pl
 
@@ -1640,13 +1652,9 @@ There are no samples of using compound in the examples shipped with L<Graphviz|h
 
 But how?
 
-=item o Handle HTML-style labels
-
 =item o Validate parameters more carefully, e.g. to reject non-hashref arguments where appropriate
 
 Some method parameter lists take keys whose value must be a hashref.
-
-=item o Integrate with the new, unreleased, L<Graph::Easy::Marpa>
 
 =back
 

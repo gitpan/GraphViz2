@@ -1,5 +1,16 @@
 Revision history for Perl extension GraphViz2.
 
+1.10  Thu Sep  1 10:45:00 2011
+	  - Fix bug in GraphViz in handling of nodes whose shape is none or plaintext, and whose label is HTML.
+	  - Fix bug in scripts/generate.png.sh to add png parameter to 'perl -Ilib scripts/generate.demo.pl png'.
+	  - HTML labels work without any code changes, so references to them not working have been removed from the docs.
+	  - GraphViz2 is called by the now-released Graph::Easy::Marpa, so remove that item from the TODO list.
+	  - Fix doc referring to scripts/generate.index.pl. It now refers to scripts/generate.demo.pl.
+	  - Add DOCTYPE and Content-type to html/graphviz.index.tx. Output by scripts/generate.demo.pl, html/index.html, now handles UTF-8 properly.
+	  - Add alt to the <img ...> tags output by scripts/generate.demo.pl.
+	  - Add scripts/html.labels.pl. This code includes a demo of using ports.
+	  - Reorder methods in GraphViz2::Utils to be in alphabetical order.
+
 1.09  Thu Jul 21 14:13:00 2011
 	  - Patch parameter validation to allow for output image types such as png:gd etc.
 	  	Only the prefix before the first ':' is validated.

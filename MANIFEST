@@ -15,6 +15,7 @@ html/dbi.schema.svg
 html/dependency.svg
 html/graphviz2.index.tx
 html/Heawood.svg
+html/html.labels.svg
 html/index.html
 html/jointed.edges.svg
 html/parse.data.svg
@@ -62,6 +63,7 @@ scripts/generate.demo.pl
 scripts/generate.png.sh
 scripts/generate.svg.sh
 scripts/Heawood.pl
+scripts/html.labels.pl
 scripts/jointed.edges.pl
 scripts/parse.data.pl
 scripts/parse.html.pl

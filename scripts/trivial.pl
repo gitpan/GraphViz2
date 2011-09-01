@@ -35,7 +35,7 @@ my($graph) = GraphViz2 -> new
 	 node   => {shape => 'oval'},
 	);
 
-$graph -> default_node(shape => 'circle', style => 'filled');
+$graph -> default_node(shape     => 'circle', style => 'filled');
 $graph -> default_edge(arrowsize => 4);
 
 $graph -> add_node(name => 'Carnegie', shape => 'circle');
@@ -43,10 +43,10 @@ $graph -> add_node(name => 'Carnegie', color => 'red');
 
 $graph -> default_node(style => 'rounded');
 
-$graph -> add_node(name => 'Murrumbeena', shape => 'box',      color => 'green');
-$graph -> add_node(name => 'Oakleigh',    shape => 'oval',     color => 'blue');
+$graph -> add_node(name => 'Murrumbeena', shape => 'box',  color => 'green');
+$graph -> add_node(name => 'Oakleigh',    shape => 'oval', color => 'blue');
 
-$graph -> add_edge(from => 'Murrumbeena', to    => 'Carnegie', arrowsize => 2);
+$graph -> add_edge(from => 'Murrumbeena', to => 'Carnegie', arrowsize => 2);
 
 $graph -> default_edge(arrowsize => 4);
 

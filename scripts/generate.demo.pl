@@ -64,6 +64,7 @@ my($index) = $templater -> render
 		  map
 		  {
 			  {
+				  alt    => mark_raw($script{$_}),
 				  count  => ++$count,
 				  image  => "./$image_file{$_}",
 				  input  => mark_raw($script{$_}),

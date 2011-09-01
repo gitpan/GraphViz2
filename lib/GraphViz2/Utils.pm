@@ -12,7 +12,7 @@ use Perl6::Slurp;
 
 fieldhash my %graph => 'graph';
 
-our $VERSION = '1.09';
+our $VERSION = '1.10';
 
 # ------------------------------------------------
 
@@ -50,6 +50,28 @@ sub get_annotations
 
 # ------------------------------------------------
 
+sub get_files
+{
+	my($self, $format) = @_;
+	my($dir_name)      = 'html';
+
+	opendir(INX, $dir_name);
+	my(@file) = sort grep{/$format$/} readdir INX;
+	closedir INX;
+
+	my(%file);
+
+	for my $file_name (@file)
+	{
+		$file{basename($file_name, ".$format")} = $file_name;
+	}
+
+	return %file;
+
+} # End of get_files.
+
+# ------------------------------------------------
+
 sub get_scripts
 {
 	my($self)     = @_;
@@ -75,28 +97,6 @@ sub get_scripts
 	return %script;
 
 } # End of get_scripts.
-
-# ------------------------------------------------
-
-sub get_files
-{
-	my($self, $format) = @_;
-	my($dir_name)      = 'html';
-
-	opendir(INX, $dir_name);
-	my(@file) = sort grep{/$format$/} readdir INX;
-	closedir INX;
-
-	my(%file);
-
-	for my $file_name (@file)
-	{
-		$file{basename($file_name, ".$format")} = $file_name;
-	}
-
-	return %file;
-
-} # End of get_files.
 
 # -----------------------------------------------
 

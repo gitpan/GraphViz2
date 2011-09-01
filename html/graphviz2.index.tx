@@ -1,17 +1,20 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+"http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
 		<title>Index of sample files created by GraphViz2 V <: $version :></title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 </head>
 <body>
 		<h1>Index of sample files created by GraphViz2 V <: $version :>.</h1>
 
-<p>All scripts, input files and output files required to generate these examples are shipped in the GraphViz2 distro.</p>
+<p>All scripts and input files required to generate these examples are shipped in the GraphViz2 distro's html/ dir. Output files are in there too.</p>
 
 <table align = "center" border = "1">
 :for $data -> $row {
 <tr>
   <td>Input file # <: $row.count :> - <: $row.input :>:<br /><: $row.raw :></td>
-  <td><img src = "<: $row.image :>" /><br /><br /><: $row.count :> - <: $row.title :></td>
+  <td><img src = "<: $row.image :>" alt = "<: $row.alt :>" /><br /><br /><: $row.count :> - <: $row.title :></td>
 </tr>
 :}
 </table>
