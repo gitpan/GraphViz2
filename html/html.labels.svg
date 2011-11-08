@@ -25,7 +25,7 @@
 <polyline fill="none" stroke="green" points="206,-192.5 206,-227.5 "/>
 <path fill="none" stroke="green" d="M206,-227.5C206,-233.5 200,-239.5 194,-239.5"/>
 <text text-anchor="start" x="118.5" y="-225.233" font-family="Times Roman,serif" font-size="14.00">Murrumbeena</text>
-<text text-anchor="start" x="135.5" y="-208.433" font-family="Times Roman,serif" font-size="14.00">Victoria</text>
+<text text-anchor="start" x="135.5" y="-208.433" font-family="Times Roman,serif" font-size="14.00" fill="#0000ff">Victoria</text>
 <text text-anchor="start" x="133" y="-191.633" font-family="Times Roman,serif" font-size="14.00">Australia</text>
 </g>
 <!-- Murrumbeena&#45;&gt;Carnegie -->

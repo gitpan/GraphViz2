@@ -33,16 +33,16 @@ my($graph) = GraphViz2 -> new
 	(
 	 edge   => {color => 'grey'},
 	 global => {directed => 1},
-	 graph  => {label => 'Parent', rankdir => 'BT'},
+	 graph  => {label => 'Adult', rankdir => 'BT'},
 	 logger => $logger,
 	 node   => {shape => 'oval'},
 	);
 my($data) =
 {
-	'Parent' => [],
-	'Parent::Child1' => [qw/Parent/],
-	'Parent::Child2' => [qw/Parent/],
-	'Parent::Child::Grandchild' => [qw/Parent::Child1 Parent::Child2/],
+	'Adult' => [],
+	'Adult::Child1' => [qw/Adult/],
+	'Adult::Child2' => [qw/Adult/],
+	'Adult::Child::Grandchild' => [qw/Adult::Child1 Adult::Child2/],
 };
 
 $graph -> dependency(data => Algorithm::Dependency -> new(source => Algorithm::Dependency::Source::HoA -> new($data) ) );

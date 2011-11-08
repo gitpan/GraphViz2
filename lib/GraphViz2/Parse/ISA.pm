@@ -9,7 +9,7 @@ use Algorithm::Dependency::Source::HoA;
 
 use GraphViz2;
 
-our $VERSION = '1.10';
+our $VERSION = '1.11';
 
 my(@candidate);
 my($graph);
@@ -206,7 +206,7 @@ L<GraphViz2::Parse::ISA> - Visualize a Perl class hierarchy as a graph
 		);
 	my($parser) = GraphViz2::Parse::ISA -> new(graph => $graph);
 	
-	$parser -> create(class => 'Parent::Child::Grandchild', ignore => []);
+	$parser -> create(class => 'Adult::Child::Grandchild', ignore => []);
 	
 	my($format)      = shift || 'svg';
 	my($output_file) = shift || File::Spec -> catfile('html', "parse.code.$format");

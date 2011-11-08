@@ -9,7 +9,7 @@
 <g id="graph1" class="graph" transform="scale(1 1) rotate(0) translate(4 362)">
 <title>Perl</title>
 <polygon fill="white" stroke="white" points="-4,5 -4,-362 791,-362 791,5 -4,5"/>
-<text text-anchor="middle" x="393" y="-10.4" font-family="Times Roman,serif" font-size="14.00">Parent</text>
+<text text-anchor="middle" x="393" y="-10.4" font-family="Times Roman,serif" font-size="14.00">Adult</text>
 <g id="graph3" class="cluster"><title>cluster_2</title>
 <polygon fill="none" stroke="black" points="452,-147 452,-350 778,-350 778,-147 452,-147"/>
 <text text-anchor="middle" x="615" y="-333.4" font-family="Times Roman,serif" font-size="14.00">Grandchild</text>

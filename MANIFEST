@@ -85,10 +85,10 @@ t/calc.input
 t/calc.output
 t/calc3.output
 t/calc3.y
-t/lib/Parent.pm
-t/lib/Parent/Child/Grandchild.pm
-t/lib/Parent/Child1.pm
-t/lib/Parent/Child2.pm
+t/lib/Adult.pm
+t/lib/Adult/Child/Grandchild.pm
+t/lib/Adult/Child1.pm
+t/lib/Adult/Child2.pm
 t/pod.t
 t/sample.html
 t/sample.marpa.1.dat

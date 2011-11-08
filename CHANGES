@@ -1,5 +1,12 @@
 Revision history for Perl extension GraphViz2.
 
+1.11  Tue Nov  8 10:21:00 2011
+	  - Fix bug where double quotes in HTML labels were being escaped and should not have been.
+	  	Many thanx to Fitz Elliott for the report and initial patch. See https://rt.cpan.org/Ticket/Display.html?id=72259.
+	  - Patched scripts/html.labels.pl as per Fitz's suggested test code.
+	  - Rename t/lib/Parent.pm to t/lib/Adult.pm to avoid a reported problem with "use parent 'Parent';" under Windows.
+	  	This affect various files. See https://rt.cpan.org/Public/Bug/Display.html?id=69076.
+
 1.10  Thu Sep  1 10:45:00 2011
 	  - Fix bug in GraphViz in handling of nodes whose shape is none or plaintext, and whose label is HTML.
 	  - Fix bug in scripts/generate.png.sh to add png parameter to 'perl -Ilib scripts/generate.demo.pl png'.

@@ -29,7 +29,7 @@ fieldhash my %scope            => 'scope';
 fieldhash my %verbose          => 'verbose';
 fieldhash my %valid_attributes => 'valid_attributes';
 
-our $VERSION = '1.10';
+our $VERSION = '1.11';
 
 # -----------------------------------------------
 
@@ -110,9 +110,10 @@ sub add_node
 
 		for my $port (1 .. scalar @$label)
 		{
-			# HTML labels affect this code.
+			# HTML labels affect this code. Patches here must be replicated below.
 
-			($lab = $$label[$port - 1]) =~ s#([[\]{}"])#\\$1#g;
+			($lab = $$label[$port - 1]) =~ s#([[\]{}])#\\$1#g;
+			$lab  =~ s#"#\\"#g if ($lab !~ /^</); # Escape double quotes if it's not an HTML label.
 
 			push @label, "<port$port> $lab";
 		}
@@ -129,9 +130,10 @@ sub add_node
 	}
 	elsif ($arg{label})
 	{
-		# HTML labels affect this code.
+		# HTML labels affect this code. Patches here must be replicated above.
 
-		$arg{label} =~ s#([[\]{}"])#\\$1#g;
+		$arg{label} =~ s#([[\]{}])#\\$1#g;
+		$arg{label} =~ s#"#\\"#g if ($arg{label} !~ /^</); # Escape double quotes if it's not an HTML label.
 	}
 
 	$$node{$name}{attributes} = {%arg};
@@ -663,7 +665,7 @@ Or, hit L<http://savage.net.au/Perl-modules/html/graphviz2/index.html>.
 		(
 		 edge   => {color => 'grey'},
 		 global => {directed => 1},
-		 graph  => {label => 'Parent', rankdir => 'TB'},
+		 graph  => {label => 'Adult', rankdir => 'TB'},
 		 logger => $logger,
 		 node   => {shape => 'oval'},
 		);
@@ -1280,7 +1282,9 @@ Under Unix, output as PDF, and then try: lp -o fitplot html/parse.marpa.pdf.
 
 =head2 o I'm having trouble with special characters in node names and labels
 
-L<GraphViz2> escapes these characters in those contexts: []{}".
+L<GraphViz2> escapes these characters in those contexts: []{}.
+
+Double-quotes are escaped when the label is I<not> an HTML label. See scripts/html.labels.pl for sample code using font color.
 
 It would be nice to also escape | and <, but these characters are used in specifying ports in records.
 

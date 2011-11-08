@@ -40,7 +40,7 @@ my($parser) = GraphViz2::Parse::ISA -> new(graph => $graph);
 
 # These classes live in t/lib/.
 
-$parser -> create(class => 'Parent::Child::Grandchild', ignore => []);
+$parser -> create(class => 'Adult::Child::Grandchild', ignore => []);
 
 my($format)      = shift || 'svg';
 my($output_file) = shift || File::Spec -> catfile('html', "parse.isa.$format");
