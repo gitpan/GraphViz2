@@ -29,7 +29,7 @@ fieldhash my %scope            => 'scope';
 fieldhash my %verbose          => 'verbose';
 fieldhash my %valid_attributes => 'valid_attributes';
 
-our $VERSION = '1.11';
+our $VERSION = '1.12';
 
 # -----------------------------------------------
 
@@ -1391,7 +1391,7 @@ Demonstrates building a cluster as a subgraph.
 
 Outputs to ./html/cluster.svg by default.
 
-See </TODO> below for more on clusters.
+See also scripts/macro.*.pl below.
 
 =head2 scripts/dbi.schema.pl
 
@@ -1461,6 +1461,36 @@ This program was reverse-engineered from graphs/undirected/Heawood.gv in the dis
 Demonstrates a trivial 3-node graph, with colors and HTML labels.
 
 Outputs to ./html/html.labels.svg by default.
+
+=head2 scripts/macro.1.pl
+
+Demonstrates non-cluster subgraphs via a macro.
+
+Outputs to ./html/macro.1.svg by default.
+
+=head2 scripts/macro.2.pl
+
+Demonstrates linked non-cluster subgraphs via a macro.
+
+Outputs to ./html/macro.2.svg by default.
+
+=head2 scripts/macro.3.pl
+
+Demonstrates cluster subgraphs via a macro.
+
+Outputs to ./html/macro.3.svg by default.
+
+=head2 scripts/macro.4.pl
+
+Demonstrates linked cluster subgraphs via a macro.
+
+Outputs to ./html/macro.4.svg by default.
+
+=head2 scripts/macro.5.pl
+
+Demonstrates compound cluster subgraphs via a macro.
+
+Outputs to ./html/macro.5.svg by default.
 
 =head2 scripts/parse.data.pl
 
@@ -1643,14 +1673,6 @@ Outputs to ./html/trivial.svg by default.
 =item o Does GraphViz2 need to emulate the sort option in GraphViz?
 
 That depends on what that option really does.
-
-=item o Finish work on clusters
-
-For instance, L<the compound attribute|http://www.graphviz.org/content/attrs#dcompound> indicates we have to allow edges between clusters.
-
-V 1.00 assumes the cluster names are node names, and fabricates unwanted nodes to match.
-
-There are no samples of using compound in the examples shipped with L<Graphviz|http://www.graphviz.org/> V 2.23.6.
 
 =item o Handle edges such as 1 -> 2 -> {A B}, as seen in L<Graphviz|http://www.graphviz.org/>'s graphs/directed/switch.gv
 

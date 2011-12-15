@@ -1,10 +1,12 @@
-use File::Which; # For which().
-
 use Module::Build;
 
-if (! which('dot') )
+if (open my $fh, '|dot', )
 {
-	die "Did not find 'dot'. Please install graphviz from http://www.graphviz.org/";
+	close $fh;
+}
+else
+{
+	die "Please install Graphviz from http://www.graphviz.org/.\n";
 }
 
 Module::Build -> new

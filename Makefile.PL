@@ -1,10 +1,12 @@
 use ExtUtils::MakeMaker;
 
-use File::Which; # For which().
-
-if (! which('dot') )
+if (open my $fh, '|dot', )
 {
-	die "Did not find 'dot'. Please install graphviz from http://www.graphviz.org/";
+	close $fh;
+}
+else
+{
+	die "Please install Graphviz from http://www.graphviz.org/.\n";
 }
 
 # See lib/ExtUtils/MakeMaker.pm for details of how to influence

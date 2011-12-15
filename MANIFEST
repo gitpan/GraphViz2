@@ -18,6 +18,11 @@ html/Heawood.svg
 html/html.labels.svg
 html/index.html
 html/jointed.edges.svg
+html/macro.1.svg
+html/macro.2.svg
+html/macro.3.svg
+html/macro.4.svg
+html/macro.5.svg
 html/parse.data.svg
 html/parse.html.svg
 html/parse.isa.svg
@@ -65,6 +70,11 @@ scripts/generate.svg.sh
 scripts/Heawood.pl
 scripts/html.labels.pl
 scripts/jointed.edges.pl
+scripts/macro.1.pl
+scripts/macro.2.pl
+scripts/macro.3.pl
+scripts/macro.4.pl
+scripts/macro.5.pl
 scripts/parse.data.pl
 scripts/parse.html.pl
 scripts/parse.isa.pl

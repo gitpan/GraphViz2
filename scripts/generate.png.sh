@@ -13,6 +13,11 @@ perl -Ilib scripts/html.labels.pl      png > $DIR/html.labels.log
 # jointed.edges.pl has been patched to output to *.png.
 
 perl -Ilib scripts/jointed.edges.pl png:gd > $DIR/jointed.edges.log
+perl -Ilib scripts/macro.1.pl          png > $DIR/macro.1.log
+perl -Ilib scripts/macro.2.pl          png > $DIR/macro.2.log
+perl -Ilib scripts/macro.3.pl          png > $DIR/macro.3.log
+perl -Ilib scripts/macro.4.pl          png > $DIR/macro.4.log
+perl -Ilib scripts/macro.5.pl          png > $DIR/macro.5.log
 perl -Ilib scripts/parse.data.pl       png > $DIR/parse.data.log
 perl -Ilib scripts/parse.html.pl       png > $DIR/parse.hml.log
 perl -Ilib scripts/parse.isa.pl        png > $DIR/parse.isa.log

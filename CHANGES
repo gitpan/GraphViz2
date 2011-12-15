@@ -1,5 +1,14 @@
 Revision history for Perl extension GraphViz2.
 
+1.12  Wed Dec 14 11:22:00 2011
+	  - Add 5 scripts, scripts/macro.*.pl, to demonstrate using a Perl sub as a macro to generate both cluster and non-cluster sub-graphs.
+	  - Update the TODO in GraphViz2.pm, since it erroneously gave the impression the current code did not handle compound clusters.
+	  - Re-generate the demo. See: http://savage.net.au/Perl-modules/html/graphviz2/.
+	  - Adopt Flavio Poletti's suggestion of trying to pipe to dot, in Build.PL/Makefile.PL, rather than using File::Which,
+	  	to see if dot (Graphviz) is installed. This (hopefully) solves the problem of using File::Which on systems where it is
+		not installed, before Build.PL/Makefile.PL has a chance to tell the user that File::Which is required. See: RT#73077.
+	  - No code changes in *.pm files.
+
 1.11  Tue Nov  8 10:21:00 2011
 	  - Fix bug where double quotes in HTML labels were being escaped and should not have been.
 	  	Many thanx to Fitz Elliott for the report and initial patch. See https://rt.cpan.org/Ticket/Display.html?id=72259.
