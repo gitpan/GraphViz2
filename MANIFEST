@@ -39,6 +39,7 @@ html/sub.graph.svg
 html/sub.sub.graph.svg
 html/table.tx
 html/trivial.svg
+html/utf8.svg
 lib/GraphViz2.pm
 lib/GraphViz2/Data/Grapher.pm
 lib/GraphViz2/DBI.pm
@@ -91,6 +92,7 @@ scripts/report.valid.attributes.pl
 scripts/sub.graph.pl
 scripts/sub.sub.graph.pl
 scripts/trivial.pl
+scripts/utf8.pl
 t/calc.input
 t/calc.output
 t/calc3.output
@@ -99,6 +101,9 @@ t/lib/Adult.pm
 t/lib/Adult/Child/Grandchild.pm
 t/lib/Adult/Child1.pm
 t/lib/Adult/Child2.pm
+t/lib/GoldenDelicious.pm
+t/lib/GrannySmith.pm
+t/lib/HybridVariety.pm
 t/pod.t
 t/sample.html
 t/sample.marpa.1.dat

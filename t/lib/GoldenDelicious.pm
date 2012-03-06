@@ -1,4 +1,4 @@
-package Adult;
+package GoldenDelicious;
 
 our $VERSION = '2.00';
 

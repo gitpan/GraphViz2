@@ -1,162 +1,163 @@
 package GraphViz2::Parse::ISA;
 
-use parent 'Pod::Simple';
 use strict;
 use warnings;
 
 use Algorithm::Dependency;
 use Algorithm::Dependency::Source::HoA;
 
+use Class::ISA;
+use Class::Load 'try_load_class';
+
 use GraphViz2;
 
-our $VERSION = '1.12';
+use Hash::FieldHash ':all';
 
-my(@candidate);
-my($graph);
-my(%ignore);
-my(%parent);
+use Tree::DAG_Node;
 
-# ------------------------------------------------
+fieldhash my %graph => 'graph';
+fieldhash my %isa   => 'isa';
 
-sub _add
-{
-	my($self, @module) = @_;
+our $VERSION = '2.00';
 
-	my($file_name);
-	my(@parent);
+# -----------------------------------------------
 
-	for my $module (@module)
-	{
-		next if ($ignore{$module});
-
-		($file_name = $module) =~ s|::|/|g;
-		$file_name  .= '.pm';
-
-		eval
-		{
-			require $file_name;
-		};
-
-		if ($@)
-		{
-			die "Error. Unable to require $file_name. $@";
-		};
-
-		@candidate = ();
-
-		$self -> scanner($file_name);
-
-		no strict 'refs';
-
-		for my $candidate ($module, @candidate)
-		{
-			$parent{$candidate} = [];
-
-			@parent = @{"$candidate\::ISA"};
-
-			if (@parent >= 0)
-			{
-				for my $parent (@parent)
-				{
-					push @{$parent{$candidate} }, $parent if (! $ignore{$parent});
-				}
-
-				$self -> _add(@parent);
-			}
-		}
-	}
-
-} # End of _add.
-
-# ------------------------------------------------
-
-sub create
+sub add
 {
 	my($self, %arg) = @_;
-	my($class)  = delete $arg{class} || die 'Error. No class name specified';
-	my($ignore) = delete $arg{ignore};
+	my($class)  = delete $arg{class}  || die 'Error. No class name specified';
+	my($ignore) = delete $arg{ignore} || [];
 
-	if ($ignore)
-	{
-		if (ref $ignore ne 'ARRAY')
-		{
-			die "Error. The ignore parameter's value must be an arrayref";
-		}
+	die "Error. The class parameter must not be a ref\n"            if (ref $class);
+	die "Error. The ignore parameter's value must be an arrayref\n" if ($ignore && (ref $ignore ne 'ARRAY') );
+	die "Error: Unable to load class '$class'\n"                    if (try_load_class($class) == 0);
 
-		@ignore{@$ignore} = (1) x @$ignore;
-	}
+	my(%ignore);
 
-	$self -> code_handler(\&scanner);
-	$self -> _add($class);
+	@ignore{@$ignore} = (1) x @$ignore;
+	my($tree)         = Tree::DAG_Node -> new;
 
-	my(@parent);
-	my($s1, $s2);
+	$self -> _process_isa($tree, $class, \%ignore);
+	$self -> _simplify($tree);
 
-	for $class (sort keys %parent)
-	{
-		($s1 = $class) =~ s/::/_/g;
-		$ignore{$class} = 1;
-		@parent         = @{$parent{$class} };
+	my($isa) = $self -> isa;
 
-		for my $parent (@parent)
-		{
-			next if ($ignore{$parent});
-
-			($s1 = $parent) =~ s/::/_/g;
-		}
-
-		for my $parent (@parent)
-		{
-			($s1 = $class)  =~ s/::/_/g;
-			($s2 = $parent) =~ s/::/_/g;
-		}
-	}
-
-	$self -> graph -> dependency(data => Algorithm::Dependency -> new(source => Algorithm::Dependency::Source::HoA -> new(\%parent) ) );
+	$self -> _build_dependency($tree, $isa);
+	$self -> isa($isa);
 
 	return $self;
 
-} # End of create.
+} # End of add.
 
-# ------------------------------------------------
+# -----------------------------------------------
 
-sub graph
+sub _build_dependency
+{
+	my($self, $tree, $isa) = @_;
+	my($name)    = $tree -> name;
+	$$isa{$name} = [];
+
+	for my $node ($tree -> daughters)
+	{
+		push @{$$isa{$name} }, $node -> name;
+
+		$self -> _build_dependency($node, $isa);
+	}
+
+} # End of _build_dependency.
+
+# -----------------------------------------------
+
+sub generate_graph
 {
 	my($self) = @_;
 
-	return $graph;
+	return $self -> graph -> dependency(data => Algorithm::Dependency -> new(source => Algorithm::Dependency::Source::HoA -> new($self -> isa) ) );
 
-} # End of graph.
+} # End of generate_graph.
 
-# ------------------------------------------------
+# -----------------------------------------------
+
+sub _init
+{
+	my($self, $arg) = @_;
+	$$arg{graph}    ||= {}; # Caller can set.
+	$$arg{isa}      = {};
+	$self           = from_hash($self, $arg);
+
+	if (! $self -> graph)
+	{
+		$self -> graph
+			(
+			 GraphViz2 -> new
+			 (
+			  edge   => {color => 'grey'},
+			  global => {directed => 1},
+			  graph  => {rankdir => 'BT'},
+			  logger => '',
+			  node   => {color => 'blue', shape => 'Mrecord'},
+			 )
+			);
+	}
+
+	return $self;
+
+} # End of _init.
+
+# -----------------------------------------------
 
 sub new
 {
 	my($class, %arg) = @_;
-	$arg{graph}      ||= GraphViz2 -> new
-		(
-		 edge   => {color => 'grey'},
-		 global => {directed => 1},
-		 graph  => {rankdir => 'BT'},
-		 logger => '',
-		 node   => {color => 'blue', shape => 'Mrecord'},
-		);
-	$graph = delete $arg{graph};
+	my($self)        = bless {}, $class;
+	$self            = $self -> _init(\%arg);
 
-	$class -> SUPER::new;
+	return $self;
 
-} # End of new.
+}	# End of new.
 
-# ------------------------------------------------
-# This is a function.
+# -----------------------------------------------
 
-sub scanner
+sub _process_isa
 {
-	my($line, $line_count, $parser) = @_;
+	my($self, $tree, $class, $ignore) = @_;
 
-	push @candidate, $1 if ($line =~ /^package\s+(\w)/);
+	$tree -> name($class);
 
-} # End of scanner.
+	for my $klass (Class::ISA::super_path($class) )
+	{
+		$self -> _process_isa($tree -> new_daughter, $klass, $ignore) if (! $$ignore{$klass});
+	}
+
+} # End of _process_isa.
+
+# -----------------------------------------------
+
+sub _simplify
+{
+	my($self, $tree) = @_;
+
+	my(@node);
+
+	for my $node ($tree -> daughters)
+	{
+		for my $sister ($node -> sisters)
+		{
+			for my $daughter ($sister -> daughters)
+			{
+				push @node, $node if ($node -> name eq $daughter -> name);
+			}
+		}
+	}
+
+	$tree -> remove_daughters(@node);
+
+	for my $node ($tree -> daughters)
+	{
+		$self -> _simplify($node);
+	}
+
+} # End of _simplify.
 
 # ------------------------------------------------
 
@@ -166,7 +167,7 @@ sub scanner
 
 =head1 NAME
 
-L<GraphViz2::Parse::ISA> - Visualize a Perl class hierarchy as a graph
+L<GraphViz2::Parse::ISA> - Visualize N Perl class hierarchies as a graph
 
 =head1 Synopsis
 
@@ -206,7 +207,11 @@ L<GraphViz2::Parse::ISA> - Visualize a Perl class hierarchy as a graph
 		);
 	my($parser) = GraphViz2::Parse::ISA -> new(graph => $graph);
 	
-	$parser -> create(class => 'Adult::Child::Grandchild', ignore => []);
+	unshift @INC, 't/lib';
+
+	$parser -> add(class => 'Adult::Child::Grandchild', ignore => []);
+	$parser -> add(class => 'Hybrid', ignore => []);
+	$parser -> generate_graph;
 	
 	my($format)      = shift || 'svg';
 	my($output_file) = shift || File::Spec -> catfile('html', "parse.code.$format");
@@ -217,7 +222,7 @@ See scripts/parse.isa.pl (L<GraphViz2/Scripts Shipped with this Module>).
 
 =head1 Description
 
-Takes a class name and converts its class hierarchy into a graph.
+Takes a class name and converts its class hierarchy into a graph. This can be done for N different classes before the graph is generated.
 
 You can write the result in any format supported by L<Graphviz|http://www.graphviz.org/>.
 
@@ -281,18 +286,29 @@ This key is optional.
 
 =head1 Methods
 
-=head2 create(class => $class, ignore => $arrayref)
+=head2 add(class => $class[, ignore => $ignore])
 
-Creates the graph, which is accessible via the graph() method, or via the graph object you passed to new().
-
-The '::' in class names is replaced with '_' in the graph, because ':' has a special meaning for
-L<Graphviz|http://www.graphviz.org/>. It is used to separate a node name from a port name.
-
-Returns $self for method chaining.
+Adds the class hierarchy of $class to an internal structure.
 
 $class is the name of the class whose parents are to be found.
 
-$ignore is an arrayref of class names to ignore.
+$ignore is an optional arrayref of class names to ignore. The value of $ignore is I<not> preserved between calls to add().
+
+After all desired calls to add(), you I<must> call L</generate_graph()> to actually trigger the call to the L<GraphViz2> methods add_node() and add_edge().
+
+Returns $self for method chaining.
+
+See scripts/parse.isa.pl.
+
+=head2 generate_graph()
+
+Processes the internal structure mentioned under add() to add all the nodes and edges to the graph.
+
+After that you call L<GraphViz2>'s run() method on the graph object. See L</graph()>.
+
+Returns $self for method chaining.
+
+See scripts/parse.isa.pl.
 
 =head2 graph()
 

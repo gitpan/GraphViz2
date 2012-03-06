@@ -28,6 +28,8 @@ Module::Build -> new
  {
 	 Algorithm::Dependency       => 1.110,
 	 Capture::Tiny               => 0.10,
+	 Class::ISA                  => 0.36,
+	 Class::Load                 => 0.17,
 	 Date::Format                => 2.24,
 	 Data::Section::Simple       => 0.02,
 	 DBI                         => 1.616,

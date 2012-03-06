@@ -21,7 +21,7 @@
 
   17  number : DIGIT
   18         | number DIGIT
-
+
 state 0
 	$accept : . list $end  (0)
 	list : .  (1)

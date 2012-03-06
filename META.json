@@ -4,7 +4,7 @@
       "Ron Savage <ron@savage.net.au>"
    ],
    "dynamic_config" : 1,
-   "generated_by" : "Module::Build version 0.38, CPAN::Meta::Converter version 2.110930",
+   "generated_by" : "Module::Build version 0.4, CPAN::Meta::Converter version 2.113640",
    "license" : [
       "artistic_1"
    ],
@@ -29,6 +29,8 @@
          "requires" : {
             "Algorithm::Dependency" : "1.11",
             "Capture::Tiny" : "0.1",
+            "Class::ISA" : "0.36",
+            "Class::Load" : "0.17",
             "DBI" : "1.616",
             "Data::Section::Simple" : "0.02",
             "Date::Format" : "2.24",
@@ -57,51 +59,51 @@
    "provides" : {
       "GraphViz2" : {
          "file" : "lib/GraphViz2.pm",
-         "version" : "1.12"
+         "version" : "2.00"
       },
       "GraphViz2::DBI" : {
          "file" : "lib/GraphViz2/DBI.pm",
-         "version" : "1.12"
+         "version" : "2.00"
       },
       "GraphViz2::Data::Grapher" : {
          "file" : "lib/GraphViz2/Data/Grapher.pm",
-         "version" : "1.12"
+         "version" : "2.00"
       },
       "GraphViz2::Parse::ISA" : {
          "file" : "lib/GraphViz2/Parse/ISA.pm",
-         "version" : "1.12"
+         "version" : "2.00"
       },
       "GraphViz2::Parse::Marpa" : {
          "file" : "lib/GraphViz2/Parse/Marpa.pm",
-         "version" : "1.12"
+         "version" : "2.00"
       },
       "GraphViz2::Parse::RecDescent" : {
          "file" : "lib/GraphViz2/Parse/RecDescent.pm",
-         "version" : "1.12"
+         "version" : "2.00"
       },
       "GraphViz2::Parse::Regexp" : {
          "file" : "lib/GraphViz2/Parse/Regexp.pm",
-         "version" : "1.12"
+         "version" : "2.00"
       },
       "GraphViz2::Parse::STT" : {
          "file" : "lib/GraphViz2/Parse/STT.pm",
-         "version" : "1.12"
+         "version" : "2.00"
       },
       "GraphViz2::Parse::XML" : {
          "file" : "lib/GraphViz2/Parse/XML.pm",
-         "version" : "1.12"
+         "version" : "2.00"
       },
       "GraphViz2::Parse::Yacc" : {
          "file" : "lib/GraphViz2/Parse/Yacc.pm",
-         "version" : "1.12"
+         "version" : "2.00"
       },
       "GraphViz2::Parse::Yapp" : {
          "file" : "lib/GraphViz2/Parse/Yapp.pm",
-         "version" : "1.12"
+         "version" : "2.00"
       },
       "GraphViz2::Utils" : {
          "file" : "lib/GraphViz2/Utils.pm",
-         "version" : "1.12"
+         "version" : "2.00"
       }
    },
    "release_status" : "stable",
@@ -110,5 +112,5 @@
          "http://opensource.org/licenses/artistic-license.php"
       ]
    },
-   "version" : "1.12"
+   "version" : "2.00"
 }

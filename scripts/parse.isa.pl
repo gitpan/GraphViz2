@@ -3,7 +3,6 @@
 # Note: t/test.t searches for the next line.
 # Annotation: Demonstrates graphing a Perl class hierarchy.
 
-use lib 't/lib';
 use strict;
 use warnings;
 
@@ -38,9 +37,11 @@ my($graph) = GraphViz2 -> new
 	);
 my($parser) = GraphViz2::Parse::ISA -> new(graph => $graph);
 
-# These classes live in t/lib/.
+unshift @INC, 't/lib';
 
-$parser -> create(class => 'Adult::Child::Grandchild', ignore => []);
+$parser -> add(class => 'Adult::Child::Grandchild', ignore => []);
+$parser -> add(class => 'HybridVariety', ignore => []);
+$parser -> generate_graph;
 
 my($format)      = shift || 'svg';
 my($output_file) = shift || File::Spec -> catfile('html', "parse.isa.$format");

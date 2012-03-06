@@ -1,5 +1,6 @@
 package GraphViz2;
 
+use open qw/:encoding(UTF-8) :std/;
 use strict;
 use warnings;
 
@@ -29,7 +30,7 @@ fieldhash my %scope            => 'scope';
 fieldhash my %verbose          => 'verbose';
 fieldhash my %valid_attributes => 'valid_attributes';
 
-our $VERSION = '1.12';
+our $VERSION = '2.00';
 
 # -----------------------------------------------
 
@@ -254,7 +255,7 @@ sub _init
 	$$arg{graph}                      ||= {}; # Caller can set.
 	$$arg{logger}                     ||= ''; # Caller can set.
 	$$arg{node}                       ||= {}; # Caller can set.
-	$$arg{node_hash}                  =  {};
+	$$arg{node_hash}                  = {};
 	$$arg{scope}                      = Set::Array -> new;
 	$$arg{valid_attributes}           = {};
 	$$arg{verbose}                    ||= 0;  # Caller can set.
@@ -535,12 +536,14 @@ sub run
 		$self -> dot_input(join('', @{$self -> command -> print} ) . "}\n");
 		$self -> log(debug => $self -> dot_input);
 
-		my($fh)   = File::Temp -> new(EXLOCK => 0);
-		my($name) = $fh -> filename;
+		# The EXLOCK option is for BSD-based systems.
 
-		binmode $fh;
-		print $fh $self -> dot_input;
-		close $fh;
+		my($temp_dir) = File::Temp -> newdir('temp.XXXX', CLEANUP => 1, EXLOCK => 0, TMPDIR => 1);
+		my($name)     = File::Spec -> catfile($temp_dir, 'graphviz2.dot');
+
+		open(OUT, '>', $name);
+		print OUT $self -> dot_input;
+		close OUT;
 
 		$Capture::Tiny::TIMEOUT = $timeout;
 		my($stdout, $stderr)    = capture{system $driver, "-T$format", $name};
@@ -552,7 +555,6 @@ sub run
 		if ($output_file)
 		{
 			open(OUT, '>', $output_file) || die "Can't open(> $output_file): $!";
-			binmode OUT;
 			print OUT $stdout;
 			close OUT;
 
@@ -622,7 +624,7 @@ sub validate_params
 
 =head1 NAME
 
-L<GraphViz2> - A wrapper for AT&T's Graphviz
+GraphViz2 - A wrapper for AT&T's Graphviz
 
 =head1 Synopsis
 
@@ -1223,8 +1225,6 @@ to 10.
 
 $output_file is the name of the file into which the output from the external program is written.
 
-Perl's binmode is called on this file.
-
 There is no default value for $output_file. If a value is not supplied for $output_file, the only way
 to recover the output of the external program is to call dot_output().
 
@@ -1275,6 +1275,15 @@ Gets or sets the verbosity level, for when a logging object is not used.
 Here, [] indicates an optional parameter.
 
 =head1 FAQ
+
+=head2 o How do I include utf8 characters in labels?
+
+Since V 2.00, L<GraphViz2> incorporates patches which produce graphs such as L<this|http://savage.net.au/Perl-modules/html/graphviz2/utf8.svg>.
+
+Examine scripts/utf8.pl for how to do it. Note that that script contains 'use utf8;' because of the utf8 characters embedded in the source code. You will need to do this.
+
+Also, GraphViz2.pm contains 'use open qw/:encoding(UTF-8) :std/;'. Then if you examine sub run(), you'll see that I do I<not> use binmode at all. That too is something you'll need to be
+careful about.
 
 =head2 o How do I print output files?
 
@@ -1506,7 +1515,7 @@ Inputs from ./t/sample.html, and outputs to ./html/parse.html.svg by default.
 
 =head2 scripts/parse.isa.pl
 
-Demonstrates graphing a Perl class hierarchy.
+Demonstrates combining 2 Perl class hierarchies on the same graph.
 
 Outputs to ./html/parse.isa.svg by default.
 
@@ -1665,6 +1674,12 @@ Outputs to ./html/sub.sub.graph.svg by default.
 Demonstrates a trivial 3-node graph, with colors, just to get you started.
 
 Outputs to ./html/trivial.svg by default.
+
+=head2 scripts/utf8.pl
+
+Demonstrates using utf8 characters in labels.
+
+outputs to ./html/utf8.html.
 
 =head1 TODO
 

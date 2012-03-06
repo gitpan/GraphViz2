@@ -2,6 +2,6 @@ package Adult::Child1;
 
 use parent 'Adult';
 
-our $VERSION = '1.12';
+our $VERSION = '2.00';
 
 1;

@@ -11,7 +11,7 @@ use Hash::FieldHash ':all';
 
 fieldhash my %graph => 'graph';
 
-our $VERSION = '1.12';
+our $VERSION = '2.00';
 
 # -----------------------------------------------
 
