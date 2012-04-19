@@ -123,7 +123,7 @@
 <text text-anchor="start" x="396.251" y="-20.9" font-family="Times Roman,serif" font-size="14.00">2: name</text>
 </g>
 <!-- designs&#45;&gt;menu_orientations -->
-<g id="edge20" class="edge"><title>designs:port2&#45;&gt;menu_orientations:port2</title>
+<g id="edge18" class="edge"><title>designs:port2&#45;&gt;menu_orientations:port2</title>
 <path fill="none" stroke="grey" d="M396.251,-130C396.251,-90.9669 354.516,-43.3966 378.146,-34.4778"/>
 <polygon fill="grey" stroke="grey" points="378.862,-37.9103 388.251,-33 377.849,-30.984 378.862,-37.9103"/>
 </g>
@@ -136,12 +136,12 @@
 <text text-anchor="start" x="750.251" y="-20.9" font-family="Times Roman,serif" font-size="14.00">2: name</text>
 </g>
 <!-- designs&#45;&gt;os_types -->
-<g id="edge18" class="edge"><title>designs:port2&#45;&gt;os_types:port2</title>
+<g id="edge16" class="edge"><title>designs:port2&#45;&gt;os_types:port2</title>
 <path fill="none" stroke="grey" d="M469.251,-210C610.324,-210 598.343,-41.5371 731.942,-33.3113"/>
 <polygon fill="grey" stroke="grey" points="732.361,-36.8004 742.251,-33 732.15,-29.8036 732.361,-36.8004"/>
 </g>
 <!-- designs&#45;&gt;sites -->
-<g id="edge16" class="edge"><title>designs:port2&#45;&gt;sites:port2</title>
+<g id="edge20" class="edge"><title>designs:port2&#45;&gt;sites:port2</title>
 <path fill="none" stroke="grey" d="M396.251,-130C396.251,-117.494 342.008,-54.8458 317.516,-37.4732"/>
 <polygon fill="grey" stroke="grey" points="318.778,-34.1959 308.251,-33 315.734,-40.4997 318.778,-34.1959"/>
 </g>

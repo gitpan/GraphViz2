@@ -3,14 +3,14 @@ package GraphViz2;
 use strict;
 use warnings;
 
-use Capture::Tiny 'capture';
-
 use Data::Section::Simple 'get_data_section';
 
 use File::Temp ();
 use File::Which; # For which().
 
 use Hash::FieldHash ':all';
+
+use IPC::Run;
 
 use Set::Array;
 
@@ -29,7 +29,7 @@ fieldhash my %scope            => 'scope';
 fieldhash my %verbose          => 'verbose';
 fieldhash my %valid_attributes => 'valid_attributes';
 
-our $VERSION = '2.01';
+our $VERSION = '2.02';
 
 # -----------------------------------------------
 
@@ -281,7 +281,7 @@ sub _init
 		. ${$self -> global}{name}
 		. "\n{\n";
 
-	$self -> command -> push($command); 
+	$self -> command -> push($command);
 
 	$self -> default_graph;
 	$self -> default_node;
@@ -535,18 +535,9 @@ sub run
 		$self -> dot_input(join('', @{$self -> command -> print} ) . "}\n");
 		$self -> log(debug => $self -> dot_input);
 
-		# The EXLOCK option is for BSD-based systems.
+		my($stdout, $stderr);
 
-		my($temp_dir) = File::Temp -> newdir('temp.XXXX', CLEANUP => 1, EXLOCK => 0, TMPDIR => 1);
-		my($name)     = File::Spec -> catfile($temp_dir, 'graphviz2.dot');
-
-		open(OUT, '>', $name);
-		binmode OUT;
-		print OUT $self -> dot_input;
-		close OUT;
-
-		$Capture::Tiny::TIMEOUT = $timeout;
-		my($stdout, $stderr)    = capture{system $driver, "-T$format", $name};
+		IPC::Run::run([$driver, "-T$format"], \$self -> dot_input, \$stdout, \$stderr);
 
 		die $stderr if ($stderr);
 
@@ -640,20 +631,20 @@ Or, hit L<http://savage.net.au/Perl-modules/html/graphviz2/index.html>.
 =head2 Perl code
 
 	#!/usr/bin/env perl
-	
+
 	use strict;
 	use warnings;
-	
+
 	use File::Spec;
-	
+
 	use GraphViz2;
-	
+
 	use Log::Handler;
-	
+
 	# ---------------
-	
+
 	my($logger) = Log::Handler -> new;
-	
+
 	$logger -> add
 		(
 		 screen =>
@@ -663,7 +654,7 @@ Or, hit L<http://savage.net.au/Perl-modules/html/graphviz2/index.html>.
 			 minlevel       => 'error',
 		 }
 		);
-	
+
 	my($graph) = GraphViz2 -> new
 		(
 		 edge   => {color => 'grey'},
@@ -672,39 +663,39 @@ Or, hit L<http://savage.net.au/Perl-modules/html/graphviz2/index.html>.
 		 logger => $logger,
 		 node   => {shape => 'oval'},
 		);
-	
+
 	$graph -> add_node(name => 'Carnegie', shape => 'circle');
 	$graph -> add_node(name => 'Murrumbeena', shape => 'box', color => 'green');
 	$graph -> add_node(name => 'Oakleigh',    color => 'blue');
-	
+
 	$graph -> add_edge(from => 'Murrumbeena', to    => 'Carnegie', arrowsize => 2);
 	$graph -> add_edge(from => 'Murrumbeena', to    => 'Oakleigh', color => 'brown');
-	
+
 	$graph -> push_subgraph
 	(
 	 name  => 'cluster_1',
 	 graph => {label => 'Child'},
 	 node  => {color => 'magenta', shape => 'diamond'},
 	);
-	
+
 	$graph -> add_node(name => 'Chadstone', shape => 'hexagon');
 	$graph -> add_node(name => 'Waverley', color => 'orange');
-	
+
 	$graph -> add_edge(from => 'Chadstone', to => 'Waverley');
-	
+
 	$graph -> pop_subgraph;
-	
+
 	$graph -> default_node(color => 'cyan');
-	
+
 	$graph -> add_node(name => 'Malvern');
 	$graph -> add_node(name => 'Prahran', shape => 'trapezium');
-	
+
 	$graph -> add_edge(from => 'Malvern', to => 'Prahran');
 	$graph -> add_edge(from => 'Malvern', to => 'Murrumbeena');
-	
+
 	my($format)      = shift || 'svg';
 	my($output_file) = shift || File::Spec -> catfile('html', "sub.graph.$format");
-	
+
 	$graph -> run(format => $format, output_file => $output_file);
 
 This program ships as scripts/sub.graph.pl. See L</Scripts Shipped with this Module>.
@@ -1266,7 +1257,7 @@ Validate the given attributes within the given context.
 Returns $self to allow method chaining.
 
 $context is one of 'edge', 'global', 'graph', 'node' or 'output_format'.
- 
+
 You wouldn't normally need to use this method.
 
 =head2 verbose([$integer])
@@ -1285,9 +1276,7 @@ scripts/utf8.pl contains 'use utf8;' because of the utf8 characters embedded in 
 
 =head2 o Why do I get 'Wide character in print...' when outputting to PNG but not SVG?
 
-AFAICT this is a problem with Perl. I use V 5.14.2, and even setting binmode on the output files in sub run() does not stop this message.
-
-And since it's potentially a binary output such as PNG, using Encode::encode() can't be the solution.
+As of V 2.02, you should not get this from GraphViz2. So, I suggest you study your own code very, very carefully :-(.
 
 Examine the output from scripts/utf8.test.pl, i.e. html/utf8.test.svg and you'll see it's correct. Then run:
 
@@ -1689,7 +1678,13 @@ Outputs to ./html/trivial.svg by default.
 
 Demonstrates using utf8 characters in labels.
 
-outputs to ./html/utf8.svg by default.
+Outputs to ./html/utf8.svg by default.
+
+=head2 scripts/utf8.test.pl
+
+Demonstrates using utf8 characters in labels.
+
+Outputs to ./html/utf8.test.svg by default.
 
 =head1 TODO
 
