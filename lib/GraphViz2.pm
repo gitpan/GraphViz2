@@ -26,10 +26,11 @@ fieldhash my %logger           => 'logger';
 fieldhash my %node             => 'node';
 fieldhash my %node_hash        => 'node_hash';
 fieldhash my %scope            => 'scope';
+fieldhash my %subgraph         => 'subgraph';
 fieldhash my %verbose          => 'verbose';
 fieldhash my %valid_attributes => 'valid_attributes';
 
-our $VERSION = '2.03';
+our $VERSION = '2.04';
 
 # -----------------------------------------------
 
@@ -209,6 +210,26 @@ sub default_node
 
 # -----------------------------------------------
 
+sub default_subgraph
+{
+	my($self, %arg) = @_;
+
+	$self -> validate_params('subgraph', %arg);
+
+	my($scope)        = $self -> scope -> last;
+	$$scope{subgraph} = {%{$$scope{subgraph} }, %arg};
+	my($tos)          = $self -> scope -> length - 1;
+
+	$self -> command -> push($self -> stringify_attributes('subgraph', $$scope{subgraph}, 1) );
+	$self -> scope -> fill($scope, $tos, 1);
+	$self -> log(debug => 'Default subgraph: ' . join(', ', map{"$_ => $$scope{subgraph}{$_}"} sort keys %{$$scope{subgraph} }) );
+
+	return $self;
+
+} # End of default_subgraph.
+
+# -----------------------------------------------
+
 sub dependency
 {
 	my($self, %arg) = @_;
@@ -256,20 +277,23 @@ sub _init
 	$$arg{node}                       ||= {}; # Caller can set.
 	$$arg{node_hash}                  = {};
 	$$arg{scope}                      = Set::Array -> new;
+	$$arg{subgraph}                   ||= {}; # Caller can set.
 	$$arg{valid_attributes}           = {};
 	$$arg{verbose}                    ||= 0;  # Caller can set.
 	$self                             = from_hash($self, $arg);
 
 	$self -> load_valid_attributes;
-	$self -> validate_params('global', %{$self -> global});
-	$self -> validate_params('graph',  %{$self -> graph});
-	$self -> validate_params('node',   %{$self -> node});
-	$self -> validate_params('edge',   %{$self -> edge});
+	$self -> validate_params('global',   %{$self -> global});
+	$self -> validate_params('graph',    %{$self -> graph});
+	$self -> validate_params('node',     %{$self -> node});
+	$self -> validate_params('edge',     %{$self -> edge});
+	$self -> validate_params('subgraph', %{$self -> subgraph});
 	$self -> scope -> push
 		({
-			edge  => $self -> edge,
-			graph => $self -> graph,
-			node  => $self -> node,
+			edge     => $self -> edge,
+			graph    => $self -> graph,
+			node     => $self -> node,
+			subgraph => $self -> subgraph,
 		 });
 
 	my(%global) = %{$self -> global};
@@ -404,24 +428,25 @@ sub push_subgraph
 	my($name) = delete $arg{name};
 	$name     = defined($name) ? $name : '';
 
-	$self -> validate_params('graph',  %{$arg{graph} });
-	$self -> validate_params('node',   %{$arg{node} });
-	$self -> validate_params('edge',   %{$arg{edge} });
+	$self -> validate_params('graph',    %{$arg{graph} });
+	$self -> validate_params('node',     %{$arg{node} });
+	$self -> validate_params('edge',     %{$arg{edge} });
+	$self -> validate_params('subgraph', %{$arg{subgraph} });
 
 	# Child inherits parent attributes.
 
-	my($scope) = $self -> scope -> last;
+	my($scope)        = $self -> scope -> last;
+	$$scope{edge}     = {%{$$scope{edge} },     %{$arg{edge} } };
+	$$scope{graph}    = {%{$$scope{graph} },    %{$arg{graph} } };
+	$$scope{node}     = {%{$$scope{node} },     %{$arg{node} } };
+	$$scope{subgraph} = {%{$$scope{subgraph} }, %{$arg{subgraph} } };
 
-	$self -> scope -> push
-		({
-			edge  => {%{$$scope{edge} },  %{$arg{edge} } },
-			graph => {%{$$scope{graph} }, %{$arg{graph} } },
-			node  => {%{$$scope{node} },  %{$arg{node} } },
-		 });
-	$self -> command -> push(qq|subgraph "$name" {\n|);
+	$self -> scope -> push($scope);
+	$self -> command -> push(qq|\nsubgraph "$name" {\n|);
 	$self -> default_graph;
 	$self -> default_node;
 	$self -> default_edge;
+	$self -> default_subgraph;
 
 	return $self;
 
@@ -576,7 +601,11 @@ sub stringify_attributes
 		$dot .= $$option{$key} =~ /^<.+>$/ ? qq|$key=$$option{$key} | : qq|$key="$$option{$key}" |;
 	}
 
-	if ($bracket && $dot)
+	if ($context eq 'subgraph')
+	{
+		$dot .= "\n";
+	}
+	elsif ($bracket && $dot)
 	{
 		$dot = "$context [ $dot]\n";
 	}
@@ -626,7 +655,7 @@ Unpack the distro and copy html/*.html and html/*.svg to your web server's doc r
 
 Then, point your browser at 127.0.0.1/index.html.
 
-Or, hit L<http://savage.net.au/Perl-modules/html/graphviz2/index.html>.
+Or, hit L<the demo page|http://savage.net.au/Perl-modules/html/graphviz2/index.html>.
 
 =head2 Perl code
 
@@ -778,7 +807,7 @@ Key-value pairs accepted in the parameter list:
 
 =item o edge => $hashref
 
-The edge key points to a hashref which is used to set default attributes for edges.
+The I<edge> key points to a hashref which is used to set default attributes for edges.
 
 Hence, allowable keys and values within that hashref are anything supported by L<Graphviz|http://www.graphviz.org/>.
 
@@ -788,7 +817,7 @@ This key is optional.
 
 =item o global => $hashref
 
-The global key points to a hashref which is used to set attributes for the output stream.
+The I<global> key points to a hashref which is used to set attributes for the output stream.
 
 Valid keys within this hashref are:
 
@@ -872,6 +901,34 @@ The default is 0.
 
 This key is optional.
 
+=item o subgraph => $hashref
+
+The I<subgraph> key points to a hashref which is used to set attributes for all subgraphs, unless overridden
+for specific subgraphs in a call of the form push_subgraph(subgraph => {$attribute => $string}).
+
+Valid keys within this hashref are:
+
+=over 4
+
+=item o rank => $string
+
+This option affects the content of all subgraphs, unless overridden later.
+
+A typical usage would be new(subgraph => {rank => 'same'}) so that all nodes mentioned within each subgraph
+are constrained to be horizontally aligned.
+
+See scripts/rank.sub.graph.[12].pl for sample code.
+
+Possible values for $string are: max, min, same, sink and source.
+
+See the L<Graphviz 'rank' docs|http://www.graphviz.org/content/attrs#drank> for details.
+
+=back
+
+The default is {}.
+
+This key is optional.
+
 =item o timeout => $integer
 
 This option specifies how long to wait for the external program before exiting with an error.
@@ -886,7 +943,7 @@ This key (global) is optional.
 
 =item o graph => $hashref
 
-The graph key points to a hashref which is used to set default attributes for graphs.
+The I<graph> key points to a hashref which is used to set default attributes for graphs.
 
 Hence, allowable keys and values within that hashref are anything supported by L<Graphviz|http://www.graphviz.org/>.
 
@@ -910,7 +967,7 @@ This key is optional.
 
 =item o node => $hashref
 
-The node key points to a hashref which is used to set default attributes for nodes.
+The I<node> key points to a hashref which is used to set default attributes for nodes.
 
 Hence, allowable keys and values within that hashref are anything supported by L<Graphviz|http://www.graphviz.org/>.
 
@@ -1157,7 +1214,7 @@ Pop off and discard the top element of the scope stack.
 
 Returns $self to allow method chaining.
 
-=head2 push_subgraph([name => $name, edge => {...}, graph => {...}, node => {...}])
+=head2 push_subgraph([name => $name, edge => {...}, graph => {...}, node => {...}, subgraph => {...}])
 
 Sets up a new subgraph environment.
 
@@ -1169,9 +1226,11 @@ name => $name is the name to assign to the subgraph. Name defaults to ''.
 
 So, without $name, 'subgraph {' is written to the output stream.
 
-With $name, "subgraph $name {" is written to the output stream.
+With $name, 'subgraph "$name" {' is written to the output stream.
 
-Note that subgraph names beginning with 'cluster' are special to L<Graphviz|http://www.graphviz.org/>.
+Note that subgraph names beginning with 'cluster' L<are special to Graphviz|http://www.graphviz.org/content/attrs#dclusterrank>.
+
+See scripts/rank.sub.graph.[1234].pl for the effect of various values for $name.
 
 edge => {...} is any edge attributes accepted as L<Graphviz attributes|http://www.graphviz.org/content/attrs>. These are validated in exactly
 the same way as the edge parameters in the calls to default_edge(%hash), new(edge => {}) and push_subgraph(edge => {}).
@@ -1181,6 +1240,18 @@ the same way as the graph parameters in the calls to default_graph(%hash), new(g
 
 node => {...} is any node attributes accepted as L<Graphviz attributes|http://www.graphviz.org/content/attrs>. These are validated in exactly
 the same way as the node parameters in the calls to default_node(%hash), new(node => {}) and push_subgraph(node => {}).
+
+subgraph => {..} is for setting attributes applicable to subgraphs. Currently the only such
+attribute is I<rank>.
+
+A typical usage would be push_subgraph(subgraph => {rank => 'same'}) so that all nodes mentioned within the subgraph
+are constrained to be horizontally aligned.
+
+See scripts/rank.sub.graph.[12].pl for sample code.
+
+Possible values for the I<rank> key are: max, min, same, sink and source.
+
+See the L<Graphviz 'rank' docs|http://www.graphviz.org/content/attrs#drank> for details.
 
 =head2 report_valid_attributes()
 
@@ -1386,6 +1457,9 @@ parent container for all other containers. The programs use this container to pr
 My policy is to use L<Hash::FieldHash> for stand-alone modules and L<Moose> for applications.
 
 =head1 Scripts Shipped with this Module
+
+See L<the demo page|http://savage.net.au/Perl-modules/html/graphviz2/index.html>, which displays the output
+of each program listed below.
 
 =head2 scripts/anonymous.pl
 
@@ -1649,6 +1723,30 @@ and use the command:
 	dot -Tsvg x.dot
 
 See L<the Graphviz docs|http://www.graphviz.org/content/attrs#kescString> for escString, where they write 'l to mean \l, for some reason.
+
+=head2 scripts/rank.sub.graph.1.pl
+
+Demonstrates a very neat way of controlling the I<rank> attribute of nodes within subgraphs.
+
+Outputs to ./html/rank.sub.graph.1.svg by default.
+
+=head2 scripts/rank.sub.graph.2.pl
+
+Demonstrates a long-winded way of controlling the I<rank> attribute of nodes within subgraphs.
+
+Outputs to ./html/rank.sub.graph.2.svg by default.
+
+=head2 scripts/rank.sub.graph.3.pl
+
+Demonstrates the effect of the name of a subgraph, when that name does not start with 'cluster'.
+
+Outputs to ./html/rank.sub.graph.3.svg by default.
+
+=head2 scripts/rank.sub.graph.4.pl
+
+Demonstrates the effect of the name of a subgraph, when that name starts with 'cluster'.
+
+Outputs to ./html/rank.sub.graph.4.svg by default.
 
 =head2 scripts/report.valid.attributes.pl
 
