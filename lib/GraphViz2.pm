@@ -20,6 +20,7 @@ fieldhash my %command          => 'command';
 fieldhash my %dot_input        => 'dot_input';
 fieldhash my %dot_output       => 'dot_output';
 fieldhash my %edge             => 'edge';
+fieldhash my %edge_hash        => 'edge_hash';
 fieldhash my %global           => 'global';
 fieldhash my %graph            => 'graph';
 fieldhash my %logger           => 'logger';
@@ -30,7 +31,7 @@ fieldhash my %subgraph         => 'subgraph';
 fieldhash my %verbose          => 'verbose';
 fieldhash my %valid_attributes => 'valid_attributes';
 
-our $VERSION = '2.04';
+our $VERSION = '2.05';
 
 # -----------------------------------------------
 
@@ -75,7 +76,26 @@ sub add_edge
 		}
 	}
 
+	# Add these nodes to the hashref of all nodes, if necessary.
+
 	$self -> node_hash($node) if ($new);
+
+	# Add this edge to the hashref of all edges.
+
+	my($edge)          = $self -> edge_hash;
+	$$edge{$from}      = {} if (! $$edge{$from});
+	$$edge{$from}{$to} = [] if (! $$edge{$from}{$to});
+
+	push @{$$edge{$from}{$to} },
+	{
+		attributes => {%arg},
+		from_port  => $port{$from} || '',
+		to_port    => $port{$to}   || '',
+	};
+
+	$self -> edge_hash($edge);
+
+	# Add this edge to the DOT output string.
 
 	my($dot) = $self -> stringify_attributes(qq|"$from"$port{$from} ${$self -> global}{label} "$to"$port{$to}|, {%arg}, 1);
 
@@ -262,6 +282,7 @@ sub _init
 	$$arg{dot_input}                  = '';
 	$$arg{dot_output}                 = '';
 	$$arg{edge}                       ||= {}; # Caller can set.
+	$$arg{edge_hash}                  = {};
 	$$arg{global}                     ||= {}; # Caller can set.
 	$$arg{global}{directed}           = $$arg{global}{directed} ? 'digraph' : 'graph';
 	$$arg{global}{driver}             ||= which('dot');
@@ -955,7 +976,7 @@ This key is optional.
 
 Provides a logger object so $logger_object -> $level($message) can be called at certain times.
 
-See "Why such a different approach to logging?" in the "FAQ" for details.
+See "Why such a different approach to logging?" in the </FAQ> for details.
 
 Retrieve and update the value with the logger() method.
 
@@ -1180,6 +1201,56 @@ external program is stored in the buffer controlled by dot_output().
 
 This output is available even if run() does not write the output to a file.
 
+=head2 edge_hash()
+
+Returns, at the end of the run, a hashref keyed by node name, specifically the node at the arrowI<tail> end of
+the hash, i.e. where the edge starts from.
+
+Use this to get a list of all nodes and the edges which leave those nodes, the corresponding destination
+nodes, and the attributes of each edge.
+
+	my($node_hash) = $graph -> node_hash;
+	my($edge_hash) = $graph -> edge_hash;
+
+	for my $from (sort keys %$node_hash)
+	{
+		my($attr) = $$node_hash{$from}{attributes};
+		my($s)    = join(', ', map{"$_ => $$attr{$_}"} sort keys %$attr);
+
+		print "Node: $from\n";
+		print "\tAttributes: $s\n";
+
+		for my $to (sort keys %{$$edge_hash{$from} })
+		{
+			for my $edge (@{$$edge_hash{$from}{$to} })
+			{
+				$attr = $$edge{attributes};
+				$s    = join(', ', map{"$_ => $$attr{$_}"} sort keys %$attr);
+
+				print "\tEdge: $from$$edge{from_port} -> $to$$edge{to_port}\n";
+				print "\t\tAttributes: $s\n";
+			}
+		}
+	}
+
+If the caller adds the same edge two (or more) times, the attributes from each call are
+I<not> coalesced (unlike L</node_hash()>), but rather the attributes from each call are stored separately
+in an arrayref.
+
+A bit more formally then, $$edge_hash{$from_node}{$to_node} is an arrayref where each element describes
+one edge, and which defaults to:
+
+	{
+		attributes => {},
+		from_port  => $from_port,
+		to_port    => $to_port,
+	}
+
+If I<from_port> is not provided by the caller, it defaults to '' (the empty string). If it is provided,
+it contains a leading ':'. Likewise for I<to_port>.
+
+See scripts/report.nodes.and.edges.pl (a version of scripts/html.labels.pl) for a complete example.
+
 =head2 load_valid_attributes()
 
 Load various sets of valid attributes from within the source code of this module, using L<Data::Section::Simple>.
@@ -1207,6 +1278,36 @@ If called with $level eq 'error', it dies with $message.
 Gets or sets the log object.
 
 Here, [] indicates an optional parameter.
+
+=head2 node_hash()
+
+Returns, at the end of the run, a hashref keyed by node name. Use this to get a list of all nodes
+and their attributes.
+
+	my($node_hash) = $graph -> node_hash;
+
+	for my $name (sort keys %$node_hash)
+	{
+		my($attr) = $$node_hash{$name}{attributes};
+		my($s)    = join(', ', map{"$_ => $$attr{$_}"} sort keys %$attr);
+
+		print "Node: $name\n";
+		print "\tAttributes: $s\n";
+	}
+
+If the caller adds the same node two (or more) times, the attributes from each call are
+I<coalesced> (unlike L</edge_hash()>), meaning all attributes from all calls are combined under the
+I<attributes> sub-key.
+
+A bit more formally then, $$node_hash{$node_name} is a hashref where each element describes one node, and
+which defaults to:
+
+	{
+		attributes => {},
+	}
+
+See scripts/report.nodes.and.edges.pl (a version of scripts/html.labels.pl) for a complete example,
+including usage of the corresponding L</edge_hash()> method.
 
 =head2 pop_subgraph()
 
@@ -1339,13 +1440,37 @@ Here, [] indicates an optional parameter.
 
 =head1 FAQ
 
-=head2 o How do I include utf8 characters in labels?
+=head2 Why do I get error messages like the following?
+
+	Error: <stdin>:1: syntax error near line 1
+	context: digraph >>>  Graph <<<  {
+
+Graphviz reserves some words as keywords, meaning they can't be used as an ID, e.g. for the name of the graph.
+So, don't do this:
+
+	strict graph graph{...}
+	strict graph Graph{...}
+	strict graph strict{...}
+	etc...
+
+Likewise for non-strict graphs, and digraphs. You can however add double-quotes around such reserved words:
+
+	strict graph "graph"{...}
+
+Even better, use a more meaningful name for your graph...
+
+The keywords are: node, edge, graph, digraph, subgraph and strict. Compass points are not keywords.
+
+See L<keywords|http://www.graphviz.org/content/dot-language> in the discussion of the syntax of DOT
+for details.
+
+=head2 How do I include utf8 characters in labels?
 
 Since V 2.00, L<GraphViz2> incorporates a sample which produce graphs such as L<this|http://savage.net.au/Perl-modules/html/graphviz2/utf8.svg>.
 
 scripts/utf8.pl contains 'use utf8;' because of the utf8 characters embedded in the source code. You will need to do this.
 
-=head2 o Why do I get 'Wide character in print...' when outputting to PNG but not SVG?
+=head2 Why do I get 'Wide character in print...' when outputting to PNG but not SVG?
 
 As of V 2.02, you should not get this from GraphViz2. So, I suggest you study your own code very, very carefully :-(.
 
@@ -1355,11 +1480,11 @@ Examine the output from scripts/utf8.test.pl, i.e. html/utf8.test.svg and you'll
 
 and examine html/utf8.test.png and you'll see it matches html/utf8.test.svg in showing 5 deltas. So, I I<think> it's all working.
 
-=head2 o How do I print output files?
+=head2 How do I print output files?
 
 Under Unix, output as PDF, and then try: lp -o fitplot html/parse.marpa.pdf.
 
-=head2 o I'm having trouble with special characters in node names and labels
+=head2 I'm having trouble with special characters in node names and labels
 
 L<GraphViz2> escapes these characters in those contexts: []{}.
 
@@ -1707,7 +1832,7 @@ Tests which run dot directly show this is a bug in L<Graphviz|http://www.graphvi
 
 For example, in this graph, it looks like \r only works after \l (node d), but not always (nodes b, c).
 
-Call this x.dot:
+Call this x.gv:
 
 	digraph G {
 		rankdir=LR;
@@ -1720,7 +1845,7 @@ Call this x.dot:
 
 and use the command:
 
-	dot -Tsvg x.dot
+	dot -Tsvg x.gv > x.svg
 
 See L<the Graphviz docs|http://www.graphviz.org/content/attrs#kescString> for escString, where they write 'l to mean \l, for some reason.
 
@@ -1747,6 +1872,14 @@ Outputs to ./html/rank.sub.graph.3.svg by default.
 Demonstrates the effect of the name of a subgraph, when that name starts with 'cluster'.
 
 Outputs to ./html/rank.sub.graph.4.svg by default.
+
+=head2 scripts/report.nodes.and.edges.pl
+
+Demonstates how to access the data returned by L</edge_hash()> and L</node_hash()>.
+
+Prints node and edge attributes.
+
+Outputs to STDOUT.
 
 =head2 scripts/report.valid.attributes.pl
 
