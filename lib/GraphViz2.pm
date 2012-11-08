@@ -31,7 +31,7 @@ fieldhash my %subgraph         => 'subgraph';
 fieldhash my %verbose          => 'verbose';
 fieldhash my %valid_attributes => 'valid_attributes';
 
-our $VERSION = '2.05';
+our $VERSION = '2.06';
 
 # -----------------------------------------------
 
@@ -463,7 +463,7 @@ sub push_subgraph
 	$$scope{subgraph} = {%{$$scope{subgraph} }, %{$arg{subgraph} } };
 
 	$self -> scope -> push($scope);
-	$self -> command -> push(qq|\nsubgraph "$name" {\n|);
+	$self -> command -> push(qq|\nsubgraph "$name"\n{\n|);
 	$self -> default_graph;
 	$self -> default_node;
 	$self -> default_edge;
