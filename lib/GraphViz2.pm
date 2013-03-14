@@ -31,7 +31,7 @@ fieldhash my %subgraph         => 'subgraph';
 fieldhash my %verbose          => 'verbose';
 fieldhash my %valid_attributes => 'valid_attributes';
 
-our $VERSION = '2.06';
+our $VERSION = '2.07';
 
 # -----------------------------------------------
 
@@ -1884,6 +1884,12 @@ Outputs to STDOUT.
 =head2 scripts/report.valid.attributes.pl
 
 Prints all current (V 2.23.6) L<Graphviz|http://www.graphviz.org/> attributes, along with a few global ones I've invented for the purpose of writing this module.
+
+Outputs to STDOUT.
+
+=head2 scripts/sqlite.foreign.keys.pl
+
+Demonstrates how to find foreign key info by calling SQLite's pragma foreign_key_list.
 
 Outputs to STDOUT.
 

@@ -28,8 +28,9 @@ WriteMakefile
 	 COMPRESS => 'gzip',
 	 SUFFIX   => 'gz'
  },
- DISTNAME  => 'GraphViz2',
- NAME      => 'GraphViz2',
+	DISTNAME  => 'GraphViz2',
+	NAME      => 'GraphViz2',
+	LICENSE   => 'artistic_2',
  PL_FILES  => {},
  PREREQ_PM =>
  {
@@ -57,8 +58,8 @@ WriteMakefile
 	Scalar::Util                => 1.23,
 	Set::Array                  => 0.23,
 	strict                      => 0,
- 	Test::More                  => 0.94,
- 	Test::Pod                   => 1.44,
+ 	Test::More                => 0.94,
+# 	Test::Pod                   => 1.45, # Make it optional. See t/pod.t
 	Text::Xslate                => 1.2000,
 	Tree::DAG_Node              => 1.06,
 	Try::Tiny                   => 0.09,
