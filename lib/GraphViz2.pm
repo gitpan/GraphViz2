@@ -31,7 +31,7 @@ fieldhash my %subgraph         => 'subgraph';
 fieldhash my %verbose          => 'verbose';
 fieldhash my %valid_attributes => 'valid_attributes';
 
-our $VERSION = '2.09';
+our $VERSION = '2.10';
 
 # -----------------------------------------------
 
@@ -52,20 +52,23 @@ sub add_edge
 	my($new)  = 0;
 	my($node) = $self -> node_hash;
 
-	my($port, %port);
+	my(@node);
 
 	for my $name ($from, $to)
 	{
 		# Remove port, if any, from name.
 
-		if ($name =~ m/^(.+)(:port\d{1,})$/)
+		if ($name =~ m/^([^:]+)(:[^:]*)$/)
 		{
-			$name        = $1;
-			$port{$name} = $2;
+			$name = $1;
+
+			$self -> log(debug => "==> Found node $name");
+
+			push @node, [$name, $2];
 		}
 		else
 		{
-			$port{$name} = '';
+			push @node, [$name, ''];
 		}
 
 		if (! defined $$node{$name})
@@ -89,15 +92,15 @@ sub add_edge
 	push @{$$edge{$from}{$to} },
 	{
 		attributes => {%arg},
-		from_port  => $port{$from} || '',
-		to_port    => $port{$to}   || '',
+		from_port  => $node[0][1],
+		to_port    => $node[1][1],
 	};
 
 	$self -> edge_hash($edge);
 
 	# Add this edge to the DOT output string.
 
-	my($dot) = $self -> stringify_attributes(qq|"$from"$port{$from} ${$self -> global}{label} "$to"$port{$to}|, {%arg}, 1);
+	my($dot) = $self -> stringify_attributes(qq|"$from"$node[0][1] ${$self -> global}{label} "$to"$node[1][1]|, {%arg});
 
 	$self -> command -> push($dot);
 	$self -> log(debug => "Added edge: $dot");
@@ -127,23 +130,45 @@ sub add_node
 
 	if (ref $label eq 'ARRAY')
 	{
-		my($lab, @label);
+		my($port_count) = 0;
 
-		for my $port (1 .. scalar @$label)
+		my(@label);
+		my($port);
+		my($text);
+
+		for my $index (0 .. scalar @$label - 1)
 		{
+			if (ref $$label[$index] eq 'HASH')
+			{
+				$port = $$label[$index]{port} || 0;
+				$text = $$label[$index]{text} || '';
+			}
+			else
+			{
+				$port_count++;
+
+				$port = "<port$port_count>";
+				$text = $$label[$index];
+			}
+
 			# HTML labels affect this code. Patches here must be replicated below.
 
-			($lab = $$label[$port - 1]) =~ s#([[\]{}])#\\$1#g;
-			$lab  =~ s#"#\\"#g if ($lab !~ /^</); # Escape double quotes if it's not an HTML label.
+			$text =~ s#([[\]])#\\$1#g;
+			$text =~ s#"#\\"#g if ($text !~ /^</); # Escape double quotes if it's not an HTML label.
 
-			push @label, "<port$port> $lab";
+			if (ref $$label[$index] eq 'HASH')
+			{
+				push @label, $port ? "$port $text" : $text;
+			}
+			else
+			{
+				push @label, "$port $text";
+			}
 		}
 
-		my(%global)      = %{$self -> global};
-		my($orientation) = $global{record_orientation};
-		$arg{label}      = join('|', @label);
-		$arg{label}      = "{$arg{label}}" if ($orientation eq 'vertical');
-		$arg{shape}      = 'record';
+		my(%global) = %{$self -> global};
+		$arg{label} = join('|', @label);
+		$arg{shape} = 'record';
 	}
 	elsif ($arg{shape} && ( ($arg{shape} =~ /M?record/) || ( ($arg{shape} =~ /(?:none|plaintext)/) && ($arg{label} =~ /^</) ) ) )
 	{
@@ -153,12 +178,12 @@ sub add_node
 	{
 		# HTML labels affect this code. Patches here must be replicated above.
 
-		$arg{label} =~ s#([[\]{}])#\\$1#g;
+		$arg{label} =~ s#([[\]])#\\$1#g;
 		$arg{label} =~ s#"#\\"#g if ($arg{label} !~ /^</); # Escape double quotes if it's not an HTML label.
 	}
 
 	$$node{$name}{attributes} = {%arg};
-	my($dot)                  = $self -> stringify_attributes(qq|"$name"|, {%arg}, 1);
+	my($dot)                  = $self -> stringify_attributes(qq|"$name"|, {%arg});
 
 	$self -> command -> push($dot);
 	$self -> node_hash($node);
@@ -180,7 +205,7 @@ sub default_edge
 	$$scope{edge} = {%{$$scope{edge} }, %arg};
 	my($tos)      = $self -> scope -> length - 1;
 
-	$self -> command -> push($self -> stringify_attributes('edge', $$scope{edge}, 1) );
+	$self -> command -> push($self -> stringify_attributes('edge', $$scope{edge}) );
 	$self -> scope -> fill($scope, $tos, 1);
 	$self -> log(debug => 'Default edge: ' . join(', ', map{"$_ => $$scope{edge}{$_}"} sort keys %{$$scope{edge} }) );
 
@@ -200,7 +225,7 @@ sub default_graph
 	$$scope{graph} = {%{$$scope{graph} }, %arg};
 	my($tos)       = $self -> scope -> length - 1;
 
-	$self -> command -> push($self -> stringify_attributes('graph', $$scope{graph}, 1) );
+	$self -> command -> push($self -> stringify_attributes('graph', $$scope{graph}) );
 	$self -> scope -> fill($scope, $tos, 1);
 	$self -> log(debug => 'Default graph: ' . join(', ', map{"$_ => $$scope{graph}{$_}"} sort keys %{$$scope{graph} }) );
 
@@ -220,7 +245,7 @@ sub default_node
 	$$scope{node} = {%{$$scope{node} }, %arg};
 	my($tos)      = $self -> scope -> length - 1;
 
-	$self -> command -> push($self -> stringify_attributes('node', $$scope{node}, 1) );
+	$self -> command -> push($self -> stringify_attributes('node', $$scope{node}) );
 	$self -> scope -> fill($scope, $tos, 1);
 	$self -> log(debug => 'Default node: ' . join(', ', map{"$_ => $$scope{node}{$_}"} sort keys %{$$scope{node} }) );
 
@@ -240,7 +265,7 @@ sub default_subgraph
 	$$scope{subgraph} = {%{$$scope{subgraph} }, %arg};
 	my($tos)          = $self -> scope -> length - 1;
 
-	$self -> command -> push($self -> stringify_attributes('subgraph', $$scope{subgraph}, 1) );
+	$self -> command -> push($self -> stringify_attributes('subgraph', $$scope{subgraph}) );
 	$self -> scope -> fill($scope, $tos, 1);
 	$self -> log(debug => 'Default subgraph: ' . join(', ', map{"$_ => $$scope{subgraph}{$_}"} sort keys %{$$scope{subgraph} }) );
 
@@ -277,31 +302,30 @@ sub dependency
 
 sub _init
 {
-	my($self, $arg)                   = @_;
-	$$arg{command}                    = Set::Array -> new;
-	$$arg{dot_input}                  = '';
-	$$arg{dot_output}                 = '';
-	$$arg{edge}                       ||= {}; # Caller can set.
-	$$arg{edge_hash}                  = {};
-	$$arg{global}                     ||= {}; # Caller can set.
-	$$arg{global}{directed}           = $$arg{global}{directed} ? 'digraph' : 'graph';
-	$$arg{global}{driver}             ||= which('dot');
-	$$arg{global}{format}             ||= 'svg';
-	$$arg{global}{label}              ||= $$arg{global}{directed} eq 'digraph' ? '->' : '--';
-	$$arg{global}{name}               ||= 'Perl';
-	$$arg{global}{record_orientation} = $$arg{global}{record_orientation} && $$arg{global}{record_orientation} =~ /^(horizontal)$/ ? $1 : 'vertical';
-	$$arg{global}{record_shape}       = $$arg{global}{record_shape} && $$arg{global}{record_shape} =~ /^(M?record)$/ ? $1 : 'Mrecord';
-	$$arg{global}{strict}             ||= 0;
-	$$arg{global}{timeout}            ||= 10;
-	$$arg{graph}                      ||= {}; # Caller can set.
-	$$arg{logger}                     ||= ''; # Caller can set.
-	$$arg{node}                       ||= {}; # Caller can set.
-	$$arg{node_hash}                  = {};
-	$$arg{scope}                      = Set::Array -> new;
-	$$arg{subgraph}                   ||= {}; # Caller can set.
-	$$arg{valid_attributes}           = {};
-	$$arg{verbose}                    ||= 0;  # Caller can set.
-	$self                             = from_hash($self, $arg);
+	my($self, $arg)             = @_;
+	$$arg{command}              = Set::Array -> new;
+	$$arg{dot_input}            = '';
+	$$arg{dot_output}           = '';
+	$$arg{edge}                 ||= {}; # Caller can set.
+	$$arg{edge_hash}            = {};
+	$$arg{global}               ||= {}; # Caller can set.
+	$$arg{global}{directed}     = $$arg{global}{directed} ? 'digraph' : 'graph';
+	$$arg{global}{driver}       ||= which('dot');
+	$$arg{global}{format}       ||= 'svg';
+	$$arg{global}{label}        ||= $$arg{global}{directed} eq 'digraph' ? '->' : '--';
+	$$arg{global}{name}         ||= 'Perl';
+	$$arg{global}{record_shape} = $$arg{global}{record_shape} && $$arg{global}{record_shape} =~ /^(M?record)$/ ? $1 : 'Mrecord';
+	$$arg{global}{strict}       ||= 0;
+	$$arg{global}{timeout}      ||= 10;
+	$$arg{graph}                ||= {}; # Caller can set.
+	$$arg{logger}               ||= ''; # Caller can set.
+	$$arg{node}                 ||= {}; # Caller can set.
+	$$arg{node_hash}            = {};
+	$$arg{scope}                = Set::Array -> new;
+	$$arg{subgraph}             ||= {}; # Caller can set.
+	$$arg{valid_attributes}     = {};
+	$$arg{verbose}              ||= 0;  # Caller can set.
+	$self                       = from_hash($self, $arg);
 
 	$self -> load_valid_attributes;
 	$self -> validate_params('global',   %{$self -> global});
@@ -614,7 +638,7 @@ sub run
 
 sub stringify_attributes
 {
-	my($self, $context, $option, $bracket) = @_;
+	my($self, $context, $option) = @_;
 	my($dot) = '';
 
 	for my $key (sort keys %$option)
@@ -626,7 +650,7 @@ sub stringify_attributes
 	{
 		$dot .= "\n";
 	}
-	elsif ($bracket && $dot)
+	elsif ($dot)
 	{
 		$dot = "$context [ $dot]\n";
 	}
@@ -898,6 +922,10 @@ This key is optional.
 
 =item o record_orientation => /^(?:horizontal|vertical)$/
 
+Ignored as of V 2.10. This option will be removed in a future version.
+
+The following text applies to prior versions:
+
 This option affects how records are plotted. The value must be 'horizontal' or 'vertical'.
 
 The default is 'vertical', which suits L<GraphViz2::DBI>.
@@ -1023,9 +1051,11 @@ This mechanism has the effect of hard-coding L<Graphviz|http://www.graphviz.org/
 
 Nevertheless, the implementation of these lists is handled differently from the way it was done in V 2.
 
-V 3 ships with a set of scripts, scripts/extract.*.pl, which retrieve pages from the L<Graphviz|http://www.graphviz.org/> web site and
-extract the current lists of valid attributes. These are then copied manually into the source code of L<GraphViz2>, meaning any time those
-lists change on the L<Graphviz|http://www.graphviz.org/> web site, it's a trivial matter to update the lists stored within this module.
+V 2 ships with a set of scripts, scripts/extract.*.pl, which retrieve pages from the
+L<Graphviz|http://www.graphviz.org/> web site and extract the current lists of valid attributes.
+
+These are then copied manually into the source code of L<GraphViz2>, meaning any time those lists change on the
+L<Graphviz|http://www.graphviz.org/> web site, it's a trivial matter to update the lists stored within this module.
 
 See L<GraphViz2/Scripts Shipped with this Module>.
 
@@ -1138,23 +1168,57 @@ Here, [] indicates an optional parameter.
 %hash is any node attributes accepted as L<Graphviz attributes|http://www.graphviz.org/content/attrs>. These are validated in exactly
 the same way as the node parameters in the calls to default_node(%hash), new(node => {}) and push_subgraph(node => {}).
 
-The attribute name 'label' may point to a string or an arrayref. If it is an arrayref:
+The attribute name 'label' may point to a string or an arrayref.
+
+=head3 If it is a string...
+
+The string is the label.
+
+The string may contain ports and orientation markers ({}).
+
+=head3 If it is an arrayref of strings...
 
 =over 4
 
+=item o The shape of the node is forced to be a record
+
+=item o Each element in the array defines a field in the record
+
+These fields are combined into a single node
+
 =item o Each element is treated as a label
 
-=item o Each label is given a port number (1 .. N)
-
-=item o Each label + port appears in a separate, small, rectangle
-
-=item o These rectangles are combined into a single node
-
-=item o The shape of this node is forced to be a record
+=item o Each label is given a port name (1 .. N) of the form "port<$port_count>"
 
 =item o Judicious use of '{' and '}' in the label can make this record appear horizontally or vertically, and even nested
 
 =back
+
+=head3 If it is an arrayref of hashrefs...
+
+=over 4
+
+=item o The shape of the node is forced to be a record
+
+=item o Each element in the array defines a field in the record
+
+=item o Each element is treated as a hashref with keys 'text' and 'port'
+
+The 'port' key is optional.
+
+=item o The value of the 'text' key is the label
+
+=item o The value of the 'port' key is the port
+
+The format is "<$port_name>".
+
+=item o Judicious use of '{' and '}' in the label can make this record appear horizontally or vertically, and even nested
+
+=back
+
+See scripts/html.label.pl and scripts/record.*.pl for sample code.
+
+See also the FAQ topic L</How labels interact with ports>.
 
 For more details on this complex topic, see L<Records|http://www.graphviz.org/content/node-shapes#record> and L<Ports|http://www.graphviz.org/content/attrs#kportPos>.
 
@@ -1414,7 +1478,7 @@ This method performs a series of tasks:
 
 =back
 
-=head2 stringify_attributes($context, $option, $bracket)
+=head2 stringify_attributes($context, $option)
 
 Returns a string suitable to writing to the output stream.
 
@@ -1482,17 +1546,21 @@ and examine html/utf8.test.png and you'll see it matches html/utf8.test.svg in s
 
 =head2 How do I print output files?
 
-Under Unix, output as PDF, and then try: lp -o fitplot html/parse.marpa.pdf.
+Under Unix, output as PDF, and then try: lp -o fitplot html/parse.stt.pdf (or whatever).
 
 =head2 I'm having trouble with special characters in node names and labels
 
-L<GraphViz2> escapes these characters in those contexts: []{}.
+L<GraphViz2> escapes these 2 characters in those contexts: [].
+
+Escaping the 2 chars [] started with V 2.10. Previously, all of []{} were escaped, but {} are used in records
+to control the orientation of fields, so they should not have been escaped in the first place.
+See scripts/record.1.pl.
 
 Double-quotes are escaped when the label is I<not> an HTML label. See scripts/html.labels.pl for sample code using font color.
 
-It would be nice to also escape | and <, but these characters are used in specifying ports in records.
+It would be nice to also escape | and <, but these characters are used in specifying fields and ports in records.
 
-See the next point for details.
+See the next couple of points for details.
 
 =head2 A warning about L<Graphviz|http://www.graphviz.org/> and ports
 
@@ -1509,19 +1577,99 @@ The L<Graphviz|http://www.graphviz.org/> syntax for ports is a bit unusual:
 
 =back
 
+Let me repeat - that is Graphviz syntax, not GraphViz2 syntax. In Perl, you must do this:
+
+	$graph -> add_edge(from => 'struct1:f1', to => 'struct2:f0', color => 'blue');
+
 You don't have to quote all node names in L<Graphviz|http://www.graphviz.org/>, but some, such as digits, must be quoted, so I've decided to quote them all.
+
+=head2 How labels interact with ports
+
+You can specify labels with ports in these ways:
+
+=over 4
+
+=item o As a string
+
+From scripts/record.1.pl:
+
+	$graph -> add_node(name => 'struct3', label => "hello\nworld |{ b |{c|<here> d|e}| f}| g | h");
+
+Here, the string contains a port (<here>), field markers (|), and orientation markers ({}).
+
+Clearly, you must specify the field separator character '|' explicitly. In the next 2 cases, it is implicit.
+
+Then you use $graph -> add_edge(...) to refer to those ports, if desired. Again, from scripts/record.1.pl:
+
+$graph -> add_edge(from => 'struct1:f2', to => 'struct3:here', color => 'red');
+
+The same label is specified in the next case.
+
+=item o As an arrayref of hashrefs
+
+From scripts/record.2.pl:
+
+	$graph -> add_node(name => 'struct3', label =>
+	[
+		{
+			text => "hello\nworld",
+		},
+		{
+			text => '{b',
+		},
+		{
+			text => '{c',
+		},
+		{
+			port => '<here>',
+			text => 'd',
+		},
+		{
+			text => 'e}',
+		},
+		{
+			text => 'f}',
+		},
+		{
+			text => 'g',
+		},
+		{
+			text => 'h',
+		},
+	]);
+
+Each hashref is a field, and hence you do not specify the field separator character '|'.
+
+Then you use $graph -> add_edge(...) to refer to those ports, if desired. Again, from scripts/record.2.pl:
+
+$graph -> add_edge(from => 'struct1:f2', to => 'struct3:here', color => 'red');
+
+The same label is specified in the previous case.
+
+=item o As an arrayref of strings
+
+From scripts/html.labels.pl:
+
+	$graph -> add_node(name => 'Oakleigh', shape => 'record', color => 'blue',
+		label => ['West Oakleigh', 'East Oakleigh']);
+
+Here, again, you do not specify the field separator character '|'.
+
+What happens is that each string is taken to be the label of a field, and each field is given
+an auto-generated port name of the form "<port$n>", where $n starts from 1.
+
+Here's how you refer to those ports, again from scripts/html.labels.pl:
+
+	$graph -> add_edge(from => 'Murrumbeena', to => 'Oakleigh:port2',
+		color => 'green', label => '<Drive<br/>Run<br/>Sprint>');
+
+=back
+
+See also the docs for the C<< add_node(name => $node_name, [%hash]) >> method.
 
 =head2 Why does L<GraphViz> plot top-to-bottom but L<GraphViz2::Parse::ISA> plot bottom-to-top?
 
 Because the latter knows the data is a class structure. The former makes no assumptions about the nature of the data.
-
-=head2 I'm having trouble with ports
-
-The code in L<GraphViz2>'s add_edge() method assumes my convention that port names match /:port\d{1,}/.
-
-This matches the code in the add_node() method, where port names are generated.
-
-If you adopt this convention, you should have no problems.
 
 =head2 What happened to GraphViz::No?
 
@@ -1671,7 +1819,11 @@ This program was reverse-engineered from graphs/undirected/Heawood.gv in the dis
 
 Demonstrates a trivial 3-node graph, with colors and HTML labels.
 
+Also demonstrates an arrayref of strings as a label.
+
 Outputs to ./html/html.labels.svg by default.
+
+See also scripts/record.*.pl for other label techniques.
 
 =head2 scripts/macro.1.pl
 
@@ -1725,14 +1877,6 @@ The default for L<GraphViz2::Parse::ISA> is to plot from the bottom to the top (
 This is the opposite of L<GraphViz2>.
 
 See also dependency.pl, above.
-
-=head2 scripts/parse.marpa.pl
-
-Demonstrates graphing a L<Marpa>-style grammar.
-
-Inputs from t/sample.marpa.1 and outputs to ./html/parse.marpa.svg by default.
-
-The input grammar was extracted from L<Graph::Easy::Marpa::Parser> V 0.70, before the grammar supported L<Graph::Easy>'s groups.
 
 =head2 scripts/parse.recdescent.pl
 
@@ -1871,6 +2015,30 @@ Demonstrates the effect of the name of a subgraph, when that name does not start
 
 Outputs to ./html/rank.sub.graph.3.svg by default.
 
+=head2 scripts/record.1.pl
+
+Demonstrates a string as a label, containing both ports and orientation markers ({}).
+
+Outputs to ./html/record.1.svg by default.
+
+See also scripts/html.labels.pl and scripts/record.*.pl for other label techniques.
+
+=head2 scripts/record.2.pl
+
+Demonstrates an arrayref of hashrefs as a label, containing both ports and orientation markers ({}).
+
+Outputs to ./html/record.2.svg by default.
+
+See also scripts/html.labels.pl and scripts/record.*.pl for other label techniques.
+
+=head2 scripts/record.3.pl
+
+Demonstrates a string as a label, containing ports and deeply nested orientation markers ({}).
+
+Outputs to ./html/record.3.svg by default.
+
+See also scripts/html.labels.pl and scripts/record.*.pl for other label techniques.
+
 =head2 scripts/rank.sub.graph.4.pl
 
 Demonstrates the effect of the name of a subgraph, when that name starts with 'cluster'.
@@ -2000,6 +2168,7 @@ r
 @@ arrow
 box
 crow
+curve
 diamond
 dot
 inv
@@ -2042,15 +2211,18 @@ edgetarget => edge
 edgetooltip => edge
 epsilon => graph
 esep => graph
-fillcolor => node, cluster
+fillcolor => node, edge, cluster
 fixedsize => node
 fontcolor => edge, node, graph, cluster
 fontname => edge, node, graph, cluster
 fontnames => graph
 fontpath => graph
 fontsize => edge, node, graph, cluster
+forcelabels => graph
+gradientangle => node, cluster, graph
 group => node
 headURL => edge
+head_lp => edge
 headclip => edge
 headhref => edge
 headlabel => edge
@@ -2059,8 +2231,9 @@ headtarget => edge
 headtooltip => edge
 height => node
 href => graph, cluster, node, edge
-id => graph, node, edge
+id => graph, cluster, node, edge
 image => node
+imagepath => graph
 imagescale => node
 label => edge, node, graph, cluster
 labelURL => edge
@@ -2077,8 +2250,10 @@ labelloc => node, graph, cluster
 labeltarget => edge
 labeltooltip => edge
 landscape => graph
-layer => edge, node
+layer => edge, node, cluster
+layerlistsep => graph
 layers => graph
+layerselect => graph
 layersep => graph
 layout => graph
 len => edge
@@ -2089,7 +2264,7 @@ lheight => graph, cluster
 lp => edge, graph, cluster
 ltail => edge
 lwidth => graph, cluster
-margin => node, graph
+margin => node, cluster, graph
 maxiter => graph
 mclimit => graph
 mindist => graph
@@ -2147,9 +2322,10 @@ smoothing => graph
 sortv => graph, cluster, node
 splines => graph
 start => graph
-style => edge, node, cluster
+style => edge, node, cluster, graph
 stylesheet => graph
 tailURL => edge
+tail_lp => edge
 tailclip => edge
 tailhref => edge
 taillabel => edge
@@ -2164,6 +2340,8 @@ viewport => graph
 voro_margin => graph
 weight => edge
 width => node
+xlabel => edge, node
+xlp => node, edge
 z => node
 
 @@ global
@@ -2181,8 +2359,10 @@ timeout
 Mcircle
 Mdiamond
 Msquare
+assembly
 box
 box3d
+cds
 circle
 component
 diamond
@@ -2190,14 +2370,19 @@ doublecircle
 doubleoctagon
 egg
 ellipse
+fivepoverhang
 folder
 hexagon
 house
+insulator
 invhouse
 invtrapezium
 invtriangle
+larrow
+lpromoter
 none
 note
+noverhang
 octagon
 oval
 parallelogram
@@ -2205,14 +2390,27 @@ pentagon
 plaintext
 point
 polygon
+primersite
+promoter
+proteasesite
+proteinstab
+rarrow
 rect
 rectangle
+restrictionsite
+ribosite
+rnastab
+rpromoter
 septagon
+signature
 square
 tab
+terminator
+threepoverhang
 trapezium
 triangle
 tripleoctagon
+utr
 
 @@ output_format
 bmp
@@ -2248,5 +2446,6 @@ vml
 vmlz
 vrml
 wbmp
+webp
 xdot
 xlib
