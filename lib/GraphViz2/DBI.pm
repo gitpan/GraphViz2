@@ -1,7 +1,11 @@
 package GraphViz2::DBI;
 
 use strict;
+use utf8;
 use warnings;
+use warnings  qw(FATAL utf8);    # Fatalize encoding glitches.
+use open      qw(:std :utf8);    # Undeclared streams in UTF-8.
+use charnames qw(:full :short);  # Unneeded in v5.16.
 
 use GraphViz2;
 
@@ -15,7 +19,7 @@ fieldhash my %table      => 'table';
 fieldhash my %table_info => 'table_info';
 fieldhash my %type       => 'type';
 
-our $VERSION = '2.14';
+our $VERSION = '2.15';
 
 # -----------------------------------------------
 

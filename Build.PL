@@ -51,7 +51,26 @@ sub is_perl_recent
 is_dot_installed();
 is_perl_recent();
 
-Module::Build -> new
+my $class = Module::Build->subclass(code => <<'EOF');
+
+sub ACTION_authortest
+{
+	my($self) = @_;
+
+	$self->depends_on('build');
+	$self->depends_on('manifest');
+	$self->depends_on('distmeta');
+
+	$self->test_files( qw< t xt/author > );
+	$self->recursive_test_files(1);
+
+	$self->depends_on('test');
+
+	return;
+}
+EOF
+
+$class -> new
 (
  module_name    => 'GraphViz2',
  license        => 'artistic_2',
@@ -69,9 +88,12 @@ Module::Build -> new
  requires =>
  {
 	Algorithm::Dependency       => 1.110,
+	Algorithm::Dependency::Source::HoA => 1.110,
 	Capture::Tiny               => 0.10,
+	charnames                   => 0,
 	Class::ISA                  => 0.36,
 	Class::Load                 => 0.17,
+	Config                      => 0,
 	Date::Format                => 2.24,
 	Data::Section::Simple       => 0.02,
 	DBI                         => 1.616,
@@ -83,8 +105,9 @@ Module::Build -> new
 	HTML::Entities::Interpolate => 1.04,
 	HTML::TreeBuilder           => 4.2,
 	HTTP::Tiny                  => 0.012,
-	IPC::Run                    => 0.90,
+	IPC::Run3                   => 0.046,
 	Log::Handler                => 0.71,
+	open                        => 0,
 	parent                      => 0.225,
 	Parse::RecDescent           => 1.965001,
 	perl                        => '5.14.2', # For the utf stuff.

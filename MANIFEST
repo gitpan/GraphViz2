@@ -3,18 +3,15 @@ Changelog.ini
 Changes
 data/arrow.shapes.dat
 data/arrow.shapes.html
-data/arrow.shapes.old.html
 data/attributes.dat
 data/attributes.html
-data/attributes.old.html
 data/node.shapes.dat
 data/node.shapes.html
-data/node.shapes.old.html
 data/output.formats.dat
 data/output.formats.html
-data/output.formats.old.html
 data/record.1.dot
 html/anonymous.svg
+html/circo.svg
 html/cluster.svg
 html/dbi.schema.svg
 html/dependency.svg
@@ -58,7 +55,6 @@ lib/GraphViz2.pm
 lib/GraphViz2/Data/Grapher.pm
 lib/GraphViz2/DBI.pm
 lib/GraphViz2/Parse/ISA.pm
-lib/GraphViz2/Parse/Marpa.pm
 lib/GraphViz2/Parse/RecDescent.pm
 lib/GraphViz2/Parse/Regexp.pm
 lib/GraphViz2/Parse/STT.pm
@@ -72,6 +68,7 @@ META.json
 META.yml
 README
 scripts/anonymous.pl
+scripts/circo.pl
 scripts/cluster.pl
 scripts/dbi.schema.pl
 scripts/dependency.pl
@@ -101,6 +98,7 @@ scripts/parse.xml.pp.pl
 scripts/parse.yacc.pl
 scripts/parse.yapp.pl
 scripts/plaintext.pl
+scripts/pod2html.sh
 scripts/quote.pl
 scripts/rank.sub.graph.1.pl
 scripts/rank.sub.graph.2.pl
@@ -129,7 +127,6 @@ t/lib/Adult/Child2.pm
 t/lib/GoldenDelicious.pm
 t/lib/GrannySmith.pm
 t/lib/HybridVariety.pm
-t/pod.t
 t/sample.html
 t/sample.recdescent.1.dat
 t/sample.recdescent.2.dat
@@ -137,3 +134,4 @@ t/sample.stt.1.dat
 t/sample.stt.2.dat
 t/sample.xml
 t/test.t
+xt/author/pod.t

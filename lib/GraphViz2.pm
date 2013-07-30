@@ -1,7 +1,11 @@
 package GraphViz2;
 
 use strict;
+use utf8;
 use warnings;
+use warnings  qw(FATAL utf8);    # Fatalize encoding glitches.
+use open      qw(:std :utf8);    # Undeclared streams in UTF-8.
+use charnames qw(:full :short);  # Unneeded in v5.16.
 
 use Data::Section::Simple 'get_data_section';
 
@@ -10,7 +14,7 @@ use File::Which; # For which().
 
 use Hash::FieldHash ':all';
 
-use IPC::Run;
+use IPC::Run3; # For run3().
 
 use Set::Array;
 
@@ -31,7 +35,7 @@ fieldhash my %subgraph         => 'subgraph';
 fieldhash my %verbose          => 'verbose';
 fieldhash my %valid_attributes => 'valid_attributes';
 
-our $VERSION = '2.14';
+our $VERSION = '2.15';
 
 # -----------------------------------------------
 
@@ -149,10 +153,7 @@ sub add_node
 				$text = $$label[$index];
 			}
 
-			# HTML labels affect this code. Patches here must be replicated below.
-
-			$text =~ s#([[\]])#\\$1#g;
-			$text =~ s#"#\\"#g if ($text !~ /^</); # Escape double quotes if it's not an HTML label.
+			$text = $self -> escape_some_chars($text);
 
 			if (ref $$label[$index] eq 'HASH')
 			{
@@ -174,10 +175,7 @@ sub add_node
 	}
 	elsif ($label)
 	{
-		# HTML labels affect this code. Patches here must be replicated above.
-
-		$arg{label} =~ s#([[\]])#\\$1#g;
-		$arg{label} =~ s#"#\\"#g if ($arg{label} !~ /^</); # Escape double quotes if it's not an HTML label.
+		$arg{label} = $self -> escape_some_chars($arg{label});
 	}
 
 	$$node{$name}{attributes} = {%arg};
@@ -295,6 +293,45 @@ sub dependency
 	return $self;
 
 } # End of dependency.
+
+# -----------------------------------------------
+
+sub escape_some_chars
+{
+	my($self, $s) = @_;
+	my(@s)        = split(//, $s);
+	my($label)    = '';
+
+	for my $i (0 .. $#s)
+	{
+		if ( ($s[$i] eq '[') || ($s[$i] eq ']') )
+		{
+			# Escape if not escaped.
+
+			if ( ($i == 0) || ( ($i > 0) && ($s[$i - 1] ne '\\') ) )
+			{
+				$label .= '\\';
+			}
+		}
+		elsif ($s[$i] eq '"')
+		{
+			if (substr($s, 0, 1) ne '<')
+			{
+				# It's not a HTML label. Escape if not escaped.
+
+				if ( ($i == 0) || ( ($i > 0) && ($s[$i - 1] ne '\\') ) )
+				{
+					$label .= '\\';
+				}
+			}
+		}
+
+		$label .= $s[$i];
+	}
+
+	return $label;
+
+} # End of escape_some_chars.
 
 # -----------------------------------------------
 
@@ -600,12 +637,21 @@ sub run
 
 	try
 	{
-		$self -> dot_input(join('', @{$self -> command -> print} ) . "}\n");
+		$self -> dot_input(join('', @{$self -> command -> print}) . "}\n");
 		$self -> log(debug => $self -> dot_input);
 
 		my($stdout, $stderr);
 
-		IPC::Run::run([$driver, "-T$format"], \$self -> dot_input, \$stdout, \$stderr);
+		run3
+			[$driver, "-T$format"],
+			\$self -> dot_input,
+			\$stdout,
+			\$stderr,
+			{
+				binmode_stdin  => ':utf8',
+				binmode_stdout => ':utf8',
+				binmode_stderr => ':utf8',
+			};
 
 		die $stderr if ($stderr);
 
@@ -614,7 +660,7 @@ sub run
 		if ($output_file)
 		{
 			open(OUT, '>', $output_file) || die "Can't open(> $output_file): $!";
-			binmode OUT;
+			#binmode OUT;
 			print OUT $stdout;
 			close OUT;
 
@@ -1900,7 +1946,9 @@ Inputs from t/sample.stt.1.dat and outputs to ./html/parse.stt.svg by default.
 
 The input grammar was extracted from L<Set::FA::Element>.
 
-You can patch the *.pl to read from t/sample.stt.2.dat, which was output by L<Graph::Easy::Marpa::DFA> V 0.70.
+You can patch the scripts/parse.stt.pl to read from t/sample.stt.2.dat instead of t/sample.stt.1.dat.
+t/sample.stt.2.dat was extracted from a obsolete version of L<Graph::Easy::Marpa>, i.e. V 1.*. The Marpa-based
+parts of the latter module were completely rewritten for V 2.*.
 
 =head2 scripts/parse.yacc.pl
 

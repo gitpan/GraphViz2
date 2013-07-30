@@ -77,9 +77,12 @@ WriteMakefile
  PREREQ_PM =>
  {
 	Algorithm::Dependency       => 1.110,
+	Algorithm::Dependency::Source::HoA => 1.110,
 	Capture::Tiny               => 0.10,
+	charnames                   => 0,
 	Class::ISA                  => 0.36,
 	Class::Load                 => 0.17,
+	Config                      => 0,
 	Date::Format                => 2.24,
 	Data::Section::Simple       => 0.02,
 	DBI                         => 1.616,
@@ -91,8 +94,9 @@ WriteMakefile
 	HTML::Entities::Interpolate => 1.04,
 	HTML::TreeBuilder           => 4.2,
 	HTTP::Tiny                  => 0.012,
-	IPC::Run                    => 0.90,
+	IPC::Run3                   => 0.046,
 	Log::Handler                => 0.71,
+	open                        => 0,
 	parent                      => 0.225,
 	Parse::RecDescent           => 1.965001,
 	perl                        => '5.14.2', # For the utf stuff.
@@ -100,7 +104,7 @@ WriteMakefile
 	Scalar::Util                => 1.23,
 	Set::Array                  => 0.23,
 	strict                      => 0,
- 	Test::More                => 0.94,
+ 	Test::More                  => 0.94,
 # 	Test::Pod                   => 1.45, # Make it optional. See t/pod.t
 	Text::Xslate                => 1.2000,
 	Tree::DAG_Node              => 1.06,

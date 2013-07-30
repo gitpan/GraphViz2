@@ -16,45 +16,44 @@ name: GraphViz2
 provides:
   GraphViz2:
     file: lib/GraphViz2.pm
-    version: 2.14
+    version: 2.15
   GraphViz2::DBI:
     file: lib/GraphViz2/DBI.pm
-    version: 2.14
+    version: 2.15
   GraphViz2::Data::Grapher:
     file: lib/GraphViz2/Data/Grapher.pm
-    version: 2.14
+    version: 2.15
   GraphViz2::Parse::ISA:
     file: lib/GraphViz2/Parse/ISA.pm
-    version: 2.14
-  GraphViz2::Parse::Marpa:
-    file: lib/GraphViz2/Parse/Marpa.pm
-    version: 2.14
+    version: 2.15
   GraphViz2::Parse::RecDescent:
     file: lib/GraphViz2/Parse/RecDescent.pm
-    version: 2.14
+    version: 2.15
   GraphViz2::Parse::Regexp:
     file: lib/GraphViz2/Parse/Regexp.pm
-    version: 2.14
+    version: 2.15
   GraphViz2::Parse::STT:
     file: lib/GraphViz2/Parse/STT.pm
-    version: 2.14
+    version: 2.15
   GraphViz2::Parse::XML:
     file: lib/GraphViz2/Parse/XML.pm
-    version: 2.14
+    version: 2.15
   GraphViz2::Parse::Yacc:
     file: lib/GraphViz2/Parse/Yacc.pm
-    version: 2.14
+    version: 2.15
   GraphViz2::Parse::Yapp:
     file: lib/GraphViz2/Parse/Yapp.pm
-    version: 2.14
+    version: 2.15
   GraphViz2::Utils:
     file: lib/GraphViz2/Utils.pm
-    version: 2.14
+    version: 2.15
 requires:
   Algorithm::Dependency: 1.11
+  Algorithm::Dependency::Source::HoA: 1.11
   Capture::Tiny: 0.1
   Class::ISA: 0.36
   Class::Load: 0.17
+  Config: 0
   DBI: 1.616
   Data::Section::Simple: 0.02
   Date::Format: 2.24
@@ -66,7 +65,7 @@ requires:
   HTML::TreeBuilder: 4.2
   HTTP::Tiny: 0.012
   Hash::FieldHash: 0.1
-  IPC::Run: 0.9
+  IPC::Run3: 0.046
   Log::Handler: 0.71
   Parse::RecDescent: 1.965001
   Perl6::Slurp: 0.03
@@ -77,6 +76,8 @@ requires:
   Try::Tiny: 0.09
   XML::Bare: 0
   XML::Tiny: 2.06
+  charnames: 0
+  open: 0
   parent: 0.225
   perl: v5.14.2
   strict: 0
@@ -84,4 +85,4 @@ requires:
   warnings: 0
 resources:
   license: http://www.perlfoundation.org/artistic_license_2_0
-version: 2.14
+version: 2.15
