@@ -5,11 +5,37 @@ use warnings;
 
 use GraphViz2;
 
-use Hash::FieldHash ':all';
+use Moo;
 
-fieldhash my %graph => 'graph';
+has graph =>
+(
+	default  => sub{return {} },
+	is       => 'rw',
+	#isa     => 'GraphViz2',
+	required => 0,
+);
 
-our $VERSION = '2.15';
+our $VERSION = '2.16';
+
+# -----------------------------------------------
+
+sub BUILD
+{
+	my($self) = @_;
+
+	$self -> graph
+	(
+		GraphViz2 -> new
+		(
+			edge   => {color => 'grey'},
+			global => {directed => 1},
+			graph  => {rankdir => 'TB'},
+			logger => '',
+			node   => {color => 'blue', shape => 'oval'},
+		)
+	);
+
+} # End of BUILD.
 
 # -----------------------------------------------
 
@@ -30,7 +56,10 @@ sub create
 		$line  =~ s/^\[//;
 		$line  =~ s/],?$//;
 		@field = split(/\s*,\s*/, $line);
-		@field = map{s/^(["'])(.+)\1/$2/; $_} @field;
+
+		# The first 2 '\'s are just to fix the syntax highlighting in UltraEdit.
+
+		@field = map{s/^([\"\'])(.+)\1/$2/; $_} @field;
 
 		for $i (0, 2)
 		{
@@ -65,37 +94,6 @@ sub create
 
 # -----------------------------------------------
 
-sub _init
-{
-	my($self, $arg) = @_;
-	$$arg{graph}    ||= GraphViz2 -> new
-		(
-		 edge   => {color => 'grey'},
-		 global => {directed => 1},
-		 graph  => {rankdir => 'LR'},
-		 logger => '',
-		 node   => {color => 'green', shape => 'oval'},
-		);
-	$self = from_hash($self, $arg);
-
-	return $self;
-
-} # End of _init.
-
-# -----------------------------------------------
-
-sub new
-{
-	my($class, %arg) = @_;
-	my($self)        = bless {}, $class;
-	$self            = $self -> _init(\%arg);
-
-	return $self;
-
-}	# End of new.
-
-# -----------------------------------------------
-
 1;
 
 =pod
@@ -118,7 +116,7 @@ L<GraphViz2::Parse::STT> - Visualize a Set::FA::Element state transition table a
 
 	use Log::Handler;
 
-	use Perl6::Slurp;
+	use File::Slurp; # For read_file().
 
 	# ------------------------------------------------
 
@@ -143,7 +141,7 @@ L<GraphViz2::Parse::STT> - Visualize a Set::FA::Element state transition table a
 		 node   => {color => 'green', shape => 'oval'},
 		);
 	my($g)  = GraphViz2::Parse::STT -> new(graph => $graph);
-	my $stt = slurp(File::Spec -> catfile('t', 'sample.stt.1.dat') );
+	my $stt = read_file(File::Spec -> catfile('t', 'sample.stt.1.dat') );
 
 	$g -> create(stt => $stt);
 

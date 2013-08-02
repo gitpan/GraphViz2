@@ -7,123 +7,125 @@ use warnings  qw(FATAL utf8);    # Fatalize encoding glitches.
 use open      qw(:std :utf8);    # Undeclared streams in UTF-8.
 use charnames qw(:full :short);  # Unneeded in v5.16.
 
-use File::Basename; # For basename().
+use Config;
+
+use Date::Simple;
+
 use File::Spec;
 
-use Hash::FieldHash ':all';
+use GraphViz2::Config;
+use GraphViz2::Filer;
 
-use Perl6::Slurp;
+use HTML::Entities::Interpolate;
 
-fieldhash my %graph => 'graph';
+use Moo;
 
-our $VERSION = '2.15';
+use Perl6::Slurp; # For slurp().
 
-# ------------------------------------------------
+use Text::Xslate 'mark_raw';
 
-sub get_annotations
-{
-	my($self)     = @_;
-	my($dir_name) = 'scripts';
+has config =>
+(
+	default  => sub{return GraphViz2::Config -> new -> config},
+	is       => 'rw',
+#	isa      => 'HashRef',
+	required => 0,
+);
 
-	$|=1;
-
-	opendir(INX, $dir_name);
-	my(@file_name) = sort grep{! -d $_} readdir INX;
-	closedir INX;
-
-	my(%annotation);
-	my(@line);
-	my($s);
-
-	for my $file_name (@file_name)
-	{
-		@line = slurp(File::Spec -> catfile($dir_name, $file_name), {chomp => 1});
-
-		if ( ($#line >= 3) && ($line[3] =~ /^# Annotation: (.+)$/) )
-		{
-			# Preserve $1 in case basename changes it.
-
-			$s                                       = $1;
-			$annotation{basename($file_name, '.pl')} = $s;
-		}
-	}
-
-	return %annotation;
-
-} # End of get_annotations.
+our $VERSION = '2.16';
 
 # ------------------------------------------------
 
-sub get_files
+sub generate_demo_environment
 {
-	my($self, $format) = @_;
-	my($dir_name)      = 'html';
+	my($self) = @_;
 
-	opendir(INX, $dir_name);
-	my(@file) = sort grep{/$format$/} readdir INX;
-	closedir INX;
+	my(@environment);
 
-	my(%file);
+	# mark_raw() is needed because of the HTML tag <a>.
 
-	for my $file_name (@file)
-	{
-		$file{basename($file_name, ".$format")} = $file_name;
-	}
+	push @environment,
+	{left => 'Author', right => mark_raw(qq|<a href="http://savage.net.au/">Ron Savage</a>|)},
+	{left => 'Date',   right => Date::Simple -> today},
+	{left => 'OS',     right => 'Debian V 6'},
+	{left => 'Perl',   right => $Config{version} };
 
-	return %file;
+	return \@environment;
 
-} # End of get_files.
-
-# ------------------------------------------------
-
-sub get_scripts
-{
-	my($self)     = @_;
-	my($dir_name) = 'scripts';
-
-	opendir(INX, $dir_name);
-	my(@file_name) = sort grep{! -d $_ && /\.pl$/} readdir INX;
-	closedir INX;
-
-	my(@line);
-	my(%script);
-
-	for my $file_name (map{File::Spec -> catfile($dir_name, $_)} @file_name)
-	{
-		@line = slurp($file_name, {chomp => 1});
-
-		if ( ($#line >= 3) && ($line[3] =~ /^# Annotation: (?:.+)$/) )
-		{
-			$script{basename($file_name, '.pl')} = $file_name;
-		}
-	}
-
-	return %script;
-
-} # End of get_scripts.
+} # End of generate_demo_environment.
 
 # -----------------------------------------------
 
-sub _init
+sub generate_demo_index
 {
-	my($self, $arg) = @_;
-	$self = from_hash($self, $arg);
+	my($self)          = @_;
+	my($html_dir_name) = 'html';
+	my(%script_file)   = GraphViz2::Filer -> new -> get_scripts;
 
-	return $self;
+	my($html_name);
+	my($line, @line);
+	my($note);
 
-} # End of _init.
+	for my $key (sort keys %script_file)
+	{
+		$line      = slurp $script_file{$key}, {utf8 => 1};
+		@line      = split(/\n/, $line);
+		$note      = $line[3];
+		$note      =~ s/Annotation: //;
+		$html_name = "$html_dir_name/$key.svg";
 
-# -----------------------------------------------
+		$script_file{$key} =
+		{
+			image_name  => -e $html_name ? $html_name : '',
+			note        => $note,
+			script_name => $script_file{$key},
+		};
+	}
 
-sub new
-{
-	my($class, %arg) = @_;
-	my($self)        = bless {}, $class;
-	$self            = $self -> _init(\%arg);
+	my(@key)       = sort keys %script_file;
+	my($config)    = $self -> config;
+	my($templater) = Text::Xslate -> new
+	(
+		input_layer => '',
+		path        => $$config{template_path},
+	);
+	my($count) = 0;
+	my($index) = $templater -> render
+	(
+	'graphviz2.index.tx',
+	{
+		default_css     => "$$config{css_url}/default.css",
+		data =>
+			[
+			map
+			{
+				{
+					count       => ++$count,
+					image       => "./$_.svg",
+					image_name  => $script_file{$_}{image_name},
+					note        => $script_file{$_}{note},
+					script_name => $script_file{$_}{script_name},
+				};
+			} @key
+			],
+		environment     => $self -> generate_demo_environment,
+		fancy_table_css => "$$config{css_url}/fancy.table.css",
+		version         => $VERSION,
+	}
+	);
+	my($file_name) = File::Spec -> catfile($html_dir_name, 'index.html');
 
-	return $self;
+	open(OUT, '>', $file_name);
+	print OUT $index;
+	close OUT;
 
-}	# End of new.
+	print "Wrote $file_name\n";
+
+	# Return 0 for success and 1 for failure.
+
+	return 0;
+
+} # End of generate_demo_index.
 
 # -----------------------------------------------
 
@@ -133,15 +135,23 @@ sub new
 
 =head1 NAME
 
-L<GraphViz2::Utils> - Some utils to simplify testing
+L<GraphViz2::Utils> - Some utils to generate the demo page
 
 =head1 Synopsis
 
-See scripts/generate.index.pl and t/test.t.
+See L<GraphViz2/Synopsis>.
+
+See scripts/generate.index.pl.
+
+Note: scripts/generate.index.pl outputs to a directory called 'html' in the 'current' directory.
+
+See: L<http://savage.net.au/Perl-modules/html/graph.easy.marpa/index.html>.
 
 =head1 Description
 
-Some utils to simplify testing.
+Some utils to simplify generation of the demo page.
+
+It is not expected that end-users would ever need to use this module.
 
 =head1 Distributions
 
@@ -192,6 +202,26 @@ Key-value pairs accepted in the parameter list:
 
 =back
 
+=head1 Methods
+
+=head2 generate_demo_environment()
+
+Returns a hashref of OS, etc, values.
+
+Keys are C<left> and C<right>, to suit C<htdocs/assets/templates/graph/easy/marpa/fancy.table.tx>.
+
+C<*.tx> files are used by L<Text::Xslate>.
+
+Called by L</generate_demo_index()>.
+
+=head2 generate_demo_index()
+
+Calls L<GraphViz2::Filer/get_files($dir_name, $type)> and L</generate_demo_environment()>.
+
+Writes C<html/index.html>.
+
+See scripts/generate.index.pl.
+
 =head1 Thanks
 
 Many thanks are due to the people who chose to make L<Graphviz|http://www.graphviz.org/> Open Source.
@@ -204,7 +234,7 @@ Version numbers < 1.00 represent development versions. From 1.00 up, they are pr
 
 =head1 Machine-Readable Change Log
 
-The file CHANGES was converted into Changelog.ini by L<Module::Metadata::Changes>.
+The file Changes was converted into Changelog.ini by L<Module::Metadata::Changes>.
 
 =head1 Support
 
