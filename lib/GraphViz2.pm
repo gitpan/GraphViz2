@@ -132,7 +132,7 @@ has valid_attributes =>
 	required => 0,
 );
 
-our $VERSION = '2.17';
+our $VERSION = '2.18';
 
 # -----------------------------------------------
 
@@ -152,11 +152,6 @@ sub BUILD
 		strict       => 0,
 		timeout      => 10,
 	};
-
-	for my $key (sort keys %$global)
-	{
-		print "$key => $$global{$key}. \n";
-	}
 
 	$self -> global($global);
 	$self -> load_valid_attributes;
@@ -1044,16 +1039,6 @@ name => 'G666' outputs 'digraph G666 {...}'.
 The default is 'Perl' :-).
 
 This key is optional.
-
-=item o record_orientation => /^(?:horizontal|vertical)$/
-
-Ignored as of V 2.10. This option will be removed in a future version.
-
-The following text applies to prior versions:
-
-This option affects how records are plotted. The value must be 'horizontal' or 'vertical'.
-
-The default is 'vertical', which suits L<GraphViz2::DBI>.
 
 =item o record_shape => /^(?:M?record)$/
 
