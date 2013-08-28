@@ -9,7 +9,6 @@ use charnames qw(:full :short);  # Unneeded in v5.16.
 
 use Data::Section::Simple 'get_data_section';
 
-use File::Temp ();
 use File::Which; # For which().
 
 use Moo;
@@ -132,7 +131,7 @@ has valid_attributes =>
 	required => 0,
 );
 
-our $VERSION = '2.19';
+our $VERSION = '2.20';
 
 # -----------------------------------------------
 
@@ -764,7 +763,9 @@ sub stringify_attributes
 
 	for my $key (sort keys %$option)
 	{
-		$dot .= $$option{$key} =~ /^<.+>$/ ? qq|$key=$$option{$key} | : qq|$key="$$option{$key}" |;
+		$$option{$key} =~ s/^\s+(<)/$1/;
+		$$option{$key} =~ s/(>)\s+$/$1/;
+		$dot           .= ($$option{$key} =~ /^<.+>$/s) ? qq|$key=$$option{$key} | : qq|$key="$$option{$key}" |;
 	}
 
 	if ($context eq 'subgraph')
@@ -1341,7 +1342,7 @@ The format is "<$port_name>".
 
 =back
 
-See scripts/html.labels.pl and scripts/record.*.pl for sample code.
+See scripts/html.labels.*.pl and scripts/record.*.pl for sample code.
 
 See also the FAQ topic L</How labels interact with ports>.
 
@@ -1438,7 +1439,13 @@ one edge, and which defaults to:
 If I<from_port> is not provided by the caller, it defaults to '' (the empty string). If it is provided,
 it contains a leading ':'. Likewise for I<to_port>.
 
-See scripts/report.nodes.and.edges.pl (a version of scripts/html.labels.pl) for a complete example.
+See scripts/report.nodes.and.edges.pl (a version of scripts/html.labels.1.pl) for a complete example.
+
+=head2 escape_some_chars($s)
+
+Escapes various chars in various circumstances, because some chars are treated specially by Graphviz.
+
+See the L</FAQ> for a discussion of this tricky topic.
 
 =head2 load_valid_attributes()
 
@@ -1450,7 +1457,7 @@ These attributes are used to validate attributes in many situations.
 
 You wouldn't normally need to use this method.
 
-=head2 sub log([$level, $message])
+=head2 log([$level, $message])
 
 Logs the message at the given log level.
 
@@ -1495,7 +1502,7 @@ which defaults to:
 		attributes => {},
 	}
 
-See scripts/report.nodes.and.edges.pl (a version of scripts/html.labels.pl) for a complete example,
+See scripts/report.nodes.and.edges.pl (a version of scripts/html.labels.1.pl) for a complete example,
 including usage of the corresponding L</edge_hash()> method.
 
 =head2 pop_subgraph()
@@ -1673,6 +1680,16 @@ and examine html/utf8.2.png and you'll see it matches html/utf8.2.svg in showing
 
 Under Unix, output as PDF, and then try: lp -o fitplot html/parse.stt.pdf (or whatever).
 
+=head2 Can I include spaces and newlines in HTML labels?
+
+Yes. The code removes leading and trailing whitespace on HTML labels before calling 'dot'.
+
+Also, the code, and 'dot', both accept newlines embedded within such labels.
+
+Together, these allow HTML labels to be formatted nicely in the calling code.
+
+See <the Graphviz docs|http://www.graphviz.org/content/node-shapes#record> for their discussion on whitespace.
+
 =head2 I'm having trouble with special characters in node names and labels
 
 L<GraphViz2> escapes these 2 characters in those contexts: [].
@@ -1681,7 +1698,7 @@ Escaping the 2 chars [] started with V 2.10. Previously, all of []{} were escape
 to control the orientation of fields, so they should not have been escaped in the first place.
 See scripts/record.1.pl.
 
-Double-quotes are escaped when the label is I<not> an HTML label. See scripts/html.labels.pl for sample code using font color.
+Double-quotes are escaped when the label is I<not> an HTML label. See scripts/html.labels.*.pl for sample code.
 
 It would be nice to also escape | and <, but these characters are used in specifying fields and ports in records.
 
@@ -1773,7 +1790,7 @@ The same label is specified in the previous case.
 
 =item o As an arrayref of strings
 
-From scripts/html.labels.pl:
+From scripts/html.labels.1.pl:
 
 	$graph -> add_node(name => 'Oakleigh', shape => 'record', color => 'blue',
 		label => ['West Oakleigh', 'East Oakleigh']);
@@ -1783,7 +1800,7 @@ Here, again, you do not specify the field separator character '|'.
 What happens is that each string is taken to be the label of a field, and each field is given
 an auto-generated port name of the form "<port$n>", where $n starts from 1.
 
-Here's how you refer to those ports, again from scripts/html.labels.pl:
+Here's how you refer to those ports, again from scripts/html.labels.1.pl:
 
 	$graph -> add_edge(from => 'Murrumbeena', to => 'Oakleigh:port2',
 		color => 'green', label => '<Drive<br/>Run<br/>Sprint>');
@@ -1956,15 +1973,21 @@ Outputs to ./html/Heawood.svg by default.
 
 This program was reverse-engineered from graphs/undirected/Heawood.gv in the distro for L<Graphviz|http://www.graphviz.org/> V 2.26.3.
 
-=head2 scripts/html.labels.pl
+=head2 scripts/html.labels.1.pl
 
-Demonstrates a trivial 3-node graph, with colors and HTML labels.
+Demonstrates a HTML label without a table.
 
 Also demonstrates an arrayref of strings as a label.
 
-Outputs to ./html/html.labels.svg by default.
-
 See also scripts/record.*.pl for other label techniques.
+
+Outputs to ./html/html.labels.1.svg by default.
+
+=head2 scripts/html.labels.2.pl
+
+Demonstrates a HTML label with a table.
+
+Outputs to ./html/html.labels.2.svg by default.
 
 =head2 scripts/macro.1.pl
 
@@ -2164,7 +2187,7 @@ Demonstrates a string as a label, containing both ports and orientation markers 
 
 Outputs to ./html/record.1.svg by default.
 
-See also scripts/html.labels.pl and scripts/record.*.pl for other label techniques.
+See also scripts/html.labels.2.pl and scripts/record.*.pl for other label techniques.
 
 =head2 scripts/record.2.pl
 
@@ -2172,7 +2195,7 @@ Demonstrates an arrayref of hashrefs as a label, containing both ports and orien
 
 Outputs to ./html/record.2.svg by default.
 
-See also scripts/html.labels.pl and scripts/record.*.pl for other label techniques.
+See also scripts/html.labels.1.pl the other type of HTML labels.
 
 =head2 scripts/record.3.pl
 
@@ -2180,7 +2203,7 @@ Demonstrates a string as a label, containing ports and deeply nested orientation
 
 Outputs to ./html/record.3.svg by default.
 
-See also scripts/html.labels.pl and scripts/record.*.pl for other label techniques.
+See also scripts/html.labels.*.pl and scripts/record.*.pl for other label techniques.
 
 =head2 scripts/record.4.pl
 

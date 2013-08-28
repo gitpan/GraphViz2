@@ -12,7 +12,8 @@ perl -Ilib scripts/circo.pl             svg > $DIR/circo.log
 perl -Ilib scripts/cluster.pl           svg > $DIR/cluster.log
 perl -Ilib scripts/dbi.schema.pl        svg > $DIR/dbi.schema.log
 perl -Ilib scripts/dependency.pl        svg > $DIR/dependency.log
-perl -Ilib scripts/html.labels.pl       svg > $DIR/html.labels.log
+perl -Ilib scripts/html.labels.1.pl     svg > $DIR/html.labels.1.log
+perl -Ilib scripts/html.labels.2.pl     svg > $DIR/html.labels.2.log
 perl -Ilib scripts/jointed.edges.pl     svg > $DIR/jointed.edges.log
 perl -Ilib scripts/macro.1.pl           svg > $DIR/macro.1.log
 perl -Ilib scripts/macro.2.pl           svg > $DIR/macro.2.log
@@ -47,3 +48,7 @@ perl -Ilib scripts/utf8.1.pl            svg > $DIR/utf8.1.log
 perl -Ilib scripts/utf8.2.pl            svg > $DIR/utf8.2.log
 
 perl -Ilib scripts/generate.demo.pl svg
+
+cp html/* $DR/Perl-modules/html/graphviz2/
+
+echo Also, copy demo files to the real web site...
