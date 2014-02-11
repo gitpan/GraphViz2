@@ -130,7 +130,7 @@ has valid_attributes =>
 	required => 0,
 );
 
-our $VERSION = '2.26';
+our $VERSION = '2.27';
 
 # -----------------------------------------------
 
@@ -766,6 +766,8 @@ sub stringify_attributes
 {
 	my($self, $context, $option) = @_;
 	my($dot) = '';
+
+	# Add double-quotes around anything (e.g. labels) which does not look like HTML.
 
 	for my $key (sort keys %$option)
 	{
