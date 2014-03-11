@@ -2,6 +2,7 @@ package GraphViz2::Parse::Regexp;
 
 use strict;
 use warnings;
+use warnings  qw(FATAL utf8); # Fatalize encoding glitches.
 
 use Capture::Tiny 'capture';
 
@@ -17,7 +18,7 @@ has graph =>
 	required => 0,
 );
 
-our $VERSION = '2.27';
+our $VERSION = '2.28';
 
 # -----------------------------------------------
 
