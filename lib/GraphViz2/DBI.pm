@@ -65,7 +65,7 @@ has type =>
 	required => 0,
 );
 
-our $VERSION = '2.28';
+our $VERSION = '2.29';
 
 # -----------------------------------------------
 
@@ -93,8 +93,23 @@ sub BUILD
 sub create
 {
 	my($self, %arg) = @_;
-	my($name) = $arg{name} || '';
-	my($info) = DBIx::Admin::TableInfo -> new(dbh => $self -> dbh) -> info;
+	my($name)       = $arg{name}    || '';
+	my($exclude)    = $arg{exclude} || [];
+	my($include)    = $arg{include} || [];
+	my($info)       = DBIx::Admin::TableInfo -> new(dbh => $self -> dbh) -> info;
+
+	my(%include);
+
+	@include{@$include} = (1) x @$include;
+
+	delete $$info{$_} for @$exclude;
+
+	# This 'if' stops us excluding all tables :-).
+
+	if ($#$include >= 0)
+	{
+		delete $$info{$_} for grep{! $include{$_} } keys %$info;
+	}
 
 	$self -> table_info($info);
 
@@ -118,7 +133,7 @@ sub create
 
 	for my $table_name (sort keys %$info)
 	{
-		# Make the table name + 'N columns-in-one' be a horizontal record.
+		# Step 1: Make the table name + 'N columns-in-one' be a horizontal record.
 
 		my($label) =
 		[
@@ -134,7 +149,7 @@ sub create
 			};
 		}
 
-		# Make the N columns be a vertical record.
+		# Step 2: Make the N columns be a vertical record.
 
 		$$label[1]{port}        = "{$$label[1]{port}";
 		$$label[$#$label]{text} .= '}';
@@ -301,19 +316,46 @@ This key is optional.
 
 =head1 Methods
 
-=head2 create(name => $name)
+=head2 create(exclude => [], include => [], name => $name)
 
 Creates the graph, which is accessible via the graph() method, or via the graph object you passed to new().
 
 Returns $self to allow method chaining.
 
-$name is the string which will be placed in the root node of the tree. It may be omitted, in which case the root node is omitted.
+Parameters:
+
+=over 4
+
+=item o exclude
+
+An optional arrayref of table names to exclude.
+
+If none are listed for exclusion, I<all> tables are included.
+
+=item o include
+
+An optional arrayref of table names to include.
+
+If none are listed for inclusion, I<all> tables are included.
+
+=item o name
+
+$name is the string which will be placed in the root node of the tree.
+It may be omitted, in which case the root node is omitted.
+
+=back
 
 =head2 graph()
 
 Returns the graph object, either the one supplied to new() or the one created during the call to new().
 
 =head1 FAQ
+
+=head2 Does GraphViz2::DBI work with MySQL/MariaDB databases?
+
+Yes. But see these L<warnings|https://metacpan.org/pod/DBIx::Admin::TableInfo#Description> when using MySQL/MariaDB.
+
+I'm currently using MariaDB V 5.5.38.
 
 =head2 Does GraphViz2::DBI work with SQLite databases?
 
