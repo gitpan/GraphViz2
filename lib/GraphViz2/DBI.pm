@@ -8,6 +8,8 @@ use DBIx::Admin::TableInfo;
 
 use GraphViz2;
 
+use Lingua::EN::PluralToSingular 'to_singular';
+
 use Moo;
 
 has catalog =>
@@ -65,7 +67,7 @@ has type =>
 	required => 0,
 );
 
-our $VERSION = '2.29';
+our $VERSION = '2.30';
 
 # -----------------------------------------------
 
@@ -119,14 +121,12 @@ sub create
 	{
 		# Port 1 is the table name.
 
-		$port              = 1;
+		$port              = 0;
 		$port{$table_name} = {};
 
-		for my $column_name (map{s/^"(.+)"$/$1/; $_} sort keys %{$$info{$table_name}{columns} })
+		for my $column_name (sort map{s/^"(.+)"$/$1/; $_} keys %{$$info{$table_name}{columns} })
 		{
-			$port++;
-
-			$port{$table_name}{$column_name} = "<port$port>";
+			$port{$table_name}{$column_name} = ++$port;
 
 		}
 	}
@@ -137,15 +137,15 @@ sub create
 
 		my($label) =
 		[
-			{text => $table_name},
+			{text => "<port0> $table_name"},
 		];
 
 		for my $column (sort keys %{$port{$table_name} })
 		{
 			push @$label,
 			{
-				port => $port{$table_name}{$column},
-				text => $column,
+				port => "<port$port{$table_name}{$column}>",
+				text => "$port{$table_name}{$column}: $column",
 			};
 		}
 
@@ -157,11 +157,55 @@ sub create
 		$self -> graph -> add_node(name => $table_name, label => [@$label]);
 	}
 
+	my($vendor_name) = uc $self -> dbh -> get_info(17);
+
+	my($temp_1, $temp_2, $temp_3);
+
+	if ($vendor_name eq 'MYSQL')
+	{
+		$temp_1 = 'PKTABLE_NAME';
+		$temp_2 = 'FKTABLE_NAME';
+		$temp_3 = 'FKCOLUMN_NAME';
+	}
+	else # ORACLE && POSTGRESQL && SQLITE (at least).
+	{
+		$temp_1 = 'UK_TABLE_NAME';
+		$temp_2 = 'FK_TABLE_NAME';
+		$temp_3 = 'FK_COLUMN_NAME';
+	}
+
+	my(%special_fk_column) =
+	(
+		spouse_id => 'person_id',
+	);
+
+	my($destination_port);
+	my($fk_column_name, $fk_table_name);
+	my($pk_table_name, $primary_key_name);
+	my($singular_name, $source_port);
+
 	for my $table_name (sort keys %$info)
 	{
-		for my $other_table (sort keys %{$$info{$table_name}{foreign_keys} })
+		for my $item (@{$$info{$table_name}{foreign_keys} })
 		{
-			$self -> graph -> add_edge(from => "$other_table:port2", to => "$table_name:port2");
+			$pk_table_name  = $$item{$temp_1};
+			$fk_table_name  = $$item{$temp_2};
+			$fk_column_name = $$item{$temp_3};
+			$source_port    = $fk_column_name ? $port{$fk_table_name}{$fk_column_name} : 2;
+
+			if ($pk_table_name)
+			{
+				$singular_name    = to_singular($pk_table_name);
+				$primary_key_name = $special_fk_column{$fk_column_name} ? $special_fk_column{$fk_column_name} : $fk_column_name;
+				$primary_key_name =~ s/${singular_name}_//;
+				$destination_port = ($primary_key_name eq 'id') ? '0:w' : $port{$table_name}{$primary_key_name};
+			}
+			else
+			{
+				$destination_port = 2;
+			}
+
+			$self -> graph -> add_edge(from => "$fk_table_name:port$source_port", to => "$table_name:port$destination_port");
 		}
 	}
 
@@ -243,6 +287,8 @@ L<GraphViz2::DBI> - Visualize a database schema as a graph
 	$graph -> run(format => $format, output_file => $output_file);
 
 See scripts/dbi.schema.pl (L<GraphViz2/Scripts Shipped with this Module>).
+
+The image html/dbi.schema.svg was generated from the database tables of my module L<App::Office::Contacts>.
 
 =head1 Description
 
@@ -351,28 +397,33 @@ Returns the graph object, either the one supplied to new() or the one created du
 
 =head1 FAQ
 
-=head2 Does GraphViz2::DBI work with MySQL/MariaDB databases?
+=head2 Which versions of the servers did you test?
 
-Yes. But see these L<warnings|https://metacpan.org/pod/DBIx::Admin::TableInfo#Description> when using MySQL/MariaDB.
-
-I'm currently using MariaDB V 5.5.38.
+See L<DBIx::Admin::TableInfo/FAQ>.
 
 =head2 Does GraphViz2::DBI work with SQLite databases?
 
-Yes. As of V 2.07, this module uses SQLite's "pragma foreign_key_list($table_name)" to emulate L<DBI>'s
-$dbh -> foreign_key_info(...).
+Yes. See L<DBIx::Admin::TableInfo/FAQ>.
 
 =head2 What is returned by SQLite's "pragma foreign_key_list($table_name)"?
 
-	Fields returned are:
-	0: COUNT   (0, 1, ...)
-	1: KEY_SEQ (0, or column # (1, 2, ...) within multi-column key)
-	2: FKTABLE_NAME
-	3: PKCOLUMN_NAME
-	4: FKCOLUMN_NAME
-	5: UPDATE_RULE
-	6: DELETE_RULE
-	7: 'NONE' (Constant string)
+See L<DBIx::Admin::TableInfo/FAQ>.
+
+=head2 How does GraphViz2::DBI draw edges from foreign keys to primary keys?
+
+It assumes that the primary table's name is a plural word, and that the foreign key's name is prefixed by the singular
+of the primary table's name, separated by '_'.
+
+Thus a (primary) table 'people' with a primary key 'id' will be pointed to by a table 'phone_numbers' using a
+column 'person_id'.
+
+Table 'phone_numbers' will probably have a primary key 'id' but that is not used (unless some other table has a
+foreign key pointing to the 'phone_numbers' table).
+
+The conversion of plural to singular is done with L<Lingua::EN::PluralToSingular>.
+
+If this naming convention does not hold, then both the source and destination ports default to '1', which is the
+port of the 1st column (in alphabetical order) in each table. The table name itself is port '0'.
 
 =head2 Are any sample scripts shipped with this module?
 

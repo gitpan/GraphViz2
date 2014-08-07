@@ -130,7 +130,7 @@ has valid_attributes =>
 	required => 0,
 );
 
-our $VERSION = '2.29';
+our $VERSION = '2.30';
 
 # -----------------------------------------------
 
@@ -198,7 +198,7 @@ sub add_edge
 
 	$self -> validate_params('edge', %arg);
 
-	# If either from or to is unknown, add a new node.
+	# If either 'from' or 'to' is unknown, add a new node.
 
 	my($new)  = 0;
 	my($node) = $self -> node_hash;
@@ -208,12 +208,13 @@ sub add_edge
 	for my $name ($from, $to)
 	{
 		# Remove port, if any, from name.
+		# But beware node names like 'A::Class'.
 
-		if ($name =~ m/^([^:]+)(:[^:]*)$/)
+		if ($name =~ m/^([^:]+)(:[^:]+)$/)
 		{
 			$name = $1;
 
-			push @node, [$name, $2];
+			push @node, [$name, $2 || ''];
 		}
 		else
 		{

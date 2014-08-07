@@ -30,6 +30,7 @@ my($stdout, $stderr);
 for my $key (sort keys %script)
 {
 		$count++;
+
 		($stdout, $stderr) = capture{system $^X, '-Ilib', $script{$key}, 'svg', File::Spec -> catfile($temp_dir, "$key.svg")};
 
 		ok(length($stderr) == 0, "$script{$key} runs without error");
