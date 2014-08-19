@@ -130,7 +130,7 @@ has valid_attributes =>
 	required => 0,
 );
 
-our $VERSION = '2.31';
+our $VERSION = '2.32';
 
 # -----------------------------------------------
 
@@ -195,6 +195,10 @@ sub add_edge
 	$to         = defined($to) ? $to : '';
 	my($label)  = delete $arg{label};
 	$arg{label} = defined($label) ? $label : '';
+	$arg{label} =~ s/^\s+(<)/$1/;
+	$arg{label} =~ s/(>)\s+$/$1/;
+	$arg{label} =~ s/^(<)\n/$1/;
+	$arg{label} =~ s/\n(>)$/$1/;
 
 	$self -> validate_params('edge', %arg);
 
@@ -289,6 +293,11 @@ sub add_node
 	$$node{$name}{attributes} = {%{$$node{$name}{attributes} }, %arg};
 	%arg                      = %{$$node{$name}{attributes} };
 	my($label)                = $arg{label} || '';
+	$label                    =~ s/^\s+(<)/$1/;
+	$label                    =~ s/(>)\s+$/$1/;
+	$label                    =~ s/^(<)\n/$1/;
+	$label                    =~ s/\n(>)$/$1/;
+	$arg{label}               = $label;
 
 	# Handle ports.
 
