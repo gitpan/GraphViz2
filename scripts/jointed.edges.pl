@@ -45,18 +45,24 @@ $graph -> add_node(name => 'Oakleigh',    color => 'blueviolet');
 
 # This is the 1st of 2 nodes used as the junction of 3 edges.
 
-my(%junction) = (label => '', style => 'filled', fillcolor => 'white', fixedsize => 1, width => 0, height => 0);
+my(%junction) =
+(
+	fixedsize => 1,
+	height    => 0,
+	label     => '',
+	width     => 0,
+);
 
 $graph -> add_node(name => 'one', %junction);
 
 # Note: arrowhead is case-sensitive (i.e. arrowHead does not work).
 # Presumably all attribute names are likewise case-sensitive.
 
-my(%headless_arrow) = (arrowhead => 'none', samehead => 1);
+my(%headless_arrow) = (arrowhead => 'none');
 
 $graph -> add_edge(from => 'Murrumbeena', to => 'one', %headless_arrow);
 $graph -> add_edge(from => 'Carnegie',    to => 'one', %headless_arrow);
-$graph -> add_edge(from => 'one',         to => 'Oakleigh', sametail => 1);
+$graph -> add_edge(from => 'one',         to => 'Oakleigh');
 
 # Node set 2:
 
@@ -70,7 +76,7 @@ $graph -> add_node(name => 'two', %junction);
 
 $graph -> add_edge(from => 'Ashburton', to => 'two', %headless_arrow);
 $graph -> add_edge(from => 'Chadstone', to => 'two', %headless_arrow);
-$graph -> add_edge(from => 'two',       to => 'Waverley', sametail => 1);
+$graph -> add_edge(from => 'two',       to => 'Waverley');
 
 my($format)      = shift || 'svg';
 my($output_file) = shift || File::Spec -> catfile('html', "jointed.edges.$format");

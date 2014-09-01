@@ -130,7 +130,7 @@ has valid_attributes =>
 	required => 0,
 );
 
-our $VERSION = '2.32';
+our $VERSION = '2.33';
 
 # -----------------------------------------------
 
@@ -193,12 +193,12 @@ sub add_edge
 	$from       = defined($from) ? $from : '';
 	my($to)     = delete $arg{to};
 	$to         = defined($to) ? $to : '';
-	my($label)  = delete $arg{label};
-	$arg{label} = defined($label) ? $label : '';
-	$arg{label} =~ s/^\s+(<)/$1/;
-	$arg{label} =~ s/(>)\s+$/$1/;
-	$arg{label} =~ s/^(<)\n/$1/;
-	$arg{label} =~ s/\n(>)$/$1/;
+	my($label)  = defined($arg{label}) ? $arg{label} : '';
+	$label      =~ s/^\s+(<)/$1/;
+	$label      =~ s/(>)\s+$/$1/;
+	$label      =~ s/^(<)\n/$1/;
+	$label      =~ s/\n(>)$/$1/;
+	$arg{label} = $label if (defined $arg{label});
 
 	$self -> validate_params('edge', %arg);
 
@@ -292,12 +292,12 @@ sub add_node
 	$$node{$name}{attributes} = {} if (! $$node{$name}{attributes});
 	$$node{$name}{attributes} = {%{$$node{$name}{attributes} }, %arg};
 	%arg                      = %{$$node{$name}{attributes} };
-	my($label)                = $arg{label} || '';
+	my($label)                = defined($arg{label}) ? $arg{label} : '';
 	$label                    =~ s/^\s+(<)/$1/;
 	$label                    =~ s/(>)\s+$/$1/;
 	$label                    =~ s/^(<)\n/$1/;
 	$label                    =~ s/\n(>)$/$1/;
-	$arg{label}               = $label;
+	$arg{label}               = $label if (defined $arg{label});
 
 	# Handle ports.
 
@@ -965,11 +965,19 @@ for help on unpacking and installing distros.
 
 =head1 Installation
 
+Of course you need to install AT&T's Graphviz before using this module.
+See L<http://www.graphviz.org/Download.php>.
+
+You are strongly advised to download the stable version of Graphviz, because the
+development snapshots (click on 'Source code'), are sometimes non-functional.
+
 Install L<GraphViz2> as you would for any C<Perl> module:
 
 Run:
 
 	cpanm GraphViz2
+
+	Note: cpanm ships in App::cpanminus. See also App::perlbrew.
 
 or run:
 
