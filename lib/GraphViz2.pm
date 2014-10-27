@@ -130,7 +130,7 @@ has valid_attributes =>
 	required => 0,
 );
 
-our $VERSION = '2.33';
+our $VERSION = '2.34';
 
 # -----------------------------------------------
 
@@ -746,7 +746,7 @@ sub run
 
 		my($stdout, $stderr);
 
-		# Usage of utf8 here relies on ISO-8859-1 match Unicode for low chars.
+		# Usage of utf8 here relies on ISO-8859-1 matching Unicode for low chars.
 		# It saves me the effort of determining if the input contains Unicode.
 
 		run3
